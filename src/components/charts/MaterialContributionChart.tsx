@@ -131,19 +131,19 @@ export function MaterialContributionChart() {
               <defs>
                 {/* Gradients for vertical bars: fades at bottom (start), 80% opacity at top (end) */}
                 <linearGradient id="gradientBAU" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="#6b7280" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#6b7280" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#6b7280" stopOpacity={0.8} />
                 </linearGradient>
                 <linearGradient id="gradientScen3" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="#ef4444" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#ef4444" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#ef4444" stopOpacity={0.8} />
                 </linearGradient>
                 <linearGradient id="gradientScen2" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8} />
                 </linearGradient>
                 <linearGradient id="gradientScen15" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.8} />
                 </linearGradient>
               </defs>

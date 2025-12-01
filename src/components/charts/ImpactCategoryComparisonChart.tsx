@@ -63,27 +63,27 @@ export function ImpactCategoryComparisonChart() {
                 {/* Gradient for negative values (left direction): 80% opacity at left (end), fades right (start/center) */}
                 <linearGradient id="gradientBaseNeg" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#6b7280" stopOpacity={0.8} />
-                  <stop offset="100%" stopColor="#6b7280" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#6b7280" stopOpacity={0.35} />
                 </linearGradient>
                 <linearGradient id="gradientPkBudg1000Neg" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.8} />
-                  <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.35} />
                 </linearGradient>
                 <linearGradient id="gradientPkBudg650Neg" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.8} />
-                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.35} />
                 </linearGradient>
                 {/* Gradient for positive values (right direction): fades left (start/center), 80% opacity at right (end) */}
                 <linearGradient id="gradientBasePos" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#6b7280" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#6b7280" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#6b7280" stopOpacity={0.8} />
                 </linearGradient>
                 <linearGradient id="gradientPkBudg1000Pos" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8} />
                 </linearGradient>
                 <linearGradient id="gradientPkBudg650Pos" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.35} />
                   <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.8} />
                 </linearGradient>
               </defs>

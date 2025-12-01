@@ -149,45 +149,45 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
             <defs>
               {/* Grid infrastructure gradient */}
               <radialGradient id="gridGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor={GRID_GRADIENT_START} stopOpacity={0.3} />
-                <stop offset="100%" stopColor={GRID_GRADIENT_END} stopOpacity={1} />
+                <stop offset="0%" stopColor={GRID_GRADIENT_START} stopOpacity={0.35} />
+                <stop offset="100%" stopColor={GRID_GRADIENT_END} stopOpacity={0.8} />
               </radialGradient>
-              {/* Radial gradients for each energy source: fades at inner radius, solid at outer radius */}
+              {/* Radial gradients for each energy source: fades at inner radius, 80% opacity at outer radius */}
               <radialGradient id="gradCoal" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#52525b" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#52525b" stopOpacity={1} />
+                <stop offset="0%" stopColor="#52525b" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#52525b" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradGas" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#f97316" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#f97316" stopOpacity={1} />
+                <stop offset="0%" stopColor="#f97316" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#f97316" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradWind" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity={1} />
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradSolar" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#eab308" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#eab308" stopOpacity={1} />
+                <stop offset="0%" stopColor="#eab308" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#eab308" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradBiomass" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#22c55e" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#22c55e" stopOpacity={1} />
+                <stop offset="0%" stopColor="#22c55e" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#22c55e" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradNuclear" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#fbbf24" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#fbbf24" stopOpacity={1} />
+                <stop offset="0%" stopColor="#fbbf24" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#fbbf24" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradHydro" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#06b6d4" stopOpacity={1} />
+                <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#06b6d4" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradHydrogen" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#ed7577" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#ed7577" stopOpacity={1} />
+                <stop offset="0%" stopColor="#ed7577" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#ed7577" stopOpacity={0.8} />
               </radialGradient>
               <radialGradient id="gradOther" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                <stop offset="0%" stopColor="#9ca3af" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#9ca3af" stopOpacity={1} />
+                <stop offset="0%" stopColor="#9ca3af" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#9ca3af" stopOpacity={0.8} />
               </radialGradient>
             </defs>
 
@@ -239,8 +239,8 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
                         fill={GRADIENT_IDS[entry.name] || entry.fill}
                         fillOpacity={1}
                         opacity={1}
-                        stroke="transparent"
-                        strokeWidth={1}
+                        stroke={COLORS[entry.name] || entry.fill}
+                        strokeWidth={1.5}
                         className={entry.name === "Grid infrastructure" ? "grid-pulse" : undefined}
                         cornerRadius={cornerRadius}
                       />

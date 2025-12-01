@@ -324,9 +324,12 @@ export function SankeyVisualization() {
                       ry={8}
                       fill={node.color}
                       fillOpacity={nodeOpacity}
+                      stroke={node.color}
+                      strokeWidth={1.5}
+                      strokeOpacity={hasAnimated ? 1 : 0}
                       className="shadow-sm"
                       style={{
-                        transition: `transform 640ms ease-out, fill-opacity 640ms ease-out, opacity 740ms ease-out`,
+                        transition: `transform 640ms ease-out, fill-opacity 640ms ease-out, stroke-opacity 640ms ease-out, opacity 740ms ease-out`,
                         transitionDelay: hasAnimated && !entryComplete ? nodeDelay(node) : "0ms",
                         transform: hasAnimated ? "translateX(0px)" : "translateX(-16px)",
                         transformBox: "fill-box",
