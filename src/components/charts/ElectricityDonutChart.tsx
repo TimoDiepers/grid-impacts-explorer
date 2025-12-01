@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { Cell, Pie, PieChart } from "recharts";
 
@@ -20,6 +20,10 @@ interface ElectricityDonutChartProps {
     generation: Record<string, { share: number; impact: number }>;
   };
 }
+
+export const ElectricityDonutChart = memo(ElectricityDonutChartComponent, (prevProps, nextProps) =>
+  dataIsEqual(prevProps.data, nextProps.data)
+);
 
 const COLORS: Record<string, string> = {
   Coal: "#52525b",
@@ -47,7 +51,29 @@ function interpolateHexColor(start: string, end: string, t = 0.5) {
 
 const gridLegendColor = interpolateHexColor(GRID_GRADIENT_START, GRID_GRADIENT_END);
 
-export function ElectricityDonutChart({ data }: ElectricityDonutChartProps) {
+function dataIsEqual(prev: ElectricityDonutChartProps["data"], next: ElectricityDonutChartProps["data"]) {
+  if (
+    prev.year !== next.year ||
+    prev.scenario !== next.scenario ||
+    prev.totalGCO2e !== next.totalGCO2e ||
+    prev.gridShare !== next.gridShare
+  ) {
+    return false;
+  }
+
+  const prevKeys = Object.keys(prev.generation);
+  const nextKeys = Object.keys(next.generation);
+
+  if (prevKeys.length !== nextKeys.length) return false;
+
+  return prevKeys.every((key) => {
+    const prevVal = prev.generation[key];
+    const nextVal = next.generation[key];
+    return !!nextVal && prevVal.share === nextVal.share && prevVal.impact === nextVal.impact;
+  });
+}
+
+function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -56,36 +82,43 @@ export function ElectricityDonutChart({ data }: ElectricityDonutChartProps) {
     if (isInView && !hasAnimated) setHasAnimated(true);
   }, [isInView, hasAnimated]);
 
-  const pieData = Object.entries(data.generation).map(([name, values]) => ({
-    name,
-    value: values.impact,
-    share: values.share,
-    fill: COLORS[name] || "#9ca3af",
-  }));
+  const { sortedData, chartData, chartConfig } = useMemo(() => {
+    const pieData = Object.entries(data.generation).map(([name, values]) => ({
+      name,
+      value: values.impact,
+      share: values.share,
+      fill: COLORS[name] || "#9ca3af",
+    }));
 
-  pieData.push({
-    name: "Grid infrastructure",
-    value: data.gridShare,
-    share: 0,
-    fill: COLORS["Grid infrastructure"],
-  });
+    pieData.push({
+      name: "Grid infrastructure",
+      value: data.gridShare,
+      share: 0,
+      fill: COLORS["Grid infrastructure"],
+    });
 
-  const sortedData = [
-    ...pieData
-      .filter((d) => d.name !== "Grid infrastructure")
-      .sort((a, b) => b.value - a.value),
-    pieData.find((d) => d.name === "Grid infrastructure")!,
-  ];
+    const ordered = [
+      ...pieData
+        .filter((d) => d.name !== "Grid infrastructure")
+        .sort((a, b) => b.value - a.value),
+      pieData.find((d) => d.name === "Grid infrastructure")!,
+    ];
 
-  const chartData = hasAnimated ? sortedData : sortedData.map((d) => ({ ...d, value: 0 }));
+    const config = ordered.reduce((acc, item) => {
+      acc[item.name] = {
+        label: item.name,
+        color: item.name === "Grid infrastructure" ? gridLegendColor : item.fill,
+      };
+      return acc;
+    }, {} as ChartConfig);
 
-  const chartConfig = sortedData.reduce((acc, item) => {
-    acc[item.name] = {
-      label: item.name,
-      color: item.name === "Grid infrastructure" ? gridLegendColor : item.fill,
+    return {
+      sortedData: ordered,
+      chartData: hasAnimated ? ordered : ordered.map((d) => ({ ...d, value: 0 })),
+      chartConfig: config,
     };
-    return acc;
-  }, {} as ChartConfig);
+    // hasAnimated deliberately included so chartData updates once animation is allowed
+  }, [data, hasAnimated]);
 
   return (
     <div ref={ref} className="flex flex-col items-center w-full">
