@@ -1,4 +1,4 @@
-import { Pie, PieChart, Cell, Sector } from "recharts";
+import { Pie, PieChart, Cell, type LegendPayload } from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
@@ -28,10 +28,23 @@ const COLORS: Record<string, string> = {
   Biomass: "#22c55e",
   Nuclear: "#fbbf24",
   Hydro: "#06b6d4",
-  Hydrogen: "#a855f7",
+  Hydrogen: "#f755beff",
   Other: "#9ca3af",
   "Grid infrastructure": "#1e40af",
 };
+
+const GRID_GRADIENT_START = "#645de8ff";
+const GRID_GRADIENT_END = "#a855f7";
+
+function interpolateHexColor(start: string, end: string, t = 0.5) {
+  const parse = (hex: string) => hex.replace("#", "").match(/.{2}/g)!.map((h) => parseInt(h, 16));
+  const [r1, g1, b1] = parse(start);
+  const [r2, g2, b2] = parse(end);
+
+  const toHex = (n: number) => n.toString(16).padStart(2, "0");
+
+  return `#${toHex(Math.round(r1 + (r2 - r1) * t))}${toHex(Math.round(g1 + (g2 - g1) * t))}${toHex(Math.round(b1 + (b2 - b1) * t))}`;
+}
 
 export function ElectricityDonutChart({ data }: ElectricityDonutChartProps) {
   const ref = useRef(null);
@@ -68,36 +81,38 @@ export function ElectricityDonutChart({ data }: ElectricityDonutChartProps) {
     pieData.find((d) => d.name === "Grid infrastructure")!,
   ];
 
-  const gridIndex = sortedData.findIndex((d) => d.name === "Grid infrastructure");
-
   // Use zeroed data until in view
   const chartData = hasAnimated 
     ? sortedData 
     : sortedData.map(d => ({ ...d, value: 0 }));
 
-  const sliceShape = (props: any) => {
-    const isGrid = props?.payload?.name === "Grid infrastructure";
-    const outerRadius = (props.outerRadius ?? 0) + (isGrid ? 16 : 0);
-    const innerRadius = (props.innerRadius ?? 0) + (isGrid ? 8 : 0);
-    return (
-      <Sector
-        {...props}
-        outerRadius={outerRadius}
-        innerRadius={innerRadius}
-        stroke="transparent"
-        strokeWidth={1}
-      />
-    );
-  };
+  const gridLegendColor = interpolateHexColor(GRID_GRADIENT_START, GRID_GRADIENT_END);
 
   // Build chart config dynamically
   const chartConfig = sortedData.reduce((acc, item) => {
     acc[item.name] = {
       label: item.name,
-      color: item.fill,
+      color: item.name === "Grid infrastructure" ? gridLegendColor : item.fill,
     };
     return acc;
   }, {} as ChartConfig);
+
+  const renderLegend = (legendProps: unknown) => {
+    const payload = (legendProps as { payload?: LegendPayload[] })?.payload;
+    const normalizedPayload = payload?.map((item) => {
+      const key = String(item.dataKey ?? item.value);
+      if (key === "Grid infrastructure") {
+        return { ...item, color: gridLegendColor, dataKey: key, value: item.value };
+      }
+      return { ...item, dataKey: key, value: item.value };
+    });
+    return (
+      <ChartLegendContent
+        payload={normalizedPayload as any}
+        className="text-[10px] sm:text-xs flex-wrap gap-1 justify-center -translate-y-20"
+      />
+    );
+  };
 
   return (
     <div ref={ref} className="flex flex-col items-center w-full">
@@ -142,7 +157,6 @@ export function ElectricityDonutChart({ data }: ElectricityDonutChartProps) {
             isAnimationActive={true}
             animationDuration={1200}
             animationBegin={0}
-            shape={sliceShape}
           >
             {sortedData.map((entry, index) => (
               <Cell
@@ -159,11 +173,7 @@ export function ElectricityDonutChart({ data }: ElectricityDonutChartProps) {
 
           <ChartLegend
             verticalAlign="bottom"
-            content={
-              <ChartLegendContent
-                className="text-[10px] sm:text-xs flex-wrap gap-1 justify-center -translate-y-20"
-              />
-            }
+            content={(props) => renderLegend(props)}
           />
         </PieChart>
       </ChartContainer>

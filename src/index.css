@@ -204,11 +204,11 @@ h1, h2, h3, h4, h5, h6 {
 
 @keyframes grid-pulse {
   0%, 100% {
-    transform: scale(0.96);
-    opacity: 0.8;
+    transform: scale(1.02) translateX(2px);
+    opacity: 0.85;
   }
-  50% {
-    transform: scale(1.02);
+  40% {
+    transform: scale(1.06) translateX(8px);
     opacity: 1;
   }
 }

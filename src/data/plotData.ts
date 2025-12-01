@@ -1,4 +1,4 @@
-export type ScenarioKey = "bau" | "scen3" | "scen2" | "scen15";
+export type ScenarioKey = "scen3" | "scen2" | "scen15";
 
 export const scenarioOptions: { key: ScenarioKey; label: string }[] = [
   { key: "scen3", label: "3°C scenario" },
