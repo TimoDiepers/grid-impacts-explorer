@@ -121,6 +121,25 @@ export function MaterialContributionChart() {
               barGap={12}
               barCategoryGap={20}
             >
+              <defs>
+                {/* Gradients for vertical bars: solid at bottom, fades to top */}
+                <linearGradient id="gradientBAU" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stopColor="#6b7280" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#6b7280" stopOpacity={0.3} />
+                </linearGradient>
+                <linearGradient id="gradientScen3" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stopColor="#ef4444" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3} />
+                </linearGradient>
+                <linearGradient id="gradientScen2" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.3} />
+                </linearGradient>
+                <linearGradient id="gradientScen15" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" />
               <XAxis
                 dataKey="category"
@@ -178,7 +197,7 @@ export function MaterialContributionChart() {
               <Bar
                 dataKey="BAU"
                 name="BAU"
-                fill="var(--color-BAU)"
+                fill="url(#gradientBAU)"
                 radius={[8, 8, 0, 0]}
                 isAnimationActive={true}
                 animationDuration={900}
@@ -186,20 +205,25 @@ export function MaterialContributionChart() {
                 style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
               />
 
-              {scenarioOrder.map((key, index) => (
-                <Bar
-                  key={key}
-                  dataKey={key}
-                  name={chartConfig[key]?.label as string}
-                  fill={`var(--color-${key})`}
-                  radius={[8, 8, 0, 0]}
-                  isAnimationActive={true}
-                  animationDuration={900}
-                  animationBegin={120 + index * 120}
-                  animationEasing="ease-out"
-                  style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
-                />
-              ))}
+              {scenarioOrder.map((key, index) => {
+                const gradientId = key === "scen3" ? "gradientScen3" 
+                  : key === "scen2" ? "gradientScen2" 
+                  : "gradientScen15";
+                return (
+                  <Bar
+                    key={key}
+                    dataKey={key}
+                    name={chartConfig[key]?.label as string}
+                    fill={`url(#${gradientId})`}
+                    radius={[8, 8, 0, 0]}
+                    isAnimationActive={true}
+                    animationDuration={900}
+                    animationBegin={120 + index * 120}
+                    animationEasing="ease-out"
+                    style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
+                  />
+                );
+              })}
             </BarChart>
           </ChartContainer>
         </div>

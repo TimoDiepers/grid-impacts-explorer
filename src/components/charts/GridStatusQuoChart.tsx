@@ -45,6 +45,14 @@ const COLORS: Record<string, string> = {
   Switchgears: "#a855f7",
 };
 
+const GRADIENT_IDS: Record<string, string> = {
+  "Overhead lines": "url(#gradientOverhead)",
+  Cables: "url(#gradientCables)",
+  Transformers: "url(#gradientTransformers)",
+  Substations: "url(#gradientSubstations)",
+  Switchgears: "url(#gradientSwitchgears)",
+};
+
 export function GridStatusQuoChart() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -68,6 +76,29 @@ export function GridStatusQuoChart() {
             layout="vertical"
             barSize={20}
           >
+            <defs>
+              {/* Gradients for horizontal bars: solid at left, fades to right */}
+              <linearGradient id="gradientOverhead" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#2563eb" stopOpacity={1} />
+                <stop offset="100%" stopColor="#2563eb" stopOpacity={0.3} />
+              </linearGradient>
+              <linearGradient id="gradientCables" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#f97316" stopOpacity={1} />
+                <stop offset="100%" stopColor="#f97316" stopOpacity={0.3} />
+              </linearGradient>
+              <linearGradient id="gradientTransformers" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#22c55e" stopOpacity={1} />
+                <stop offset="100%" stopColor="#22c55e" stopOpacity={0.3} />
+              </linearGradient>
+              <linearGradient id="gradientSubstations" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity={1} />
+                <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3} />
+              </linearGradient>
+              <linearGradient id="gradientSwitchgears" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#a855f7" stopOpacity={1} />
+                <stop offset="100%" stopColor="#a855f7" stopOpacity={0.3} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#374151" />
             <XAxis
               type="number"
@@ -108,7 +139,7 @@ export function GridStatusQuoChart() {
               animationBegin={0}
             >
               {gridStatusQuoComponents.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[entry.name] || "#8884d8"} />
+                <Cell key={`cell-${index}`} fill={GRADIENT_IDS[entry.name] || COLORS[entry.name] || "#8884d8"} />
               ))}
             </Bar>
             <ChartLegend

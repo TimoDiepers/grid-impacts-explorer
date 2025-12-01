@@ -1,4 +1,4 @@
-import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ReferenceLine, ResponsiveContainer } from "recharts";
+import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ReferenceLine, ResponsiveContainer, Cell } from "recharts";
 import { expansionComparisonData } from "@/data";
 import {
   ChartContainer,
@@ -59,6 +59,34 @@ export function ImpactCategoryComparisonChart() {
               layout="vertical"
               barGap={2}
             >
+              <defs>
+                {/* Gradient for negative values (left direction): solid at right, fades left */}
+                <linearGradient id="gradientBaseNeg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#6b7280" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#6b7280" stopOpacity={1} />
+                </linearGradient>
+                <linearGradient id="gradientPkBudg1000Neg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity={1} />
+                </linearGradient>
+                <linearGradient id="gradientPkBudg650Neg" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity={1} />
+                </linearGradient>
+                {/* Gradient for positive values (right direction): solid at left, fades right */}
+                <linearGradient id="gradientBasePos" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#6b7280" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#6b7280" stopOpacity={0.3} />
+                </linearGradient>
+                <linearGradient id="gradientPkBudg1000Pos" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.3} />
+                </linearGradient>
+                <linearGradient id="gradientPkBudg650Pos" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                </linearGradient>
+              </defs>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#374151" />
               <XAxis
                 type="number"
@@ -97,28 +125,46 @@ export function ImpactCategoryComparisonChart() {
               <ReferenceLine x={0} stroke="#6b7280" strokeDasharray="3 3" />
               <Bar
                 dataKey="base"
-                fill="var(--color-base)"
                 radius={[0, 8, 8, 0]}
                 isAnimationActive={true}
                 animationDuration={1200}
                 animationBegin={0}
-              />
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`base-${index}`}
+                    fill={entry.base >= 0 ? "url(#gradientBasePos)" : "url(#gradientBaseNeg)"}
+                  />
+                ))}
+              </Bar>
               <Bar
                 dataKey="pkBudg1000"
-                fill="var(--color-pkBudg1000)"
                 radius={[0, 8, 8, 0]}
                 isAnimationActive={true}
                 animationDuration={1200}
                 animationBegin={200}
-              />
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`pkBudg1000-${index}`}
+                    fill={entry.pkBudg1000 >= 0 ? "url(#gradientPkBudg1000Pos)" : "url(#gradientPkBudg1000Neg)"}
+                  />
+                ))}
+              </Bar>
               <Bar
                 dataKey="pkBudg650"
-                fill="var(--color-pkBudg650)"
                 radius={[0, 8, 8, 0]}
                 isAnimationActive={true}
                 animationDuration={1200}
                 animationBegin={400}
-              />
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`pkBudg650-${index}`}
+                    fill={entry.pkBudg650 >= 0 ? "url(#gradientPkBudg650Pos)" : "url(#gradientPkBudg650Neg)"}
+                  />
+                ))}
+              </Bar>
               <ChartLegend
                 verticalAlign="top"
                 content={<ChartLegendContent className="text-[11px]" />}
