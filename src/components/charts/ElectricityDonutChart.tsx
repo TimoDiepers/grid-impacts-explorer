@@ -33,7 +33,7 @@ const COLORS: Record<string, string> = {
   Biomass: "#22c55e",
   Nuclear: "#fbbf24",
   Hydro: "#06b6d4",
-  Hydrogen: "#ed7577ff",
+  Hydrogen: "#ed7577",
   Other: "#9ca3af",
   "Grid infrastructure": "#1e40af",
 };
@@ -52,7 +52,7 @@ const GRADIENT_IDS: Record<string, string> = {
   "Grid infrastructure": "url(#gridGrad)",
 };
 
-const GRID_GRADIENT_START = "#645de8ff";
+const GRID_GRADIENT_START = "#645de8";
 const GRID_GRADIENT_END = "#a855f7";
 
 function interpolateHexColor(start: string, end: string, t = 0.5) {
