@@ -316,7 +316,7 @@ export function SankeyVisualization() {
                       rx={8}
                       ry={8}
                       fill={node.color}
-                      fillOpacity={hasAnimated ? (nodeDimming ? (nodeHighlighted ? 0.95 : 0.5) : 0.9) : 0}
+                      fillOpacity={hasAnimated ? (nodeDimming ? (nodeHighlighted ? 0.85 : 0.4) : 0.8) : 0}
                       stroke={node.color}
                       strokeWidth={2}
                       strokeOpacity={hasAnimated ? (nodeDimming ? (nodeHighlighted ? 1 : 0.3) : 0.9) : 0}
