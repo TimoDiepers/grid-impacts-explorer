@@ -163,17 +163,32 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
             animationDuration={1200}
             animationBegin={0}
               >
-                {sortedData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.name === "Grid infrastructure" ? "url(#gridGrad)" : entry.fill}
-                fillOpacity={1}
-                opacity={1}
-                stroke="transparent"
-                strokeWidth={1}
-                className={entry.name === "Grid infrastructure" ? "grid-pulse" : undefined}
-                  />
-                ))}
+                {(() => {
+                  const totalValue = sortedData.reduce((sum, item) => sum + item.value, 0);
+
+                  return sortedData.map((entry, index) => {
+                    const arcSpan = totalValue > 0 ? (entry.value / totalValue) * 180 : 0;
+                    const cornerRadius =
+                      arcSpan < 1 ? 1 :
+                      arcSpan < 2 ? 2 :
+                      arcSpan < 4 ? 5 :
+                      arcSpan < 6 ? 6 :
+                      8;
+
+                    return (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.name === "Grid infrastructure" ? "url(#gridGrad)" : entry.fill}
+                        fillOpacity={1}
+                        opacity={1}
+                        stroke="transparent"
+                        strokeWidth={1}
+                        className={entry.name === "Grid infrastructure" ? "grid-pulse" : undefined}
+                        cornerRadius={cornerRadius}
+                      />
+                    );
+                  });
+                })()}
               </Pie>
 
             <ChartLegend
