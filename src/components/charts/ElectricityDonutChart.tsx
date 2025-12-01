@@ -176,8 +176,10 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
                     const cornerRadius =
                       arcSpan < 1 ? 0.5 :
                       arcSpan < 2 ? 1.5 :
+                      arcSpan < 3 ? 2 :
                       arcSpan < 4 ? 3 :
                       arcSpan < 6 ? 5 :
+                      arcSpan < 7 ? 6 :
                       8;
 
                     return (
