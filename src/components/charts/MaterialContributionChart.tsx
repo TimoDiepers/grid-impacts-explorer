@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "framer-motion";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { plotDatasets, scenarioOptions, type PlotDatasetKey, type ScenarioKey } from "@/data/plotData";
 import type { ChartConfig } from "@/components/ui/chart";
@@ -111,80 +111,82 @@ export function MaterialContributionChart() {
         </Select>
       </div>
 
-      <ChartContainer
-        config={chartConfig}
-        className="h-[420px] sm:h-[460px] md:h-[520px] w-full"
-      >
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={chartData}
-            margin={{ top: 12, right: 22, left: 12, bottom: 64 }}
-            barGap={14}
-            barCategoryGap={28}
+      <div className="w-full overflow-x-auto pb-2">
+        <div className="min-w-[640px] sm:min-w-0">
+          <ChartContainer
+            config={chartConfig}
+            className="h-[400px] sm:h-[460px] md:h-[520px] w-full"
           >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" />
-            <XAxis
-              dataKey="category"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              interval={0}
-              height={60}
-              tick={{ fontSize: 11, fill: "#e5e7eb" }}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={6}
-              tick={{ fontSize: 11, fill: "#9ca3af" }}
-              domain={[0, yMax]}
-              tickFormatter={(v) => `${v}%`}
-            />
-            <ChartTooltip
-              content={
-                <ChartTooltipContent
-                  formatter={(value, name) => (
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-gray-400 text-xs">
-                        {chartConfig[name as keyof typeof chartConfig]?.label || name}
-                      </span>
-                      <span className="font-mono font-medium text-gray-100 text-xs">
-                        {typeof value === "number" ? value.toFixed(1) : value}%
-                      </span>
-                    </div>
-                  )}
-                />
-              }
-            />
-            <ChartLegend
-              verticalAlign="top"
-              content={<ChartLegendContent className="text-[11px]" />}
-            />
+            <BarChart
+              data={chartData}
+              margin={{ top: 12, right: 22, left: 12, bottom: 64 }}
+              barGap={12}
+              barCategoryGap={20}
+            >
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" />
+              <XAxis
+                dataKey="category"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={10}
+                interval={0}
+                height={60}
+                tick={{ fontSize: 11, fill: "#e5e7eb" }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickMargin={6}
+                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                domain={[0, yMax]}
+                tickFormatter={(v) => `${v}%`}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(value, name) => (
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-gray-400 text-xs">
+                          {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                        </span>
+                        <span className="font-mono font-medium text-gray-100 text-xs">
+                          {typeof value === "number" ? value.toFixed(1) : value}%
+                        </span>
+                      </div>
+                    )}
+                  />
+                }
+              />
+              <ChartLegend
+                verticalAlign="top"
+                content={<ChartLegendContent className="text-[11px]" />}
+              />
 
-            <Bar
-              dataKey="BAU"
-              name="BAU"
-              fill="var(--color-BAU)"
-              radius={[6, 6, 0, 0]}
-              isAnimationActive={true}
-              animationDuration={900}
-              animationEasing="ease-out"
-              style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
-            />
-            <Bar
-              dataKey="scenario"
-              name="Scenario"
-              fill="var(--color-scenario)"
-              radius={[6, 6, 0, 0]}
-              isAnimationActive={true}
-              animationDuration={900}
-              animationBegin={120}
-              animationEasing="ease-out"
-              style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartContainer>
+              <Bar
+                dataKey="BAU"
+                name="BAU"
+                fill="var(--color-BAU)"
+                radius={[6, 6, 0, 0]}
+                isAnimationActive={true}
+                animationDuration={900}
+                animationEasing="ease-out"
+                style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
+              />
+              <Bar
+                dataKey="scenario"
+                name="Scenario"
+                fill="var(--color-scenario)"
+                radius={[6, 6, 0, 0]}
+                isAnimationActive={true}
+                animationDuration={900}
+                animationBegin={120}
+                animationEasing="ease-out"
+                style={{ opacity: ready ? 1 : 0, transition: "opacity 450ms ease-out" }}
+              />
+            </BarChart>
+          </ChartContainer>
+        </div>
+      </div>
     </div>
   );
 }

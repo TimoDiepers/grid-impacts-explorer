@@ -141,7 +141,7 @@ export function SankeyVisualization() {
 
   // Staged fade: leftmost column first, then its outgoing links, then next column, etc.
   // Use small stagger so layers overlap while still revealing left-to-right
-  const layerDelayMs = 300;
+  const layerDelayMs = 200;
   const nodeDelayMs = (node: SankeyNodeDatum) => (node.depth ?? 0) * layerDelayMs;
   const nodeDelay = (node: SankeyNodeDatum) => `${nodeDelayMs(node)}ms`;
   const linkDelayMs = (link: SankeyLinkDatum) => {
