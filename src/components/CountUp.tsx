@@ -48,10 +48,15 @@ export function CountUp({
   }, [start, target, duration, delay, count, decimals]);
 
   const formatted = Number.isFinite(display)
-    ? display.toLocaleString(undefined, {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals,
-      })
+    ? (() => {
+        const [integerPart, fractionPart = ""] = display
+          .toFixed(decimals)
+          .split(".");
+        const groupedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return decimals > 0
+          ? `${groupedInteger}.${fractionPart}`
+          : groupedInteger;
+      })()
     : display;
 
   return (
