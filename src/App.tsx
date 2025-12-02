@@ -440,8 +440,8 @@ function App() {
             accent="amber"
           />
 
-          <div className="grid lg:grid-cols-5 gap-4 sm:gap-6 mb-8">
-            <Card className="lg:col-span-2 card-hover">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 mb-8">
+            <Card className="lg:col-span-2 card-hover w-full min-w-0">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2 text-blue-400 mb-2">
                   <BarChart3 className="h-5 w-5" />
@@ -467,7 +467,7 @@ function App() {
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-3 card-hover">
+            <Card className="lg:col-span-3 card-hover w-full min-w-0">
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg">Component Breakdown</CardTitle>
                 <CardDescription>Climate impact by infrastructure type</CardDescription>

@@ -333,7 +333,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
             />
           </PieChart>
 
-        <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-44 z-0">
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-40 sm:pb-44 z-0">
           <div className="text-center">
             <CountUp
               target={targetTotal}
