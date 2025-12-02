@@ -42,7 +42,7 @@ const GRID_GRADIENT_START = "#645de8ff";
 const GRID_GRADIENT_END = "#a855f7";
 
 function usePrevious<T>(value: T) {
-  const ref = useRef<T>();
+  const ref = useRef<T | undefined>(undefined);
   useEffect(() => {
     ref.current = value;
   }, [value]);
@@ -104,11 +104,12 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
                 if (payload.length === 0) return null;
                 const point = active ? payload.find((p) => p.dataKey === active) : payload[0];
                 if (!point) return null;
-                const { dataKey, value, color } = point;
+                const { dataKey, value } = point;
 
                 return (
                   <ChartTooltipContent
-                    {...props}
+                    active={props?.active}
+                    label={typeof props?.label === "number" ? props.label.toString() : props?.label}
                     payload={[point]}
                     hideLabel
                     hideIndicator
@@ -125,7 +126,7 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
               }}
             />
             {entries.map(([name], idx) => {
-              const radius = entries.length === 1
+              const radius: [number, number, number, number] = entries.length === 1
                 ? [8, 8, 8, 8]
                 : idx === 0
                   ? [8, 0, 0, 8]
@@ -256,18 +257,21 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
 
             <ChartTooltip
               wrapperStyle={{ zIndex: 9999, pointerEvents: "none" }}
-              content={
-                <ChartTooltipContent
-                formatter={(value, name) => (
-                  <div className="flex items-center justify-between gap-2 sm:gap-4">
-                    <span className="text-gray-400 text-xs">{name}</span>
-                    <span className="font-mono font-medium text-gray-100 text-xs">
-                      {typeof value === "number" ? value.toFixed(1) : value}%
-                    </span>
-                  </div>
-                )}
-              />
-              }
+                  content={(tooltipProps) => (
+                    <ChartTooltipContent
+                      active={tooltipProps?.active}
+                  label={typeof tooltipProps?.label === "number" ? tooltipProps.label.toString() : tooltipProps?.label}
+                  payload={tooltipProps?.payload ? [...tooltipProps.payload] : undefined}
+                  formatter={(value, name) => (
+                    <div className="flex items-center justify-between gap-2 sm:gap-4">
+                      <span className="text-gray-400 text-xs">{name}</span>
+                      <span className="font-mono font-medium text-gray-100 text-xs">
+                        {typeof value === "number" ? value.toFixed(1) : value}%
+                      </span>
+                    </div>
+                  )}
+                />
+              )}
             />
             <Pie
             data={chartData}
