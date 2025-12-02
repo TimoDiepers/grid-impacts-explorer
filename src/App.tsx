@@ -13,6 +13,7 @@ import {
 } from "@/components/charts";
 import { electricityImpactData, gridStatusQuoComponents } from "@/data";
 import { CountUp } from "@/components/CountUp";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   Zap,
   TrendingUp,
@@ -180,9 +181,13 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden relative">
+    <div className="min-h-screen overflow-x-hidden relative transition-colors duration-300">
       {/* Fixed grid background */}
       <div className="fixed inset-0 bg-grid-pattern pointer-events-none z-0" />
+      {/* Theme Toggle - Fixed at top right */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       {/* Hero Section */}
       <section
         ref={heroRef}
