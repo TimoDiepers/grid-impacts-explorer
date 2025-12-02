@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "framer-motion";
-import { Cell, Pie, PieChart } from "recharts";
+import { Cell, Pie, PieChart, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 import {
   ChartContainer,
@@ -24,8 +24,7 @@ interface ElectricityDonutChartProps {
 export const ElectricityDonutChart = memo(ElectricityDonutChartComponent, (prevProps, nextProps) =>
   dataIsEqual(prevProps.data, nextProps.data)
 );
-
-const COLORS: Record<string, string> = {
+export const ELECTRICITY_COLORS: Record<string, string> = {
   Coal: "#52525b",
   Gas: "#f97316",
   Wind: "#3b82f6",
@@ -50,6 +49,97 @@ function interpolateHexColor(start: string, end: string, t = 0.5) {
 }
 
 const gridLegendColor = interpolateHexColor(GRID_GRADIENT_START, GRID_GRADIENT_END);
+
+function GenerationStackBar({ generation, order, animate }: { generation: Record<string, { share: number }>; order: string[]; animate: boolean }) {
+  const filtered = order
+    .map((name) => [name, generation[name]] as const)
+    .filter(([, v]) => v && v.share >= 2);
+
+  const total = filtered.reduce((sum, [, v]) => sum + v!.share, 0);
+  if (total === 0) return null;
+
+  const entries = filtered.map(([name, v]) => {
+    const scaled = Number(((v!.share / total) * 100).toFixed(1));
+    return [name, { ...v, share: scaled }] as const;
+  });
+
+  const activeRow = Object.fromEntries(entries.map(([name, v]) => [name, v!.share]));
+  const zeroRow = Object.fromEntries(entries.map(([name]) => [name, 0]));
+
+  const data = [
+    { label: "mix", ...(animate ? activeRow : zeroRow) },
+  ];
+
+  const chartConfig = entries.reduce((acc, [name]) => {
+    acc[name] = { label: name, color: ELECTRICITY_COLORS[name] || "#9ca3af" };
+    return acc;
+  }, {} as ChartConfig);
+
+  const [active, setActive] = useState<string | null>(null);
+
+  return (
+    <div className="w-full mt-3">
+      <div className="flex items-center justify-between px-2">
+        <span className="text-[10px] uppercase tracking-[0.12em] text-zinc-500">Generation mix</span>
+      </div>
+      <ChartContainer config={chartConfig} className="h-6 w-full px-2">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} layout="vertical" margin={{ top: 6, right: 6, bottom: 0, left: 0 }}>
+            <XAxis type="number" hide domain={[0, 100]} />
+            <YAxis type="category" dataKey="label" hide />
+            <ChartTooltip
+              cursor={false}
+              content={(props) => {
+                const payload = props?.payload ?? [];
+                if (payload.length === 0) return null;
+                const point = active ? payload.find((p) => p.dataKey === active) : payload[0];
+                if (!point) return null;
+                const { dataKey, value, color } = point;
+
+                return (
+                  <ChartTooltipContent
+                    {...props}
+                    payload={[point]}
+                    hideLabel
+                    hideIndicator
+                    formatter={() => (
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-gray-300 text-xs">{dataKey as string}</span>
+                        <span className="font-mono font-medium text-gray-100 text-xs">
+                          {typeof value === "number" ? value.toFixed(1) : value}%
+                        </span>
+                      </div>
+                    )}
+                  />
+                );
+              }}
+            />
+            {entries.map(([name], idx) => (
+              <Bar
+                key={name}
+                dataKey={name}
+                stackId="mix"
+                fill={ELECTRICITY_COLORS[name] || "#9ca3af"}
+                radius={
+                  idx === 0
+                    ? [8, 0, 0, 8]
+                    : idx === entries.length - 1
+                      ? [0, 8, 8, 0]
+                      : [0, 0, 0, 0]
+                }
+                onMouseEnter={() => setActive(name)}
+                onMouseLeave={() => setActive(null)}
+                isAnimationActive={animate}
+                animationDuration={900}
+                animationBegin={120}
+              />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      </ChartContainer>
+    </div>
+  );
+}
 
 type CellWithCornerRadiusProps = React.ComponentProps<typeof Cell> & {
   cornerRadius?: number;
@@ -87,19 +177,23 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
     if (isInView && !hasAnimated) setHasAnimated(true);
   }, [isInView, hasAnimated]);
 
-  const { sortedData, chartData, chartConfig } = useMemo(() => {
-    const pieData = Object.entries(data.generation).map(([name, values]) => ({
-      name,
-      value: values.impact,
-      share: values.share,
-      fill: COLORS[name] || "#9ca3af",
-    }));
+  const { sortedData, chartData, chartConfig, displayOrder } = useMemo(() => {
+    const MIN_VALUE = 0.001;
+
+    const pieData = Object.entries(data.generation)
+      .map(([name, values]) => ({
+        name,
+        value: values.impact,
+        share: values.share,
+        fill: ELECTRICITY_COLORS[name] || "#9ca3af",
+      }))
+      .filter((entry) => entry.value > MIN_VALUE);
 
     pieData.push({
       name: "Grid infrastructure",
       value: data.gridShare,
       share: 0,
-      fill: COLORS["Grid infrastructure"],
+      fill: ELECTRICITY_COLORS["Grid infrastructure"] ?? "#1e40af",
     });
 
     const ordered = [
@@ -121,6 +215,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
       sortedData: ordered,
       chartData: hasAnimated ? ordered : ordered.map((d) => ({ ...d, value: 0 })),
       chartConfig: config,
+      displayOrder: ordered.map((d) => d.name),
     };
     // hasAnimated deliberately included so chartData updates once animation is allowed
   }, [data, hasAnimated]);
@@ -161,7 +256,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
             endAngle={0}
             innerRadius="55%"
             outerRadius="93%"
-            paddingAngle={2}
+            paddingAngle={1}
             dataKey="value"
             nameKey="name"
             isAnimationActive={true}
@@ -224,6 +319,8 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
           </div>
         )}
       </div>
+
+      <GenerationStackBar generation={data.generation} order={displayOrder} animate={hasAnimated} />
     </div>
   );
 }
