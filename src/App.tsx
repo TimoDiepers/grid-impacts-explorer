@@ -282,7 +282,7 @@ function App() {
             <Button
               variant="gradient"
               size="lg"
-              onClick={() => scrollToSection("status-quo")}
+              onClick={() => scrollToSection("electricity-evolution")}
               className="group"
             >
               Start Exploring
@@ -311,7 +311,7 @@ function App() {
       {/* Main Content - Guided Tour */}
       <main className="max-w-6xl mx-auto px-4 py-16 sm:py-24 relative z-10">
         {/* Section 1: Electricity Mix */}
-        <AnimatedSection className="mb-24 sm:mb-32">
+        <AnimatedSection id="electricity-evolution" className="mb-24 sm:mb-32">
           <SectionHeader
             step={1}
             title="Electricity Generation Evolution"
