@@ -245,7 +245,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
     <div ref={ref} className="flex flex-col items-center w-full">
       <ChartContainer
         config={chartConfig}
-        className="relative w-full h-[320px] sm:h-[400px] md:h-[360px] -mb-20"
+        className="relative w-full h-[320px] sm:h-[400px] md:h-[360px] -mb-20 mt-4"
       >
         <PieChart margin={{ top: -200, right: 0, bottom: 0, left: 0 }} className="-translate-y-22">
             <defs>

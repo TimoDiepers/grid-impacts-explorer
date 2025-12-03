@@ -18,12 +18,16 @@ import {
   TrendingUp,
   Layers,
   BarChart3,
+  ChartBar,
   ChevronDown,
   ArrowRight,
   ExternalLink,
   Activity,
   Leaf,
   Cable,
+  Sigma,
+  BarChart2,
+  ArrowDownToDot,
 } from "lucide-react";
 import {
   Select,
@@ -32,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { BarChart } from "recharts";
 
 // Animated Section component for scroll-triggered animations
 function AnimatedSection({ 
@@ -72,7 +77,21 @@ function SectionHeader({
   step: number;
   title: string;
   subtitle: string;
-  accent?: "blue" | "emerald" | "violet" | "amber" | "cyan" | "rose" | "indigo" | "teal" | "lime";
+  accent?: 
+    | "blue" 
+    | "emerald" 
+    | "violet" 
+    | "amber" 
+    | "cyan" 
+    | "rose" 
+    | "indigo" 
+    | "teal" 
+    | "lime"
+    | "pink"
+    | "slate"
+    | "red"
+    | "yellow"
+    | "purple";
 }) {
   const accentColors = {
     blue: "from-blue-500 to-cyan-500",
@@ -84,6 +103,11 @@ function SectionHeader({
     indigo: "from-indigo-500 to-sky-500",
     teal: "from-teal-400 to-emerald-500",
     lime: "from-lime-400 to-green-500",
+    pink: "from-pink-500 to-rose-500",
+    slate: "from-slate-500 to-gray-600",
+    red: "from-red-500 to-rose-500",
+    yellow: "from-yellow-400 to-amber-500",
+    purple: "from-purple-500 to-fuchsia-500",
   };
 
   return (
@@ -314,100 +338,97 @@ function App() {
         <AnimatedSection id="electricity-evolution" className="mb-24 sm:mb-32">
           <SectionHeader
             step={1}
-            title="Electricity Generation Evolution"
-            subtitle="How the generation mix transforms and what it means for grid infrastructure's relative impact"
-            accent="teal"
+            title="Electricity's Climate Impact"
+            subtitle="How the climate impact of electricity supply transforms and what it means for grid infrastructure's relative impact"
+            accent="violet"
           />
 
-          <div className="flex flex-col gap-3 sm:gap-4 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 items-stretch">
-              {[
-                {
-                  ...electricityImpactData.statusQuo,
-                  scenario: "Status Quo",
-                  impactLabel: `${electricityImpactData.statusQuo.totalGCO2e} g CO₂/kWh`,
-                },
-                {
-                  ...electricityImpactData[selectedScenario],
-                  scenario:
-                    selectedScenario === "npi2045"
-                      ? "3°C Scenario"
-                      : selectedScenario === "pkBudg1000_2045"
-                        ? "2°C Scenario"
-                        : "1.5°C Scenario",
-                  impactLabel: `${electricityImpactData[selectedScenario].totalGCO2e} g CO₂/kWh`,
-                },
-              ].map((scenario, index) => (
-                <motion.div
-                  key={`electricity-card-${index}`}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                  className="h-full"
-                >
-                  <Card className="card-hover h-full flex flex-col">
-                    <CardHeader className="flex w-full flex-row items-start justify-between gap-3 p-4 sm:p-5 min-h-[140px] max-h-[220px] max-[450px]:flex-col max-[450px]:items-start">
-                      {scenario.scenario === "Status Quo" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 items-stretch mb-6 sm:mb-8">
+            {[
+              {
+                ...electricityImpactData.statusQuo,
+                scenario: "Status Quo",
+                impactLabel: `${electricityImpactData.statusQuo.totalGCO2e} g CO₂/kWh`,
+              },
+              {
+                ...electricityImpactData[selectedScenario],
+                scenario:
+                  selectedScenario === "npi2045"
+                    ? "3°C Scenario"
+                    : selectedScenario === "pkBudg1000_2045"
+                      ? "2°C Scenario"
+                      : "1.5°C Scenario",
+                impactLabel: `${electricityImpactData[selectedScenario].totalGCO2e} g CO₂/kWh`,
+              },
+            ].map((scenario, index) => (
+              <motion.div
+                key={`electricity-card-${index}`}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="h-full"
+              >
+                <Card className="card-hover h-full flex flex-col">
+                  <CardHeader className="p-4 sm:p-5 flex flex-row items-start justify-between gap-3">
+                    <div className="flex flex-col gap-1 flex-1 min-w-0">
+                      {scenario.scenario !== "Status Quo" ? (
                         <>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <CardTitle className="text-xs sm:text-sm">
-                      Status Quo
-                    </CardTitle>
-                    <CardDescription className="text-[10px]">
-                      {scenario.year} • {scenario.impactLabel}
-                    </CardDescription>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex flex-col gap-1 flex-1 min-w-0">
-                    <Select
-                      value={selectedScenario}
-                      onValueChange={(v) => setSelectedScenario(v as typeof selectedScenario)}
-                    >
-                      <SelectTrigger className="w-48 bg-zinc-900 border-zinc-800 text-sm">
-                        <SelectValue placeholder="Select scenario" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="npi2045">3°C (2045)</SelectItem>
-                        <SelectItem value="pkBudg1000_2045">2°C (2045)</SelectItem>
-                        <SelectItem value="pkBudg650_2045">1.5°C (2045)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <CardDescription className="text-[10px]">
-                      {scenario.year} • {scenario.impactLabel}
-                    </CardDescription>
-                  </div>
-                </>
-              )}
-                <div className="flex items-center flex-shrink-0 w-auto max-[420px]:w-full">
-                  <div className="flex items-center gap-2 rounded-lg border border-indigo-400/40 bg-gradient-to-br from-[#645de8] to-[#a855f7] px-3 py-2 shadow-lg shadow-indigo-900/30 text-left w-auto min-w-[160px]">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-200 opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-100" />
-                    </span>
-                    <div className="leading-tight">
-                      <div className="text-[10px] uppercase tracking-[0.08em] text-indigo-100">Grid share</div>
-                      <div className="flex items-center gap-2 text-xs text-white">
-                        <span className="font-semibold">{scenario.gridShare.toFixed(1)}%</span>
-                        <span className="text-[10px] text-indigo-100/80">{formatGridDelta(scenario.gridShare)}</span>
+                          <div className="flex items-center gap-2 text-violet-400 mb-2">
+                            <TrendingUp className="h-5 w-5 mr-2" />
+                            <Select
+                              value={selectedScenario}
+                              onValueChange={(v) => setSelectedScenario(v as typeof selectedScenario)}
+                            >
+                              <SelectTrigger className="w-42 p-1 px-2 -m-1 z-40 text-lg font-semibold text-zinc-50">
+                                <SelectValue placeholder="Choose scenario" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="npi2045">3°C Scenario</SelectItem>
+                                <SelectItem value="pkBudg1000_2045">2°C Scenario</SelectItem>
+                                <SelectItem value="pkBudg650_2045">1.5°C Scenario</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <CardDescription>Impacts shares in 2045</CardDescription>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex items-center gap-2 text-violet-400 mb-2">
+                            <ArrowDownToDot className="h-5 w-5" />
+                            <CardTitle>{scenario.scenario}</CardTitle>
+                          </div> 
+                          <CardDescription>Impacts shares in 2023</CardDescription>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="flex items-start flex-shrink-0 w-auto max-[420px]:w-full">
+                      <div className="flex items-center gap-3 rounded-lg border border-indigo-400/40 bg-gradient-to-br from-[#645de8] to-[#a855f7] px-3 py-2 -m-1 shadow-lg shadow-indigo-900/30 text-left w-auto min-w-[140px]">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-200 opacity-75" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-100" />
+                        </span>
+                        <div className="leading-tight">
+                          <div className="text-[10px] uppercase tracking-[0.08em] text-indigo-100">Grid share</div>
+                          <div className="flex items-center gap-2 text-xs text-white">
+                            <span className="font-semibold">{scenario.gridShare.toFixed(1)}%</span>
+                            <span className="text-[10px] text-indigo-100/80">{formatGridDelta(scenario.gridShare)}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </CardHeader>
-                    <CardContent className="px-2 pb-4 flex-1 flex items-center justify-center h-[360px] sm:h-[400px] md:h-[460px]">
-                      <ElectricityDonutChart data={scenario as any} />
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+                  </CardHeader>
+                  <CardContent className="px-2 pb-4 flex-1 flex items-center justify-center h-[320px] sm:h-[380px] md:h-[440px]">
+                    <ElectricityDonutChart data={scenario as any} />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
           </div>
 
-          <Card className="overflow-hidden border-0 bg-gradient-to-br from-blue-950/50 via-violet-950/50 to-blue-950/50 card-hover">
-            <CardContent className="py-8 sm:py-10">
+          <Card className="overflow-hidden border-0 bg-gradient-to-br from-blue-950/50 via-violet-950/50 to-blue-950/50 card-hover p-2">
+            <CardContent className="pt-4 sm:pt-6">
               <div className="text-center" ref={gridGrowthRef}>
                 <div className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-text mb-4 flex items-center justify-center gap-3">
                   <span className="inline-block">1%</span>
@@ -422,9 +443,8 @@ function App() {
                     suffix="%"
                   />
                 </div>
-                <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
-                  Grid infrastructure's share of total electricity impact increases from 
-                  ~1% today to over 22% in the 1.5°C scenario as generation becomes cleaner.
+                <p className="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto">
+                  Grid infrastructure's share of total electricity impact increases from ~1% today to over 22% in the 1.5°C scenario.
                 </p>
               </div>
             </CardContent>
@@ -443,23 +463,23 @@ function App() {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6 mb-8">
             <Card className="lg:col-span-2 card-hover w-full min-w-0">
               <CardHeader className="pb-2">
-                <div className="flex items-center gap-2 text-blue-400 mb-2">
-                  <BarChart3 className="h-5 w-5" />
-                  <CardTitle className="text-lg">Total Impact (2023)</CardTitle>
+                <div className="flex items-center gap-2 text-amber-400 mb-2">
+                  <Sigma className="h-5 w-5" />
+                  <CardTitle>Total Impact (2023)</CardTitle>
                 </div>
                 <CardDescription>
                   Combined climate impact of all grid components
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-4xl sm:text-5xl font-bold text-blue-400 mb-2">
+                <div className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">
                   {totalGridImpact.toFixed(2)}
                 </div>
                 <div className="text-sm text-zinc-400 mb-4">
                   Megatonnes of CO₂ equivalent
                 </div>
-                <div className="p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-xs sm:text-sm text-blue-300">
+                <div className="p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                  <p className="text-xs sm:text-sm text-amber-300">
                     ≈ <strong>4.6 g CO₂-eq/kWh</strong> contribution to Germany's 
                     electricity carbon footprint
                   </p>
@@ -469,7 +489,10 @@ function App() {
 
             <Card className="lg:col-span-3 card-hover w-full min-w-0">
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Component Breakdown</CardTitle>
+                <div className="flex items-center gap-2 text-amber-400 mb-2">
+                  <ChartBar className="h-5 w-5" />
+                  <CardTitle className="text-lg">Component Breakdown</CardTitle>
+                </div>
                 <CardDescription>Climate impact by infrastructure type</CardDescription>
               </CardHeader>
               <CardContent>
@@ -511,17 +534,17 @@ function App() {
             step={3}
             title="Material & Process Analysis"
             subtitle="Tracing the environmental impact from industrial processes through materials to grid components"
-            accent="violet"
+            accent="teal"
           />
 
           <Card className="mb-6 card-hover">
             <CardHeader className="pb-2">
-              <div className="flex items-center gap-2 text-violet-400 mb-2">
+              <div className="flex items-center gap-2 text-teal-400 mb-2">
                 <Layers className="h-5 w-5" />
-                <CardTitle className="text-lg">Material Flow Diagram</CardTitle>
+                <CardTitle>Impact Sankey Diagram</CardTitle>
               </div>
               <CardDescription>
-                Visualizing how processes contribute to materials, and materials to components
+                Climate impact flows from processes → materials → components → grid
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -537,7 +560,7 @@ function App() {
             step={4}
             title="Grid Expansion Scenarios"
             subtitle="Comparing climate pathways: how prospective LCA reveals emission reduction potential"
-            accent="emerald"
+            accent="red"
           />
 
           {/* Scenario Comparison Cards */}
@@ -584,7 +607,7 @@ function App() {
 
           <Card className="card-hover">
             <CardHeader className="pb-2">
-              <div className="flex items-center gap-2 text-emerald-400 mb-2">
+              <div className="flex items-center gap-2 text-red-400 mb-2">
                 <TrendingUp className="h-5 w-5" />
                 <CardTitle className="text-lg">Expansion Timeline</CardTitle>
               </div>
@@ -609,7 +632,10 @@ function App() {
 
           <Card className="card-hover">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Scenario Comparison by Category</CardTitle>
+              <div className="flex items-center gap-2 text-cyan-400 mb-2">
+                <BarChart3 className="h-5 w-5" />
+                <CardTitle className="text-lg">Scenario Comparison by Category</CardTitle>
+              </div>
               <CardDescription>
                 Toggle categories and scenarios to see how shares shift over time
               </CardDescription>
@@ -690,7 +716,10 @@ function App() {
 
           <Card className="card-hover">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Impact Category Comparison</CardTitle>
+              <div className="flex items-center gap-2 text-lime-400 mb-2">
+                <Leaf className="h-5 w-5" />
+                <CardTitle>Impact Category Comparison</CardTitle>
+              </div>
               <CardDescription>
                 Relative change vs. business-as-usual (BAU) across all categories
               </CardDescription>

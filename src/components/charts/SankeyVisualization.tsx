@@ -191,16 +191,7 @@ export function SankeyVisualization() {
 
   return (
     <div className="w-full">
-      <div className="mb-3 sm:mb-4">
-        <p className="text-xs sm:text-sm text-gray-400">
-          Total climate impact: <strong className="text-gray-100">64.76 Mt CO₂-eq</strong>
-        </p>
-        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">
-          Flow from processes → materials → components → grid
-        </p>
-      </div>
-
-      <div className="w-full overflow-x-auto p-0 lg:p-4">
+      <div className="w-full overflow-x-auto p-0 lg:px-4">
         <div
           ref={containerRef}
           className="relative min-w-[760px] h-auto rounded-xl"
