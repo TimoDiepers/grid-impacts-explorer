@@ -522,14 +522,16 @@ function App() {
               >
                 <Card className="text-center card-hover border-zinc-800/50">
                   <CardContent className="pt-5 pb-4">
+                    <Badge variant="secondary" className="text-[10px] sm:text-xs mb-3">{component.name}</Badge>
+                    <div className="text-lg sm:text-xl font-semibold text-zinc-200 mb-1">
+                      {component.quantity.toLocaleString()} {component.unit}
+                    </div>
                     <div
-                      className="text-xl sm:text-2xl font-bold mb-1"
+                      className="text-base sm:text-lg font-bold mb-1"
                       style={{ color: component.color }}
                     >
-                      {component.value.toFixed(1)}
+                      {component.value.toFixed(1)} Mt CO₂-eq
                     </div>
-                    <div className="text-[10px] sm:text-xs text-zinc-500 mb-2">Mt CO₂-eq</div>
-                    <Badge variant="secondary" className="text-[10px] sm:text-xs">{component.name}</Badge>
                   </CardContent>
                 </Card>
               </motion.div>

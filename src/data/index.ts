@@ -1,3 +1,12 @@
+// Type definition for grid status quo components
+export interface GridComponent {
+  name: string;
+  value: number;
+  color: string;
+  quantity: number;
+  unit: string;
+}
+
 // Data from sankey_data.csv - Grid status quo visualization
 export const sankeyData = [
   { source: "cables", target: "grid status quo", value: 24.218414 },
@@ -89,12 +98,12 @@ export { default as expansionAllImpactCategories } from "./expansion_all_impact_
 export { default as distributedComponents } from "./distributed_components.json";
 
 // Aggregated sankey data for easier visualization
-export const gridStatusQuoComponents = [
-  { name: "Overhead lines", value: 34.70, color: "#1f77b4" },
-  { name: "Cables", value: 24.22, color: "#ff7f0e" },
-  { name: "Transformers", value: 3.68, color: "#2ca02c" },
-  { name: "Substations", value: 1.19, color: "#d62728" },
-  { name: "Switchgears", value: 0.98, color: "#9467bd" },
+export const gridStatusQuoComponents: GridComponent[] = [
+  { name: "Overhead lines", value: 34.70, color: "#1f77b4", quantity: 35000, unit: "km" },
+  { name: "Cables", value: 24.22, color: "#ff7f0e", quantity: 580000, unit: "km" },
+  { name: "Transformers", value: 3.68, color: "#2ca02c", quantity: 850000, unit: "units" },
+  { name: "Substations", value: 1.19, color: "#d62728", quantity: 8500, unit: "units" },
+  { name: "Switchgears", value: 0.98, color: "#9467bd", quantity: 12000, unit: "units" },
 ];
 
 export const materialContributions = [
