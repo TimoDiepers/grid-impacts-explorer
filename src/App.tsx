@@ -28,13 +28,7 @@ import {
   Sigma,
   ArrowDownToDot,
 } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 // Animated Section component for scroll-triggered animations
 function AnimatedSection({ 
@@ -372,21 +366,37 @@ function App() {
                     <div className="flex flex-col gap-1 flex-1 min-w-0">
                       {scenario.scenario !== "Status Quo" ? (
                         <>
-                          <div className="flex items-center gap-2 text-violet-400 mb-2">
-                            <TrendingUp className="h-5 w-5 mr-2" />
-                            <Select
+                          <div className="flex flex-wrap items-center gap-2 text-violet-400 mb-2">
+                            <TrendingUp className="h-5 w-5" />
+                            <span className="text-lg font-semibold text-zinc-200">Scenario</span>
+                            <ToggleGroup
+                              type="single"
                               value={selectedScenario}
-                              onValueChange={(v) => setSelectedScenario(v as typeof selectedScenario)}
+                              onValueChange={(value) => value && setSelectedScenario(value as typeof selectedScenario)}
+                              className="gap-0 rounded-lg border border-zinc-800 overflow-hidden bg-zinc-900/60"
                             >
-                              <SelectTrigger className="w-42 p-1 px-2 -m-1 z-40 text-lg font-semibold text-zinc-50">
-                                <SelectValue placeholder="Choose scenario" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="npi2045">3°C Scenario</SelectItem>
-                                <SelectItem value="pkBudg1000_2045">2°C Scenario</SelectItem>
-                                <SelectItem value="pkBudg650_2045">1.5°C Scenario</SelectItem>
-                              </SelectContent>
-                            </Select>
+                              <ToggleGroupItem
+                                value="pkBudg650_2045"
+                                aria-label="1.5 degree scenario"
+                                className="font-semibold border-r border-zinc-800 rounded-none"
+                              >
+                                1.5°C
+                              </ToggleGroupItem>
+                              <ToggleGroupItem
+                                value="pkBudg1000_2045"
+                                aria-label="2 degree scenario"
+                                className="font-semibold border-r border-zinc-800 rounded-none"
+                              >
+                                2°C
+                              </ToggleGroupItem>
+                              <ToggleGroupItem
+                                value="npi2045"
+                                aria-label="3 degree scenario"
+                                className="font-semibold rounded-none"
+                              >
+                                3°C
+                              </ToggleGroupItem>
+                            </ToggleGroup>
                           </div>
                           <CardDescription>Impacts shares in 2045</CardDescription>
                         </>
