@@ -372,6 +372,7 @@ function App() {
                             <ToggleGroup
                               type="single"
                               value={selectedScenario}
+                              accent="violet"
                               onValueChange={(value) => value && setSelectedScenario(value as typeof selectedScenario)}
                               className="gap-0 rounded-lg border border-zinc-800 overflow-hidden bg-zinc-900/60"
                             >

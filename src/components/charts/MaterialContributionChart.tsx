@@ -11,6 +11,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const datasetOptions: { key: PlotDatasetKey; label: string }[] = [
   { key: "materials", label: "Materials" },
@@ -92,21 +93,28 @@ export function MaterialContributionChart() {
   return (
     <div ref={ref} className="w-full space-y-2">
       <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex gap-2 flex-wrap">
-          {datasetOptions.map((option) => (
-            <button
-              key={option.key}
-              type="button"
-              onClick={() => setDatasetKey(option.key)}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-colors ${
-                datasetKey === option.key
-                  ? "bg-zinc-800 border-zinc-700 text-white"
-                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap">
+          <ToggleGroup
+            type="single"
+            value={datasetKey}
+            onValueChange={(value) => value && setDatasetKey(value as PlotDatasetKey)}
+            className="gap-0 h-9 rounded-lg border border-zinc-800 overflow-hidden bg-zinc-900/60"
+            size="lg"
+            accent="zinc"
+          >
+            {datasetOptions.map((option, index) => (
+              <ToggleGroupItem
+                key={option.key}
+                value={option.key}
+                aria-label={option.label}
+                className={`rounded-none ${
+                  index < datasetOptions.length - 1 ? "border-r border-zinc-800" : ""
+                }`}
+              >
+                {option.label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
         </div>
       </div>
 
