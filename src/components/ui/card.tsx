@@ -7,7 +7,7 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-zinc-700/30 bg-zinc-900/[0.82] hover:border-zinc-600/40",
+        default: "border-zinc-700/30 bg-zinc-900/[0.7] hover:border-zinc-600/40",
         glass: "border-white/10 bg-zinc-900/[0.82]",
         gradient: "border-0 bg-gradient-to-br from-zinc-900/[0.82] to-zinc-950/[0.82]",
         accent: "border-blue-500/20 bg-blue-950/[0.82]",
