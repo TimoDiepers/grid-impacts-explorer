@@ -198,6 +198,8 @@ function App() {
   const heroRef = useRef(null);
   const gridGrowthRef = useRef<HTMLDivElement | null>(null);
   const gridGrowthInView = useInView(gridGrowthRef, { once: true, margin: "0px 0px -10% 0px" });
+  const gridStatusQuoRef = useRef<HTMLDivElement | null>(null);
+  const gridStatusQuoInView = useInView(gridStatusQuoRef, { once: true, margin: "0px 0px -10% 0px" });
   const [selectedScenario, setSelectedScenario] = useState<"npi2045" | "pkBudg1000_2045" | "pkBudg650_2045">("pkBudg650_2045");
   const baseGridShare = electricityImpactData.statusQuo.gridShare;
 
@@ -487,7 +489,7 @@ function App() {
           />
 
           {/* Component Cards - Infrastructure Overview */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 mb-8">
+          <div ref={gridStatusQuoRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 mb-8">
             {gridStatusQuoComponents.map((component, index) => {
               const IconComponent = getComponentIcon(component.icon);
               return (
@@ -508,12 +510,14 @@ function App() {
                           <IconComponent className="h-6 w-6 sm:h-7 sm:w-7" />
                         </div>
                         <div className="text-xs sm:text-sm text-zinc-400 mb-1">{component.name}</div>
-                        <div 
+                        <CountUp
+                          target={component.quantity}
+                          start={gridStatusQuoInView}
+                          duration={2}
+                          delay={index * 0.1}
                           className="text-xl sm:text-2xl font-bold"
                           style={{ color: component.color }}
-                        >
-                          {component.quantity.toLocaleString()}
-                        </div>
+                        />
                         <div className="text-[10px] sm:text-xs text-zinc-500">{component.unit}</div>
                       </div>
                     </CardContent>
@@ -549,9 +553,14 @@ function App() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2">
-                  {totalGridImpact.toFixed(2)}
-                </div>
+                <CountUp
+                  target={totalGridImpact}
+                  start={gridStatusQuoInView}
+                  duration={2.5}
+                  delay={0.3}
+                  decimals={2}
+                  className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2 block"
+                />
                 <div className="text-sm text-zinc-400 mb-4">
                   Megatonnes of CO₂ equivalent
                 </div>
