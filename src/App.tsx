@@ -565,7 +565,7 @@ function App() {
           />
 
           {/* Component Cards - Infrastructure Overview */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {gridStatusQuoComponents.map((component, index) => (
               <GridComponentCard key={component.name} component={component} index={index} />
             ))}
