@@ -430,7 +430,7 @@ function App() {
             accent="violet"
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 items-stretch mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch mb-4 sm:mb-6">
             {[
               {
                 ...electricityImpactData.statusQuo,
@@ -626,7 +626,7 @@ function App() {
           />
 
           {/* Scenario Comparison Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {[
               { name: "Static (BAU)", value: "34.5", color: "zinc", change: "Baseline", desc: "Business as usual" },
               { name: "3°C Scenario", value: "30.4", color: "amber", change: "-12%", desc: "National policies" },
@@ -717,7 +717,7 @@ function App() {
             accent="lime"
           />
 
-          <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-6">
+          <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
             <Card variant="success" className="card-hover">
               <CardHeader className="pb-2">
                 <CardTitle className="text-emerald-100 text-base flex items-center gap-2">
