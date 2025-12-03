@@ -26,7 +26,6 @@ import {
   Leaf,
   Cable,
   Sigma,
-  BarChart2,
   ArrowDownToDot,
 } from "lucide-react";
 import {
