@@ -72,9 +72,10 @@ function GridComponentCard({ component, index }: { component: GridComponent; ind
             </div>
             <div className="text-xs sm:text-sm text-zinc-400 mb-1">{component.name}</div>
             <CountUp
-              target={component.quantity}
+              target={component.displayQuantity}
               start={isInView}
               duration={1}
+              suffix={component.quantitySuffix}
               className="text-xl sm:text-2xl font-bold"
               style={{ color: component.color }}
             />

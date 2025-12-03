@@ -4,6 +4,8 @@ export interface GridComponent {
   value: number;
   color: string;
   quantity: number;
+  displayQuantity: number; // The significant digits to animate (e.g., 35 for 35,000)
+  quantitySuffix: string; // The trailing zeros as string (e.g., ",000" for 35,000)
   unit: string;
   icon: "cable" | "utility-pole" | "transformer" | "building" | "toggle-left";
 }
@@ -100,11 +102,11 @@ export { default as distributedComponents } from "./distributed_components.json"
 
 // Aggregated sankey data for easier visualization
 export const gridStatusQuoComponents: GridComponent[] = [
-  { name: "Overhead lines", value: 34.70, color: "#1f77b4", quantity: 35000, unit: "km", icon: "utility-pole" },
-  { name: "Cables", value: 24.22, color: "#ff7f0e", quantity: 580000, unit: "km", icon: "cable" },
-  { name: "Transformers", value: 3.68, color: "#2ca02c", quantity: 850000, unit: "units", icon: "transformer" },
-  { name: "Substations", value: 1.19, color: "#d62728", quantity: 8500, unit: "units", icon: "building" },
-  { name: "Switchgears", value: 0.98, color: "#9467bd", quantity: 12000, unit: "units", icon: "toggle-left" },
+  { name: "Overhead lines", value: 34.70, color: "#1f77b4", quantity: 35000, displayQuantity: 35, quantitySuffix: ",000", unit: "km", icon: "utility-pole" },
+  { name: "Cables", value: 24.22, color: "#ff7f0e", quantity: 580000, displayQuantity: 580, quantitySuffix: ",000", unit: "km", icon: "cable" },
+  { name: "Transformers", value: 3.68, color: "#2ca02c", quantity: 850000, displayQuantity: 850, quantitySuffix: ",000", unit: "units", icon: "transformer" },
+  { name: "Substations", value: 1.19, color: "#d62728", quantity: 8500, displayQuantity: 8, quantitySuffix: ",500", unit: "units", icon: "building" },
+  { name: "Switchgears", value: 0.98, color: "#9467bd", quantity: 12000, displayQuantity: 12, quantitySuffix: ",000", unit: "units", icon: "toggle-left" },
 ];
 
 export const materialContributions = [
