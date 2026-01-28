@@ -1,18 +1,18 @@
-import { useRef, useState } from "react";
+import { useRef, useState, lazy, Suspense } from "react";
 import { motion, useInView } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  GridStatusQuoChart,
-  MaterialContributionChart,
-  ExpansionTimelineChart,
-  ImpactCategoryComparisonChart,
-  ElectricityDonutChart,
-  SankeyVisualization,
-} from "@/components/charts";
 import { electricityImpactData, gridStatusQuoComponents } from "@/data";
 import { CountUp } from "@/components/CountUp";
+
+// Lazy load chart components to improve initial page load
+const GridStatusQuoChart = lazy(() => import("@/components/charts").then(m => ({ default: m.GridStatusQuoChart })));
+const MaterialContributionChart = lazy(() => import("@/components/charts").then(m => ({ default: m.MaterialContributionChart })));
+const ExpansionTimelineChart = lazy(() => import("@/components/charts").then(m => ({ default: m.ExpansionTimelineChart })));
+const ImpactCategoryComparisonChart = lazy(() => import("@/components/charts").then(m => ({ default: m.ImpactCategoryComparisonChart })));
+const ElectricityDonutChart = lazy(() => import("@/components/charts").then(m => ({ default: m.ElectricityDonutChart })));
+const SankeyVisualization = lazy(() => import("@/components/charts").then(m => ({ default: m.SankeyVisualization })));
 import {
   Zap,
   TrendingUp,
@@ -274,6 +274,15 @@ function ScrollIndicator() {
   );
 }
 
+// Chart loading fallback
+function ChartLoading({ height = "400px" }: { height?: string }) {
+  return (
+    <div className="flex items-center justify-center animate-pulse" style={{ height }}>
+      <div className="text-zinc-600">Loading chart...</div>
+    </div>
+  );
+}
+
 function App() {
   // Calculate key metrics
   const totalGridImpact = gridStatusQuoComponents.reduce((sum, c) => sum + c.value, 0);
@@ -528,7 +537,9 @@ function App() {
                     </div>
                   </CardHeader>
                   <CardContent className="px-2 pb-4 flex-1 flex items-center justify-center h-[320px] sm:h-[380px] md:h-[440px]">
-                    <ElectricityDonutChart data={scenario as any} />
+                    <Suspense fallback={<ChartLoading height="100%" />}>
+                      <ElectricityDonutChart data={scenario as any} />
+                    </Suspense>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -588,7 +599,9 @@ function App() {
                 <CardDescription>Climate impact by infrastructure type</CardDescription>
               </CardHeader>
               <CardContent>
-                <GridStatusQuoChart />
+                <Suspense fallback={<ChartLoading />}>
+                  <GridStatusQuoChart />
+                </Suspense>
               </CardContent>
             </Card>
           </div>
@@ -614,7 +627,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <SankeyVisualization />
+              <Suspense fallback={<ChartLoading />}>
+                <SankeyVisualization />
+              </Suspense>
             </CardContent>
           </Card>
 
@@ -682,7 +697,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ExpansionTimelineChart />
+              <Suspense fallback={<ChartLoading />}>
+                <ExpansionTimelineChart />
+              </Suspense>
             </CardContent>
           </Card>
         </AnimatedSection>
@@ -707,7 +724,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-4 pt-2 sm:p-5 sm:pt-2">
-              <MaterialContributionChart />
+              <Suspense fallback={<ChartLoading />}>
+                <MaterialContributionChart />
+              </Suspense>
             </CardContent>
           </Card>
         </AnimatedSection>
@@ -797,7 +816,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ImpactCategoryComparisonChart />
+              <Suspense fallback={<ChartLoading />}>
+                <ImpactCategoryComparisonChart />
+              </Suspense>
             </CardContent>
           </Card>
         </AnimatedSection>
