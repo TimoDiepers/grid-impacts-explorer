@@ -123,11 +123,22 @@ h1, h2, h3, h4, h5, h6 {
   transition: opacity 0.35s ease;
 }
 
-/* Mobile: disable blur effect on hover for better performance */
+/* Mobile: completely disable hover effects for better performance and UX */
 @media (max-width: 768px) {
+  .card-hover {
+    transition: none;
+  }
+  
   .card-hover::after {
-    filter: none;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(139, 92, 246, 0.08));
+    display: none;
+  }
+  
+  .card-hover:hover {
+    box-shadow: none;
+  }
+  
+  .card-hover:hover::after {
+    opacity: 0;
   }
 }
 
