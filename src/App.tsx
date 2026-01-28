@@ -1,5 +1,5 @@
 import { useRef, useState, lazy, Suspense } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -297,6 +297,7 @@ function App() {
   const gridGrowthInView = useInView(gridGrowthRef, { once: true, margin: "0px 0px -10% 0px" });
   const [selectedScenario, setSelectedScenario] = useState<"npi2045" | "pkBudg1000_2045" | "pkBudg650_2045">("pkBudg650_2045");
   const baseGridShare = electricityImpactData.statusQuo.gridShare;
+  const shouldReduceMotion = useReducedMotion();
 
   const formatGridDelta = (gridShare: number) => {
     const delta = gridShare - baseGridShare;
@@ -309,37 +310,41 @@ function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Optimized animation variants
+  const fadeInUp = shouldReduceMotion 
+    ? {}
+    : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 }
+      };
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden relative">
-      {/* Fixed grid background */}
-      <div className="fixed inset-0 bg-grid-pattern pointer-events-none z-0" />
       {/* Hero Section */}
       <section
         ref={heroRef}
         className="min-h-screen flex flex-col justify-center items-center px-4 py-8 relative"
       >
-        {/* Background gradient orbs */}
+        {/* Background gradient orbs - optimized with opacity instead of blur */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/5 to-transparent rounded-full" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-violet-500/5 to-transparent rounded-full" />
         </div>
 
         <div className="text-center max-w-4xl mx-auto relative z-10">
           <motion.div 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 bg-zinc-900/70 border border-zinc-700/50 text-zinc-300 px-4 py-2 rounded-full mb-6 will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
+            className="inline-flex items-center gap-2 bg-zinc-900/70 border border-zinc-700/50 text-zinc-300 px-4 py-2 rounded-full mb-6"
           >
             <Activity className="h-4 w-4 text-emerald-400" />
             <span className="text-xs sm:text-sm font-medium">Prospective Life Cycle Assessment</span>
           </motion.div>
 
           <motion.h1 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0.06, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6"
           >
             <span className="text-zinc-100">Climate Impacts of</span>
             <br />
@@ -347,10 +352,9 @@ function App() {
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.16, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-2xl mx-auto will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0.12, ease: "easeOut" }}
+            className="text-base sm:text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-2xl mx-auto"
           >
             Explore the environmental impact of electricity grid expansion 
             through 2045 for the case of Germany, considering a range of climate pathways
@@ -359,10 +363,8 @@ function App() {
           {/* Key Metrics - Animate each card sequentially */}
           <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-10 max-w-xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.24, ease: "easeOut" }}
-              className="will-change-transform"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.18, ease: "easeOut" }}
             >
               <MetricCard
                 label="Status Quo"
@@ -373,10 +375,8 @@ function App() {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.32, ease: "easeOut" }}
-              className="will-change-transform"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.24, ease: "easeOut" }}
             >
               <MetricCard
                 label="Possible Reduction"
@@ -388,10 +388,8 @@ function App() {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="will-change-transform"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
             >
               <MetricCard
                 label="Scenarios"
@@ -404,10 +402,9 @@ function App() {
           </div>
 
           <motion.div 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.56, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-3 justify-center mb-12 will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-3 justify-center mb-12"
           >
             <Button
               variant="gradient"
@@ -428,10 +425,9 @@ function App() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.72, ease: "easeOut" }}
-            className="will-change-opacity"
+            initial={shouldReduceMotion ? {} : { opacity: 0 }}
+            animate={shouldReduceMotion ? {} : { opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
           >
             <ScrollIndicator />
           </motion.div>
