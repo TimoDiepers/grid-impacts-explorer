@@ -7,12 +7,13 @@ import { electricityImpactData, gridStatusQuoComponents } from "@/data";
 import { CountUp } from "@/components/CountUp";
 
 // Lazy load chart components to improve initial page load
-const GridStatusQuoChart = lazy(() => import("@/components/charts").then(m => ({ default: m.GridStatusQuoChart })));
-const MaterialContributionChart = lazy(() => import("@/components/charts").then(m => ({ default: m.MaterialContributionChart })));
-const ExpansionTimelineChart = lazy(() => import("@/components/charts").then(m => ({ default: m.ExpansionTimelineChart })));
-const ImpactCategoryComparisonChart = lazy(() => import("@/components/charts").then(m => ({ default: m.ImpactCategoryComparisonChart })));
-const ElectricityDonutChart = lazy(() => import("@/components/charts").then(m => ({ default: m.ElectricityDonutChart })));
-const SankeyVisualization = lazy(() => import("@/components/charts").then(m => ({ default: m.SankeyVisualization })));
+// Import directly from individual files for optimal code splitting
+const GridStatusQuoChart = lazy(() => import("@/components/charts/GridStatusQuoChart").then(m => ({ default: m.GridStatusQuoChart })));
+const MaterialContributionChart = lazy(() => import("@/components/charts/MaterialContributionChart").then(m => ({ default: m.MaterialContributionChart })));
+const ExpansionTimelineChart = lazy(() => import("@/components/charts/ExpansionTimelineChart").then(m => ({ default: m.ExpansionTimelineChart })));
+const ImpactCategoryComparisonChart = lazy(() => import("@/components/charts/ImpactCategoryComparisonChart").then(m => ({ default: m.ImpactCategoryComparisonChart })));
+const ElectricityDonutChart = lazy(() => import("@/components/charts/ElectricityDonutChart").then(m => ({ default: m.ElectricityDonutChart })));
+const SankeyVisualization = lazy(() => import("@/components/charts/SankeyVisualization").then(m => ({ default: m.SankeyVisualization })));
 import {
   Zap,
   TrendingUp,
@@ -277,7 +278,12 @@ function ScrollIndicator() {
 // Chart loading fallback
 function ChartLoading({ height = "400px" }: { height?: string }) {
   return (
-    <div className="flex items-center justify-center animate-pulse" style={{ height }}>
+    <div 
+      className="flex items-center justify-center animate-pulse" 
+      style={{ height }}
+      role="status"
+      aria-live="polite"
+    >
       <div className="text-zinc-600">Loading chart...</div>
     </div>
   );
