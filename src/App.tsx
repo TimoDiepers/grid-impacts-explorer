@@ -320,15 +320,17 @@ function App() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden relative">
+      {/* Fixed grid background */}
+      <div className="fixed inset-0 bg-grid-pattern pointer-events-none z-0" />
       {/* Hero Section */}
       <section
         ref={heroRef}
         className="min-h-screen flex flex-col justify-center items-center px-4 py-8 relative"
       >
-        {/* Background gradient orbs - optimized with opacity instead of blur */}
+        {/* Background gradient orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-500/5 to-transparent rounded-full" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-violet-500/5 to-transparent rounded-full" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
         </div>
 
         <div className="text-center max-w-4xl mx-auto relative z-10">
