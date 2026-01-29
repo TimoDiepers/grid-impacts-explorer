@@ -1,18 +1,19 @@
-import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, lazy, Suspense } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  GridStatusQuoChart,
-  MaterialContributionChart,
-  ExpansionTimelineChart,
-  ImpactCategoryComparisonChart,
-  ElectricityDonutChart,
-  SankeyVisualization,
-} from "@/components/charts";
 import { electricityImpactData, gridStatusQuoComponents } from "@/data";
 import { CountUp } from "@/components/CountUp";
+
+// Lazy load chart components to improve initial page load
+// Import directly from individual files for optimal code splitting
+const GridStatusQuoChart = lazy(() => import("@/components/charts/GridStatusQuoChart").then(m => ({ default: m.GridStatusQuoChart })));
+const MaterialContributionChart = lazy(() => import("@/components/charts/MaterialContributionChart").then(m => ({ default: m.MaterialContributionChart })));
+const ExpansionTimelineChart = lazy(() => import("@/components/charts/ExpansionTimelineChart").then(m => ({ default: m.ExpansionTimelineChart })));
+const ImpactCategoryComparisonChart = lazy(() => import("@/components/charts/ImpactCategoryComparisonChart").then(m => ({ default: m.ImpactCategoryComparisonChart })));
+const ElectricityDonutChart = lazy(() => import("@/components/charts/ElectricityDonutChart").then(m => ({ default: m.ElectricityDonutChart })));
+const SankeyVisualization = lazy(() => import("@/components/charts/SankeyVisualization").then(m => ({ default: m.SankeyVisualization })));
 import {
   Zap,
   TrendingUp,
@@ -274,6 +275,20 @@ function ScrollIndicator() {
   );
 }
 
+// Chart loading fallback
+function ChartLoading({ height = "400px" }: { height?: string }) {
+  return (
+    <div 
+      className="flex items-center justify-center animate-pulse" 
+      style={{ height }}
+      role="status"
+      aria-live="polite"
+    >
+      <div className="text-zinc-600">Loading chart...</div>
+    </div>
+  );
+}
+
 function App() {
   // Calculate key metrics
   const totalGridImpact = gridStatusQuoComponents.reduce((sum, c) => sum + c.value, 0);
@@ -282,6 +297,7 @@ function App() {
   const gridGrowthInView = useInView(gridGrowthRef, { once: true, margin: "0px 0px -10% 0px" });
   const [selectedScenario, setSelectedScenario] = useState<"npi2045" | "pkBudg1000_2045" | "pkBudg650_2045">("pkBudg650_2045");
   const baseGridShare = electricityImpactData.statusQuo.gridShare;
+  const shouldReduceMotion = useReducedMotion();
 
   const formatGridDelta = (gridShare: number) => {
     const delta = gridShare - baseGridShare;
@@ -294,37 +310,43 @@ function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Optimized animation variants
+  const fadeInUp = shouldReduceMotion 
+    ? {}
+    : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 }
+      };
+
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden relative">
-      {/* Fixed grid background */}
+      {/* Fixed grid background - optimized for mobile */}
       <div className="fixed inset-0 bg-grid-pattern pointer-events-none z-0" />
       {/* Hero Section */}
       <section
         ref={heroRef}
         className="min-h-screen flex flex-col justify-center items-center px-4 py-8 relative"
       >
-        {/* Background gradient orbs */}
+        {/* Background gradient orbs - blur optimized for mobile performance */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-orb-mobile md:blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-orb-mobile md:blur-3xl" />
         </div>
 
         <div className="text-center max-w-4xl mx-auto relative z-10">
           <motion.div 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 bg-zinc-900/70 border border-zinc-700/50 text-zinc-300 px-4 py-2 rounded-full mb-6 will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0, ease: "easeOut" }}
+            className="inline-flex items-center gap-2 bg-zinc-900/70 border border-zinc-700/50 text-zinc-300 px-4 py-2 rounded-full mb-6"
           >
             <Activity className="h-4 w-4 text-emerald-400" />
             <span className="text-xs sm:text-sm font-medium">Prospective Life Cycle Assessment</span>
           </motion.div>
 
           <motion.h1 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0.06, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6"
           >
             <span className="text-zinc-100">Climate Impacts of</span>
             <br />
@@ -332,10 +354,9 @@ function App() {
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.16, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-2xl mx-auto will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0.12, ease: "easeOut" }}
+            className="text-base sm:text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-2xl mx-auto"
           >
             Explore the environmental impact of electricity grid expansion 
             through 2045 for the case of Germany, considering a range of climate pathways
@@ -344,10 +365,8 @@ function App() {
           {/* Key Metrics - Animate each card sequentially */}
           <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-10 max-w-xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.24, ease: "easeOut" }}
-              className="will-change-transform"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.18, ease: "easeOut" }}
             >
               <MetricCard
                 label="Status Quo"
@@ -358,10 +377,8 @@ function App() {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.32, ease: "easeOut" }}
-              className="will-change-transform"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.24, ease: "easeOut" }}
             >
               <MetricCard
                 label="Possible Reduction"
@@ -373,10 +390,8 @@ function App() {
               />
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="will-change-transform"
+              {...fadeInUp}
+              transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
             >
               <MetricCard
                 label="Scenarios"
@@ -389,10 +404,9 @@ function App() {
           </div>
 
           <motion.div 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.56, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-3 justify-center mb-12 will-change-transform"
+            {...fadeInUp}
+            transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-3 justify-center mb-12"
           >
             <Button
               variant="gradient"
@@ -413,10 +427,9 @@ function App() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.72, ease: "easeOut" }}
-            className="will-change-opacity"
+            initial={shouldReduceMotion ? {} : { opacity: 0 }}
+            animate={shouldReduceMotion ? {} : { opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
           >
             <ScrollIndicator />
           </motion.div>
@@ -528,7 +541,9 @@ function App() {
                     </div>
                   </CardHeader>
                   <CardContent className="px-2 pb-4 flex-1 flex items-center justify-center h-[320px] sm:h-[380px] md:h-[440px]">
-                    <ElectricityDonutChart data={scenario as any} />
+                    <Suspense fallback={<ChartLoading height="100%" />}>
+                      <ElectricityDonutChart data={scenario as any} />
+                    </Suspense>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -588,7 +603,9 @@ function App() {
                 <CardDescription>Climate impact by infrastructure type</CardDescription>
               </CardHeader>
               <CardContent>
-                <GridStatusQuoChart />
+                <Suspense fallback={<ChartLoading />}>
+                  <GridStatusQuoChart />
+                </Suspense>
               </CardContent>
             </Card>
           </div>
@@ -614,7 +631,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <SankeyVisualization />
+              <Suspense fallback={<ChartLoading />}>
+                <SankeyVisualization />
+              </Suspense>
             </CardContent>
           </Card>
 
@@ -682,7 +701,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ExpansionTimelineChart />
+              <Suspense fallback={<ChartLoading />}>
+                <ExpansionTimelineChart />
+              </Suspense>
             </CardContent>
           </Card>
         </AnimatedSection>
@@ -707,7 +728,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent className="p-4 pt-2 sm:p-5 sm:pt-2">
-              <MaterialContributionChart />
+              <Suspense fallback={<ChartLoading />}>
+                <MaterialContributionChart />
+              </Suspense>
             </CardContent>
           </Card>
         </AnimatedSection>
@@ -797,7 +820,9 @@ function App() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ImpactCategoryComparisonChart />
+              <Suspense fallback={<ChartLoading />}>
+                <ImpactCategoryComparisonChart />
+              </Suspense>
             </CardContent>
           </Card>
         </AnimatedSection>
