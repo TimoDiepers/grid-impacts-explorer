@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,10 +21,8 @@ import {
   BarChart3,
   ChartBar,
   ChevronDown,
-  ArrowRight,
+  ArrowDown,
   ExternalLink,
-  Activity,
-  Leaf,
   Cable,
   Sigma,
   ArrowDownToDot,
@@ -32,58 +30,179 @@ import {
   Unplug,
   Building2,
   ToggleLeft,
-  TriangleAlert,
-  Crown,
-  Brain,
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { GridComponent } from "@/data";
 
-// Helper to get icon component based on icon field
+// ─── Shared animation variants ───────────────────────────────────────────────
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+// ─── Helper ──────────────────────────────────────────────────────────────────
+
 const getComponentIcon = (icon: GridComponent["icon"]) => {
   const iconMap = {
     "utility-pole": UtilityPole,
-    "cable": Cable,
-    "transformer": Unplug,
-    "building": Building2,
+    cable: Cable,
+    transformer: Unplug,
+    building: Building2,
     "toggle-left": ToggleLeft,
   };
   return iconMap[icon];
 };
 
-// Grid Component Card with individual inView animation
-function GridComponentCard({ component, index }: { component: GridComponent; index: number }) {
+// ─── Reusable section wrapper with scroll-triggered reveal ───────────────────
+
+function RevealSection({
+  children,
+  className = "",
+  id,
+  fullBleed = false,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  id?: string;
+  fullBleed?: boolean;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <motion.section
+      ref={ref}
+      id={id}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={{
+        hidden: { opacity: 0, y: 40 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+        },
+      }}
+      className={`${fullBleed ? "full-bleed" : ""} ${className}`}
+    >
+      {children}
+    </motion.section>
+  );
+}
+
+// ─── Chapter-style section header ────────────────────────────────────────────
+
+function ChapterHeader({
+  step,
+  title,
+  subtitle,
+}: {
+  step: number;
+  title: string;
+  subtitle: string;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={staggerContainer}
+      className="mb-10 sm:mb-14"
+    >
+      <motion.div variants={fadeUp} className="flex items-center gap-4 mb-5">
+        <span className="font-mono text-violet-400/70 text-sm tracking-wider">
+          {String(step).padStart(2, "0")}
+        </span>
+        <div className="section-rule flex-1" />
+      </motion.div>
+      <motion.h2
+        variants={fadeUp}
+        className="font-display text-3xl sm:text-4xl md:text-5xl text-neutral-100 tracking-tight mb-4 leading-tight"
+      >
+        {title}
+      </motion.h2>
+      <motion.p variants={fadeUp} className="text-neutral-500 text-base sm:text-lg max-w-2xl leading-relaxed">
+        {subtitle}
+      </motion.p>
+    </motion.div>
+  );
+}
+
+// ─── Section takeaway ────────────────────────────────────────────────────────
+
+function SectionTakeaway({ children }: { children: React.ReactNode }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="mt-8 sm:mt-10 p-4 sm:p-5 rounded-lg border border-neutral-800/60 bg-neutral-900/30"
+    >
+      <div className="flex gap-3 items-start">
+        <ArrowDown className="h-4 w-4 text-violet-400/70 mt-0.5 flex-shrink-0 rotate-[-90deg]" />
+        <p className="text-sm sm:text-base text-neutral-400 leading-relaxed">
+          {children}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Grid component card ─────────────────────────────────────────────────────
+
+function GridComponentCard({
+  component,
+  index,
+}: {
+  component: GridComponent;
+  index: number;
+}) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(cardRef, { once: true, margin: "0px 0px -10% 0px" });
   const IconComponent = getComponentIcon(component.icon);
-  
+
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.05 }}
+      variants={fadeUp}
+      transition={{ delay: index * 0.06 }}
     >
-      <Card className="card-hover border-zinc-800/50 overflow-hidden">
+      <Card>
         <CardContent className="pt-5 pb-4 px-3 sm:px-4">
           <div className="flex flex-col items-center text-center">
-            <div 
-              className="p-3 rounded-xl mb-3"
-              style={{ backgroundColor: `${component.color}20`, color: component.color }}
+            <div
+              className="p-2.5 rounded-lg mb-3 bg-neutral-800/80"
+              style={{ color: component.color }}
             >
-              <IconComponent className="h-6 w-6 sm:h-7 sm:w-7" />
+              <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <div className="text-xs sm:text-sm text-zinc-400 mb-1">{component.name}</div>
+            <div className="text-xs sm:text-sm text-neutral-500 mb-1">
+              {component.name}
+            </div>
             <CountUp
               target={component.displayQuantity}
               start={isInView}
               duration={1}
               suffix={component.quantitySuffix}
-              className="text-xl sm:text-2xl font-bold"
+              className="text-xl sm:text-2xl font-semibold font-mono"
               style={{ color: component.color }}
             />
-            <div className="text-[10px] sm:text-xs text-zinc-500">{component.unit}</div>
+            <div className="text-[10px] sm:text-xs text-neutral-600">
+              {component.unit}
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -91,15 +210,16 @@ function GridComponentCard({ component, index }: { component: GridComponent; ind
   );
 }
 
-// Total Impact Card with individual inView animation
+// ─── Total impact card ───────────────────────────────────────────────────────
+
 function TotalImpactCard({ totalGridImpact }: { totalGridImpact: number }) {
   const cardRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(cardRef, { once: true, margin: "0px 0px -10% 0px" });
-  
+
   return (
-    <Card ref={cardRef} className="lg:col-span-2 card-hover w-full min-w-0">
+    <Card ref={cardRef} className="lg:col-span-2 w-full min-w-0">
       <CardHeader className="pb-2">
-        <div className="flex items-center gap-2 text-amber-400 mb-2">
+        <div className="flex items-center gap-2 text-violet-400 mb-2">
           <Sigma className="h-5 w-5" />
           <CardTitle>Total Impact (2023)</CardTitle>
         </div>
@@ -113,15 +233,15 @@ function TotalImpactCard({ totalGridImpact }: { totalGridImpact: number }) {
           start={isInView}
           duration={1}
           decimals={2}
-          className="text-4xl sm:text-5xl font-bold text-amber-400 mb-2 block"
+          className="text-4xl sm:text-5xl font-semibold font-mono text-violet-400 mb-2 block"
         />
-        <div className="text-sm text-zinc-400 mb-4">
+        <div className="text-sm text-neutral-500 mb-4">
           Megatonnes of CO₂ equivalent
         </div>
-        <div className="p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
-          <p className="text-xs sm:text-sm text-amber-300">
-            ≈ <strong>4.6 g CO₂-eq/kWh</strong> contribution to Germany's 
-            electricity carbon footprint
+        <div className="p-3 bg-violet-950/20 rounded-lg border border-violet-900/30">
+          <p className="text-xs sm:text-sm text-neutral-400">
+            ≈ <strong className="text-violet-400">4.6 g CO₂-eq/kWh</strong>{" "}
+            contribution to Germany's electricity carbon footprint
           </p>
         </div>
       </CardContent>
@@ -129,159 +249,85 @@ function TotalImpactCard({ totalGridImpact }: { totalGridImpact: number }) {
   );
 }
 
-// Animated Section component for scroll-triggered animations
-function AnimatedSection({ 
-  children, 
-  className = "",
-  delay = 0,
-  id
-}: { 
-  children: React.ReactNode; 
-  className?: string;
-  delay?: number;
-  id?: string;
+// ─── Full-viewport typographic moment ────────────────────────────────────────
+
+function BigStatMoment({
+  children,
+  caption,
+}: {
+  children: React.ReactNode;
+  caption: string;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-20%" });
 
   return (
-    <motion.section
+    <div
       ref={ref}
-      id={id}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
+      className="full-bleed flex flex-col items-center justify-center py-24 sm:py-32 md:py-40 px-4 relative"
     >
-      {children}
-    </motion.section>
-  );
-}
-
-// Section Header component with professional styling
-function SectionHeader({
-  step,
-  title,
-  subtitle,
-  accent = "blue",
-}: {
-  step: number;
-  title: string;
-  subtitle: string;
-  accent?: 
-    | "blue" 
-    | "emerald" 
-    | "violet" 
-    | "amber" 
-    | "cyan" 
-    | "rose" 
-    | "indigo" 
-    | "teal" 
-    | "lime"
-    | "pink"
-    | "slate"
-    | "red"
-    | "yellow"
-    | "purple";
-}) {
-  const accentColors = {
-    blue: "from-blue-500 to-cyan-500",
-    emerald: "from-emerald-500 to-teal-500",
-    violet: "from-violet-500 to-purple-500",
-    amber: "from-amber-500 to-orange-500",
-    cyan: "from-cyan-400 to-blue-500",
-    rose: "from-rose-500 to-pink-500",
-    indigo: "from-indigo-500 to-sky-500",
-    teal: "from-teal-400 to-emerald-500",
-    lime: "from-lime-400 to-green-500",
-    pink: "from-pink-500 to-rose-500",
-    slate: "from-slate-500 to-gray-600",
-    red: "from-red-500 to-rose-500",
-    yellow: "from-yellow-400 to-amber-500",
-    purple: "from-purple-500 to-fuchsia-500",
-  };
-
-  return (
-    <div className="mb-8 sm:mb-10">
-      <div className="flex items-center gap-3 mb-3">
-        <div className={`flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-gradient-to-br ${accentColors[accent]} flex items-center justify-center text-white font-bold text-sm sm:text-base shadow-lg`}>
-          {step}
-        </div>
-        <Badge variant="secondary" className="text-xs">Step {step} of 7</Badge>
-      </div>
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-zinc-100 tracking-tight mb-2">
-        {title}
-      </h2>
-      <p className="text-zinc-400 text-sm sm:text-base max-w-2xl">{subtitle}</p>
-    </div>
-  );
-}
-
-// Metric Card component
-function MetricCard({
-  label,
-  value,
-  unit,
-  trend,
-  icon: Icon,
-  color = "blue",
-}: {
-  label: string;
-  value: string;
-  unit: string;
-  trend?: string;
-  icon: React.ElementType;
-  color?: "blue" | "emerald" | "violet" | "amber" | "rose";
-}) {
-  const colorClasses = {
-    blue: "text-blue-400 bg-gradient-to-br from-blue-950/90 to-blue-900/80 border-blue-500/30",
-    emerald: "text-emerald-400 bg-gradient-to-br from-emerald-950/90 to-emerald-900/80 border-emerald-500/30",
-    violet: "text-violet-400 bg-gradient-to-br from-violet-950/90 to-violet-900/80 border-violet-500/30",
-    amber: "text-amber-400 bg-gradient-to-br from-amber-950/90 to-amber-900/80 border-amber-500/30",
-    rose: "text-rose-400 bg-gradient-to-br from-rose-950/90 to-rose-900/80 border-rose-500/30",
-  };
-
-  return (
-    <div className={`rounded-xl border p-4 sm:p-5 ${colorClasses[color]}`}>
-      <div className="flex items-center justify-between mb-3">
-        <Icon className="h-5 w-5 opacity-70" />
-        {trend && (
-          <Badge variant="success" className="text-[10px] sm:text-xs">
-            {trend}
-          </Badge>
-        )}
-      </div>
-      <div className="text-2xl sm:text-3xl font-bold mb-1">{value}</div>
-      <div className="text-xs sm:text-sm opacity-70">{unit}</div>
-      <div className="text-xs text-zinc-400 mt-2">{label}</div>
-    </div>
-  );
-}
-
-// Scroll indicator component
-function ScrollIndicator() {
-  return (
-    <div className="flex flex-col items-center gap-2 text-zinc-500">
-      <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
       <motion.div
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-        className="p-2 rounded-full border border-zinc-800 bg-zinc-900/50"
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92 }}
+        transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="text-center"
       >
-        <ChevronDown className="h-4 w-4" />
+        <div className="font-mono text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-violet-400 mb-6 flex items-center justify-center gap-4 sm:gap-6">
+          {children}
+        </div>
+        <p className="text-neutral-500 text-sm sm:text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+          {caption}
+        </p>
       </motion.div>
     </div>
   );
 }
 
+// ─── Scroll indicator ────────────────────────────────────────────────────────
+
+function ScrollIndicator() {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.2, duration: 0.8 }}
+      className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+    >
+      <span className="text-neutral-600 text-[10px] uppercase tracking-[0.2em] font-mono">
+        Scroll
+      </span>
+      <ArrowDown className="h-4 w-4 text-neutral-600 scroll-indicator" />
+    </motion.div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// APP
+// ═════════════════════════════════════════════════════════════════════════════
+
 function App() {
-  // Calculate key metrics
-  const totalGridImpact = gridStatusQuoComponents.reduce((sum, c) => sum + c.value, 0);
-  const heroRef = useRef(null);
+  const totalGridImpact = gridStatusQuoComponents.reduce(
+    (sum, c) => sum + c.value,
+    0
+  );
   const gridGrowthRef = useRef<HTMLDivElement | null>(null);
-  const gridGrowthInView = useInView(gridGrowthRef, { once: true, margin: "0px 0px -10% 0px" });
-  const [selectedScenario, setSelectedScenario] = useState<"npi2045" | "pkBudg1000_2045" | "pkBudg650_2045">("pkBudg650_2045");
+  const gridGrowthInView = useInView(gridGrowthRef, {
+    once: true,
+    margin: "0px 0px -10% 0px",
+  });
+  const [selectedScenario, setSelectedScenario] = useState<
+    "npi2045" | "pkBudg1000_2045" | "pkBudg650_2045"
+  >("pkBudg650_2045");
   const baseGridShare = electricityImpactData.statusQuo.gridShare;
+
+  // Hero parallax
+  const heroRef = useRef(null);
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroY = useTransform(heroProgress, [0, 1], [0, 120]);
+  const heroOpacity = useTransform(heroProgress, [0, 0.6], [1, 0]);
 
   const formatGridDelta = (gridShare: number) => {
     const delta = gridShare - baseGridShare;
@@ -295,599 +341,738 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#0a0a0a] text-neutral-200 overflow-x-hidden relative">
       {/* Fixed grid background */}
       <div className="fixed inset-0 bg-grid-pattern pointer-events-none z-0" />
-      {/* Hero Section */}
+
+      {/* ─── HERO ─── */}
       <section
         ref={heroRef}
-        className="min-h-screen flex flex-col justify-center items-center px-4 py-8 relative"
+        className="h-screen flex items-center justify-center px-4 relative overflow-hidden"
       >
-        {/* Background gradient orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
-        </div>
+        {/* Brighter hero grid */}
+        <div className="absolute inset-0 bg-grid-hero pointer-events-none" />
 
-        <div className="text-center max-w-4xl mx-auto relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 12 }}
+        <motion.div
+          style={{ y: heroY, opacity: heroOpacity }}
+          className="text-center max-w-4xl mx-auto relative z-10"
+        >
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 bg-zinc-900/70 border border-zinc-700/50 text-zinc-300 px-4 py-2 rounded-full mb-6 will-change-transform"
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="font-mono text-xs sm:text-sm text-violet-400/60 mb-5 tracking-[0.2em] uppercase"
           >
-            <Activity className="h-4 w-4 text-emerald-400" />
-            <span className="text-xs sm:text-sm font-medium">Prospective Life Cycle Assessment</span>
-          </motion.div>
-
-          <motion.h1 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.08, ease: "easeOut" }}
-            className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-6 will-change-transform"
-          >
-            <span className="text-zinc-100">Climate Impacts of</span>
-            <br />
-            <span className="gradient-text">Grid Expansion</span>
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.16, ease: "easeOut" }}
-            className="text-base sm:text-lg md:text-xl text-zinc-400 mb-10 leading-relaxed max-w-2xl mx-auto will-change-transform"
-          >
-            Explore the environmental impact of electricity grid expansion 
-            through 2045 for the case of Germany, considering a range of climate pathways
+            Prospective Life Cycle Assessment
           </motion.p>
-
-          {/* Key Metrics - Animate each card sequentially */}
-          <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-10 max-w-xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.24, ease: "easeOut" }}
-              className="will-change-transform"
-            >
-              <MetricCard
-                label="Status Quo"
-                value={totalGridImpact.toFixed(1)}
-                unit="Mt CO₂-eq"
-                icon={BarChart3}
-                color="blue"
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.32, ease: "easeOut" }}
-              className="will-change-transform"
-            >
-              <MetricCard
-                label="Possible Reduction"
-                value="-23%"
-                unit="vs BAU"
-                trend="1.5°C"
-                icon={TrendingDown}
-                color="emerald"
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-              className="will-change-transform"
-            >
-              <MetricCard
-                label="Scenarios"
-                value="3"
-                unit="Climate pathways"
-                icon={Layers}
-                color="violet"
-              />
-            </motion.div>
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 12 }}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.56, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row gap-3 justify-center mb-12 will-change-transform"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-100 tracking-tighter leading-[0.9] mb-6"
           >
-            <Button
-              variant="gradient"
-              size="lg"
-              onClick={() => scrollToSection("electricity-evolution")}
-              className="group"
-            >
-              Start Exploring
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-400 group-hover:translate-x-1" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => scrollToSection("key-findings")}
-            >
-              Jump to Findings
-            </Button>
-          </motion.div>
+            Climate Impacts 
+            <br />
+            of <span className="text-violet-400">Grid Expansion</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.35 }}
+            className="text-neutral-500 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
+          >
+            Exploring the environmental impact of electricity grid expansion
+            through 2045 for the case of Germany
+          </motion.p>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.72, ease: "easeOut" }}
-            className="will-change-opacity"
-          >
-            <ScrollIndicator />
-          </motion.div>
-        </div>
+        <ScrollIndicator />
       </section>
 
-      {/* Main Content - Guided Tour */}
-      <main className="max-w-6xl mx-auto px-4 py-16 sm:py-24 relative z-10">
+      {/* ─── STUDY INTRO — appears after hero ─── */}
+      <RevealSection className="full-bleed border-y border-neutral-800/60">
+        <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <motion.h2
+              variants={fadeUp}
+              className="font-display text-lg sm:text-xl md:text-2xl text-neutral-200 tracking-tight mb-4 leading-snug"
+            >
+              About this study
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="text-neutral-500 text-sm sm:text-base leading-relaxed"
+            >
+              Germany's energy transition requires a massive expansion of its electricity grid. But building new infrastructure has environmental costs of its own. This interactive explorer presents results from a{" "}
+              <span className="text-neutral-300 font-medium">prospective life cycle assessment</span>{" "}
+              that models the climate impact of grid expansion through{" "}
+              <span className="text-neutral-300 font-medium">2045</span>{" "}
+              under three different climate policy scenarios — comparing conventional static LCA with a forward-looking approach that accounts for how industrial background systems will change over time.
+            </motion.p>
+          </motion.div>
+        </div>
+      </RevealSection>
+
+      {/* ─── MAIN CONTENT ─── */}
+      <main className="relative z-10">
         {/* Section 1: Electricity Mix */}
-        <AnimatedSection id="electricity-evolution" className="mb-24 sm:mb-32">
-          <SectionHeader
-            step={1}
-            title="Electricity's Climate Impact"
-            subtitle="How the climate impact of electricity supply transforms and what it means for grid infrastructure's relative impact"
-            accent="violet"
-          />
+        <div className="max-w-5xl mx-auto px-4 pt-24 sm:pt-32 pb-8">
+          <RevealSection id="electricity-evolution">
+            <ChapterHeader
+              step={1}
+              title="Electricity's Climate Impact"
+              subtitle="Today, fossil fuel combustion dominates electricity's carbon footprint. As generation decarbonizes, the relative importance of grid infrastructure — cables, transformers, substations — grows dramatically."
+            />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 items-stretch mb-4 sm:mb-6">
-            {[
-              {
-                ...electricityImpactData.statusQuo,
-                scenario: "Status Quo",
-                impactLabel: `${electricityImpactData.statusQuo.totalGCO2e} g CO₂/kWh`,
-              },
-              {
-                ...electricityImpactData[selectedScenario],
-                scenario:
-                  selectedScenario === "npi2045"
-                    ? "3°C Scenario"
-                    : selectedScenario === "pkBudg1000_2045"
-                      ? "2°C Scenario"
-                      : "1.5°C Scenario",
-                impactLabel: `${electricityImpactData[selectedScenario].totalGCO2e} g CO₂/kWh`,
-              },
-            ].map((scenario, index) => (
-              <motion.div
-                key={`electricity-card-${index}`}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                className="h-full"
-              >
-                <Card className="card-hover h-full flex flex-col">
-                  <CardHeader className="p-4 sm:p-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div className="flex flex-col gap-1 flex-1 min-w-0">
-                      {scenario.scenario !== "Status Quo" ? (
-                        <>
-                          <div className="flex flex-wrap items-center gap-2 text-violet-400 mb-2">
-                            <TrendingUp className="h-5 w-5" />
-                            <span className="text-lg font-semibold text-zinc-200">Scenario</span>
-                            <ToggleGroup
-                              type="single"
-                              value={selectedScenario}
-                              accent="violet"
-                              onValueChange={(value) => value && setSelectedScenario(value as typeof selectedScenario)}
-                              className="gap-0 rounded-lg border border-zinc-800 overflow-hidden bg-zinc-900/60"
-                            >
-                              <ToggleGroupItem
-                                value="pkBudg650_2045"
-                                aria-label="1.5 degree scenario"
-                                className="font-semibold border-r border-zinc-800 rounded-none"
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-stretch"
+            >
+              {[
+                {
+                  ...electricityImpactData.statusQuo,
+                  scenario: "Status Quo",
+                  impactLabel: `${electricityImpactData.statusQuo.totalGCO2e} g CO₂/kWh`,
+                },
+                {
+                  ...electricityImpactData[selectedScenario],
+                  scenario:
+                    selectedScenario === "npi2045"
+                      ? "3°C Scenario"
+                      : selectedScenario === "pkBudg1000_2045"
+                        ? "2°C Scenario"
+                        : "1.5°C Scenario",
+                  impactLabel: `${electricityImpactData[selectedScenario].totalGCO2e} g CO₂/kWh`,
+                },
+              ].map((scenario, index) => (
+                <motion.div
+                  key={`electricity-card-${index}`}
+                  variants={fadeUp}
+                  className="h-full"
+                >
+                  <Card className="h-full flex flex-col">
+                    <CardHeader className="p-4 sm:p-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="flex flex-col gap-1 flex-1 min-w-0">
+                        {scenario.scenario !== "Status Quo" ? (
+                          <>
+                            <div className="flex flex-wrap items-center gap-2 text-neutral-400 mb-2">
+                              <TrendingUp className="h-4 w-4" />
+                              <span className="text-base font-medium text-neutral-300">
+                                Scenario
+                              </span>
+                              <ToggleGroup
+                                type="single"
+                                value={selectedScenario}
+                                accent="violet"
+                                onValueChange={(value) =>
+                                  value &&
+                                  setSelectedScenario(
+                                    value as typeof selectedScenario
+                                  )
+                                }
+                                className="gap-0 rounded-md border border-neutral-800 overflow-hidden bg-neutral-900/60"
                               >
-                                1.5°C
-                              </ToggleGroupItem>
-                              <ToggleGroupItem
-                                value="pkBudg1000_2045"
-                                aria-label="2 degree scenario"
-                                className="font-semibold border-r border-zinc-800 rounded-none"
-                              >
-                                2°C
-                              </ToggleGroupItem>
-                              <ToggleGroupItem
-                                value="npi2045"
-                                aria-label="3 degree scenario"
-                                className="font-semibold rounded-none"
-                              >
-                                3°C
-                              </ToggleGroupItem>
-                            </ToggleGroup>
-                          </div>
-                          <CardDescription>Impacts shares in 2045</CardDescription>
-                        </>
-                      ) : (
-                        <>
-                          <div className="flex items-center gap-2 text-violet-400 mb-2">
-                            <ArrowDownToDot className="h-5 w-5" />
-                            <CardTitle>{scenario.scenario}</CardTitle>
-                          </div> 
-                          <CardDescription>Impacts shares in 2023</CardDescription>
-                        </>
-                      )}
-                    </div>
+                                <ToggleGroupItem
+                                  value="pkBudg650_2045"
+                                  aria-label="1.5 degree scenario"
+                                  className="font-medium text-xs border-r border-neutral-800 rounded-none"
+                                >
+                                  1.5°C
+                                </ToggleGroupItem>
+                                <ToggleGroupItem
+                                  value="pkBudg1000_2045"
+                                  aria-label="2 degree scenario"
+                                  className="font-medium text-xs border-r border-neutral-800 rounded-none"
+                                >
+                                  2°C
+                                </ToggleGroupItem>
+                                <ToggleGroupItem
+                                  value="npi2045"
+                                  aria-label="3 degree scenario"
+                                  className="font-medium text-xs rounded-none"
+                                >
+                                  3°C
+                                </ToggleGroupItem>
+                              </ToggleGroup>
+                            </div>
+                            <CardDescription>Impact shares in 2045</CardDescription>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex items-center gap-2 text-neutral-400 mb-2">
+                              <ArrowDownToDot className="h-4 w-4" />
+                              <CardTitle className="text-base">
+                                {scenario.scenario}
+                              </CardTitle>
+                            </div>
+                            <CardDescription>Impact shares in 2023</CardDescription>
+                          </>
+                        )}
+                      </div>
 
-                    <div className="flex items-start flex-shrink-0 w-full sm:w-auto sm:justify-end pt-1 sm:pt-0">
-                      <div className="flex items-center gap-3 rounded-lg border border-indigo-400/40 bg-gradient-to-br from-[#645de8] to-[#a855f7] px-3 py-2 -m-1 shadow-lg shadow-indigo-900/30 text-left w-auto min-w-[140px]">
-                        <span className="relative flex h-2 w-2">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-200 opacity-75" />
-                          <span className="relative inline-flex h-2 w-2 rounded-full bg-sky-100" />
-                        </span>
-                        <div className="leading-tight">
-                          <div className="text-[10px] uppercase tracking-[0.08em] text-indigo-100">Grid share</div>
-                          <div className="flex items-center gap-2 text-xs text-white">
-                            <span className="font-semibold">{scenario.gridShare.toFixed(1)}%</span>
-                            <span className="text-[10px] text-indigo-100/80">{formatGridDelta(scenario.gridShare)}</span>
+                      <div className="flex items-start flex-shrink-0 w-full sm:w-auto sm:justify-end pt-1 sm:pt-0">
+                        <div className="flex items-center gap-3 rounded-md border border-violet-500/30 bg-violet-950/30 px-3 py-2 text-left">
+                          <span className="relative flex h-2 w-2 flex-shrink-0">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-400" />
+                          </span>
+                          <div className="leading-tight">
+                            <div className="text-[10px] uppercase tracking-wide text-violet-400/70 font-mono">
+                              Grid share
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-neutral-200">
+                              <span className="font-semibold font-mono">
+                                {scenario.gridShare.toFixed(1)}%
+                              </span>
+                              <span className="text-[10px] text-neutral-500">
+                                {formatGridDelta(scenario.gridShare)}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="px-2 pb-4 flex-1 flex items-center justify-center h-[320px] sm:h-[380px] md:h-[440px]">
-                    <ElectricityDonutChart data={scenario as any} />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                    </CardHeader>
+                    <CardContent className="px-2 pb-4 flex-1 flex items-center justify-center h-[320px] sm:h-[380px] md:h-[440px]">
+                      <ElectricityDonutChart data={scenario as any} />
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          </RevealSection>
+        </div>
 
-          <Card className="overflow-hidden border-0 bg-gradient-to-br from-blue-950/50 via-violet-950/50 to-blue-950/50 card-hover p-2">
-            <CardContent className="pt-4 sm:pt-6">
-              <div className="text-center" ref={gridGrowthRef}>
-                <div className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-text mb-4 flex items-center justify-center gap-3">
-                  <span className="inline-block">1%</span>
-                  <span aria-hidden>→</span>
-                  <CountUp
-                    target={22}
-                    start={gridGrowthInView}
-                    duration={3}
-                    delay={0}
-                    startValue={2}
-                    className="inline-block"
-                    suffix="%"
-                  />
-                </div>
-                <p className="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto">
-                  Grid infrastructure's share of total electricity impact increases from ~1% today to over 22% in the 1.5°C scenario.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </AnimatedSection>
+        {/* ─── BIG STAT: 1% → 22% ─── */}
+        <div ref={gridGrowthRef}>
+          <BigStatMoment
+            caption="Grid infrastructure's share of total electricity impact increases from ~1% today to over 22% in the 1.5°C scenario — a fundamental shift in where environmental burden lies."
+          >
+            <span className="text-neutral-600">1%</span>
+            <span className="text-neutral-700 text-3xl sm:text-5xl md:text-6xl">→</span>
+            <CountUp
+              target={22}
+              start={gridGrowthInView}
+              duration={3}
+              delay={0}
+              startValue={2}
+              className="inline-block"
+              suffix="%"
+            />
+          </BigStatMoment>
+        </div>
+
+        {/* ─── NARRATIVE TRANSITION ─── */}
+        <RevealSection className="full-bleed">
+          <div className="max-w-3xl mx-auto px-4 py-20 sm:py-28 text-center">
+            <motion.p
+              variants={fadeUp}
+              className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
+            >
+              Grid infrastructure is becoming a{" "}
+              <span className="text-neutral-300 font-medium">
+                dominant driver
+              </span>{" "}
+              of electricity's environmental footprint. But where exactly do
+              these emissions come from? To answer this, we first examine{" "}
+              <span className="text-violet-400 font-medium">
+                today's grid
+              </span>{" "}
+              and its material composition, then model how{" "}
+              <span className="text-neutral-300 font-medium">
+                expansion scenarios
+              </span>{" "}
+              shape the future, and finally assess how the energy transition{" "}
+              <span className="text-neutral-300 font-medium">
+                redistributes environmental burdens
+              </span>{" "}
+              across impact categories.
+            </motion.p>
+          </div>
+        </RevealSection>
 
         {/* Section 2: Grid Status Quo */}
-        <AnimatedSection id="status-quo" className="mb-24 sm:mb-32">
-          <SectionHeader
-            step={2}
-            title="Today's Grid Infrastructure"
-            subtitle="Understanding the current environmental footprint of Germany's electricity transmission and distribution network"
-            accent="amber"
-          />
+        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
+          <RevealSection id="status-quo">
+            <ChapterHeader
+              step={2}
+              title="Today's Grid Infrastructure"
+              subtitle="Germany's electricity grid is a vast network of overhead lines, underground cables, transformers, substations, and switchgear. Together, they add up to a significant material stock — and a measurable climate impact."
+            />
 
-          {/* Component Cards - Infrastructure Overview */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 mb-4 sm:mb-6">
-            {gridStatusQuoComponents.map((component, index) => (
-              <GridComponentCard key={component.name} component={component} index={index} />
-            ))}
-          </div>
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-5 mb-6 sm:mb-8"
+            >
+              {gridStatusQuoComponents.map((component, index) => (
+                <GridComponentCard
+                  key={component.name}
+                  component={component}
+                  index={index}
+                />
+              ))}
+            </motion.div>
 
-          {/* Total Impact and Chart */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
-            <TotalImpactCard totalGridImpact={totalGridImpact} />
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-5">
+              <TotalImpactCard totalGridImpact={totalGridImpact} />
+              <Card className="lg:col-span-3 w-full min-w-0">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center gap-2 text-violet-400 mb-2">
+                    <ChartBar className="h-5 w-5" />
+                    <CardTitle className="text-lg">Component Breakdown</CardTitle>
+                  </div>
+                  <CardDescription>
+                    Climate impact by infrastructure type
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <GridStatusQuoChart />
+                </CardContent>
+              </Card>
+            </div>
 
-            <Card className="lg:col-span-3 card-hover w-full min-w-0">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2 text-amber-400 mb-2">
-                  <ChartBar className="h-5 w-5" />
-                  <CardTitle className="text-lg">Component Breakdown</CardTitle>
-                </div>
-                <CardDescription>Climate impact by infrastructure type</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <GridStatusQuoChart />
-              </CardContent>
-            </Card>
-          </div>
-        </AnimatedSection>
+            <SectionTakeaway>
+              <strong className="text-neutral-300">Takeaway:</strong> Overhead lines and transformers are the largest contributors to the grid's climate footprint today, together accounting for the majority of the total {totalGridImpact.toFixed(1)} Mt CO₂-eq impact.
+            </SectionTakeaway>
+          </RevealSection>
+        </div>
 
         {/* Section 3: Material Flows */}
-        <AnimatedSection className="mb-24 sm:mb-32">
-          <SectionHeader
-            step={3}
-            title="Material & Process Analysis"
-            subtitle="Tracing the environmental impact from industrial processes through materials to grid components"
-            accent="teal"
-          />
+        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
+          <RevealSection>
+            <ChapterHeader
+              step={3}
+              title="Material & Process Analysis"
+              subtitle="What makes grid infrastructure carbon-intensive? By tracing impact flows from industrial processes through raw materials to finished components, we can identify the hotspots that drive the grid's footprint."
+            />
 
-          <Card className="mb-6 card-hover">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2 text-teal-400 mb-2">
-                <Layers className="h-5 w-5" />
-                <CardTitle>Impact Sankey Diagram</CardTitle>
-              </div>
-              <CardDescription>
-                Climate impact flows from processes → materials → components → grid
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <SankeyVisualization />
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2 text-neutral-400 mb-2">
+                  <Layers className="h-5 w-5" />
+                  <CardTitle>Impact Sankey Diagram</CardTitle>
+                </div>
+                <CardDescription>
+                  Climate impact flows from processes → materials → components →
+                  grid
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <SankeyVisualization />
+              </CardContent>
+            </Card>
 
-        </AnimatedSection>
+            <SectionTakeaway>
+              <strong className="text-neutral-300">Takeaway:</strong> Aluminum production (for overhead lines) and steel/iron processing (for transformers) are the dominant material hotspots. These are the processes where decarbonization of background systems will have the largest effect.
+            </SectionTakeaway>
+          </RevealSection>
+        </div>
+
+        {/* ─── TRANSITION: Today → Future ─── */}
+        <RevealSection className="full-bleed">
+          <div className="max-w-3xl mx-auto px-4 py-16 sm:py-24 text-center">
+            <motion.p
+              variants={fadeUp}
+              className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
+            >
+              Now that we understand{" "}
+              <span className="text-neutral-300 font-medium">
+                where today's emissions come from
+              </span>
+              , the question becomes: what happens when Germany massively expands
+              its grid to support the energy transition? The next sections model{" "}
+              <span className="text-violet-400 font-medium">
+                future expansion scenarios
+              </span>{" "}
+              and their cumulative impact through 2045.
+            </motion.p>
+          </div>
+        </RevealSection>
 
         {/* Section 4: Grid Expansion Scenarios */}
-        <AnimatedSection className="mb-24 sm:mb-32">
-          <SectionHeader
-            step={4}
-            title="Grid Expansion Scenarios"
-            subtitle="Comparing climate pathways: how prospective LCA reveals emission reduction potential"
-            accent="red"
-          />
+        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
+          <RevealSection>
+            <ChapterHeader
+              step={4}
+              title="Grid Expansion Scenarios"
+              subtitle="Germany's grid must grow substantially to integrate renewables. Using prospective LCA, we compare the cumulative impact of expansion under different climate policy pathways — from business-as-usual to ambitious 1.5°C targets."
+            />
 
-          {/* Scenario Comparison Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-6">
-            {[
-              { name: "Static (BAU)", value: "34.5", color: "zinc", change: "Baseline", desc: "Business as usual" },
-              { name: "3°C Scenario", value: "30.4", color: "amber", change: "-12%", desc: "National policies" },
-              { name: "2°C Scenario", value: "28.3", color: "blue", change: "-18%", desc: "1000 Gt budget" },
-              { name: "1.5°C Scenario", value: "26.3", color: "emerald", change: "-23%", desc: "650 Gt budget" },
-            ].map((scenario, index) => (
-              <motion.div
-                key={scenario.name}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className={`card-hover ${
-                  scenario.color === "emerald" ? "border-emerald-500/30 bg-emerald-950/20" : ""
-                }`}>
-                  <CardContent className="pt-5 text-center">
-                    <div className="text-xs text-zinc-400 mb-1">{scenario.name}</div>
-                    <div className={`text-2xl sm:text-3xl font-bold mb-1 ${
-                      scenario.color === "zinc" ? "text-zinc-400" :
-                      scenario.color === "amber" ? "text-amber-400" :
-                      scenario.color === "blue" ? "text-blue-400" :
-                      "text-emerald-400"
-                    }`}>
-                      {scenario.value}
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8"
+            >
+              {[
+                {
+                  name: "Static (BAU)",
+                  value: "34.5",
+                  change: "Baseline",
+                  desc: "Business as usual",
+                  highlight: false,
+                },
+                {
+                  name: "3°C Scenario",
+                  value: "30.4",
+                  change: "-12%",
+                  desc: "National policies",
+                  highlight: false,
+                },
+                {
+                  name: "2°C Scenario",
+                  value: "28.3",
+                  change: "-18%",
+                  desc: "1000 Gt budget",
+                  highlight: false,
+                },
+                {
+                  name: "1.5°C Scenario",
+                  value: "26.3",
+                  change: "-23%",
+                  desc: "650 Gt budget",
+                  highlight: true,
+                },
+              ].map((scenario) => (
+                <motion.div key={scenario.name} variants={fadeUp}>
+                  <Card
+                    className={
+                      scenario.highlight ? "border-violet-900/40" : ""
+                    }
+                  >
+                    <CardContent className="pt-5 text-center">
+                      <div className="text-xs text-neutral-500 mb-1 font-mono">
+                        {scenario.name}
+                      </div>
+                      <div
+                        className={`text-2xl sm:text-3xl font-semibold font-mono mb-1 ${
+                          scenario.highlight
+                            ? "text-violet-400"
+                            : "text-neutral-200"
+                        }`}
+                      >
+                        {scenario.value}
+                      </div>
+                      <div className="text-[10px] sm:text-xs text-neutral-600 mb-2">
+                        Mt CO₂-eq
+                      </div>
+                      <Badge
+                        variant={
+                          scenario.change === "Baseline" ? "outline" : "success"
+                        }
+                        className="text-[10px]"
+                      >
+                        {scenario.change}
+                      </Badge>
+                      <div className="text-[10px] text-neutral-600 mt-2">
+                        {scenario.desc}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2 text-neutral-400 mb-2">
+                  <TrendingUp className="h-5 w-5" />
+                  <CardTitle className="text-lg">Expansion Timeline</CardTitle>
+                </div>
+                <CardDescription>
+                  Cumulative climate impact of grid expansion from 2025 to 2045
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ExpansionTimelineChart />
+              </CardContent>
+            </Card>
+
+            <SectionTakeaway>
+              <strong className="text-neutral-300">Takeaway:</strong> The choice of climate scenario matters. Using prospective LCA — which accounts for background system changes like cleaner steel and aluminum production — reduces the estimated cumulative grid expansion impact by up to 23% compared to static assessment.
+            </SectionTakeaway>
+          </RevealSection>
+        </div>
+
+        {/* Section 5: Future Contributions Explorer */}
+        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
+          <RevealSection>
+            <ChapterHeader
+              step={5}
+              title="Future Contributions Explorer"
+              subtitle="Which materials, components, and processes drive the difference between scenarios? This interactive explorer lets you decompose the impact by category and time period to pinpoint where the largest reductions occur."
+            />
+
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2 text-neutral-400 mb-2">
+                  <BarChart3 className="h-5 w-5" />
+                  <CardTitle className="text-lg">
+                    Scenario Comparison by Category
+                  </CardTitle>
+                </div>
+                <CardDescription>
+                  Toggle categories and scenarios to see how shares shift over
+                  time
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-4 pt-2 sm:p-5 sm:pt-2">
+                <MaterialContributionChart />
+              </CardContent>
+            </Card>
+
+            <SectionTakeaway>
+              <strong className="text-neutral-300">Takeaway:</strong> The reductions are not uniform — they are concentrated in specific materials and time periods. Aluminum and steel processing see the largest absolute improvements as their background production systems decarbonize.
+            </SectionTakeaway>
+          </RevealSection>
+        </div>
+
+        {/* ─── TRANSITION: Scenarios → Burden shifting ─── */}
+        <RevealSection className="full-bleed">
+          <div className="max-w-3xl mx-auto px-4 py-16 sm:py-24 text-center">
+            <motion.p
+              variants={fadeUp}
+              className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
+            >
+              So far, we've focused on{" "}
+              <span className="text-neutral-300 font-medium">
+                climate change
+              </span>{" "}
+              as the impact category. But does the energy transition simply shift
+              environmental burdens elsewhere? The final analysis looks beyond
+              CO₂ to assess{" "}
+              <span className="text-violet-400 font-medium">
+                trade-offs across multiple impact dimensions
+              </span>
+              .
+            </motion.p>
+          </div>
+        </RevealSection>
+
+        {/* Section 6: Impact Categories */}
+        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
+          <RevealSection>
+            <ChapterHeader
+              step={6}
+              title="Shifting Environmental Burdens"
+              subtitle="The energy transition doesn't just reduce emissions — it reshapes the entire environmental profile. Here we compare prospective vs. static LCA results across all impact categories to reveal where burdens decrease, and where new trade-offs emerge."
+            />
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid md:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8"
+            >
+              <motion.div variants={fadeUp}>
+                <Card variant="success" className="h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-emerald-400 text-base">
+                      Most Improved
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {[
+                        { name: "Climate Change", value: "-23%" },
+                        { name: "Energy Resources", value: "-22%" },
+                        { name: "Eutrophication", value: "-13%" },
+                      ].map((item) => (
+                        <div
+                          key={item.name}
+                          className="flex justify-between items-center"
+                        >
+                          <span className="text-xs sm:text-sm text-neutral-400">
+                            {item.name}
+                          </span>
+                          <Badge variant="success" className="text-[10px]">
+                            {item.value}
+                          </Badge>
+                        </div>
+                      ))}
                     </div>
-                    <div className="text-[10px] sm:text-xs text-zinc-500 mb-2">Mt CO₂-eq</div>
-                    <Badge 
-                      variant={scenario.change === "Baseline" ? "outline" : "success"} 
-                      className="text-[10px]"
-                    >
-                      {scenario.change}
-                    </Badge>
-                    <div className="text-[10px] text-zinc-500 mt-2">{scenario.desc}</div>
                   </CardContent>
                 </Card>
               </motion.div>
-            ))}
-          </div>
 
-          <Card className="card-hover">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2 text-red-400 mb-2">
-                <TrendingUp className="h-5 w-5" />
-                <CardTitle className="text-lg">Expansion Timeline</CardTitle>
-              </div>
-              <CardDescription>
-                Cumulative climate impact of grid expansion from 2025 to 2045
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ExpansionTimelineChart />
-            </CardContent>
-          </Card>
-        </AnimatedSection>
-
-        {/* Section 5: Future Contributions Explorer */}
-        <AnimatedSection className="mb-24 sm:mb-32">
-          <SectionHeader
-            step={5}
-            title="Future Contributions Explorer"
-            subtitle="Compare BAU with climate scenarios across materials, components, processes, and time periods"
-            accent="cyan"
-          />
-
-          <Card className="card-hover">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2 text-cyan-400 mb-2">
-                <BarChart3 className="h-5 w-5" />
-                <CardTitle className="text-lg">Scenario Comparison by Category</CardTitle>
-              </div>
-              <CardDescription>
-                Toggle categories and scenarios to see how shares shift over time
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-4 pt-2 sm:p-5 sm:pt-2">
-              <MaterialContributionChart />
-            </CardContent>
-          </Card>
-        </AnimatedSection>
-
-        {/* Section 6: Impact Categories */}
-        <AnimatedSection className="mb-24 sm:mb-32">
-          <SectionHeader
-            step={6}
-            title="Environmental Impact Categories"
-            subtitle="Beyond climate change: comprehensive assessment across multiple impact dimensions"
-            accent="lime"
-          />
-
-          <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
-            <Card variant="success" className="card-hover">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-emerald-100 text-base flex items-center gap-2">
-                  <Crown className="h-5 w-5" />
-                  Most Improved
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[
-                    { name: "Climate Change", value: "-23%" },
-                    { name: "Energy Resources", value: "-22%" },
-                    { name: "Eutrophication", value: "-13%" },
-                  ].map((item) => (
-                    <div key={item.name} className="flex justify-between items-center">
-                      <span className="text-xs sm:text-sm text-emerald-300">{item.name}</span>
-                      <Badge variant="success" className="text-[10px]">{item.value}</Badge>
+              <motion.div variants={fadeUp}>
+                <Card variant="warning" className="h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-violet-400 text-base">
+                      Trade-offs
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs sm:text-sm text-neutral-400">
+                          Land Use
+                        </span>
+                        <Badge variant="warning" className="text-[10px]">
+                          +18%
+                        </Badge>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-xs sm:text-sm text-neutral-400">
+                          Material Resources
+                        </span>
+                        <Badge variant="outline" className="text-[10px]">
+                          +1%
+                        </Badge>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card variant="warning" className="card-hover">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-amber-100 text-base flex items-center gap-2">
-                  <TriangleAlert className="h-5 w-5" />
-                  Trade-offs
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm text-amber-300">Land Use</span>
-                    <Badge variant="warning" className="text-[10px]">+18%</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs sm:text-sm text-amber-300">Material Resources</span>
-                    <Badge variant="outline" className="text-[10px]">+1%</Badge>
-                  </div>
-                </div>
-                <p className="mt-3 text-[10px] sm:text-xs text-amber-300/70">
-                  Minor increases due to expanded renewable infrastructure
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card variant="accent" className="card-hover">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-blue-100 text-base flex items-center gap-2">
-                  <Brain className="h-5 w-5" />
-                  Key Insight
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs sm:text-sm text-blue-300">
-                  Prospective LCA reveals <strong>significant reductions</strong> across 
-                  most environmental impact categories, with only minor trade-offs 
-                  in land use.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card className="card-hover">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2 text-lime-400 mb-2">
-                <Leaf className="h-5 w-5" />
-                <CardTitle>Impact Category Comparison</CardTitle>
-              </div>
-              <CardDescription>
-                Relative change vs. business-as-usual (BAU) across all categories
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ImpactCategoryComparisonChart />
-            </CardContent>
-          </Card>
-        </AnimatedSection>
-
-        {/* Section 7: Key Findings */}
-        <AnimatedSection id="key-findings" className="mb-16 sm:mb-24">
-          <SectionHeader
-            step={7}
-            title="Key Findings"
-            subtitle="The essential insights from this prospective life cycle assessment study"
-            accent="rose"
-          />
-
-          <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
-            {[
-              {
-                icon: <TrendingUp className="h-6 w-6" />,
-                title: "23% Reduction Achievable",
-                description: "Prospective LCA reveals potential to reduce estimated grid expansion impact by up to 23% compared to static assessment methods.",
-                color: "emerald"
-              },
-              {
-                icon: <Zap className="h-6 w-6" />,
-                title: "Growing Grid Share",
-                description: "As electricity generation decarbonizes, grid infrastructure's relative contribution to total impact increases significantly.",
-                color: "blue"
-              },
-              {
-                icon: <Layers className="h-6 w-6" />,
-                title: "Material Hotspots",
-                description: "Overhead lines (aluminum) and transformers (steel/iron) are the largest contributors to grid infrastructure impact.",
-                color: "violet"
-              },
-            ].map((finding, index) => (
-              <motion.div
-                key={finding.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="h-full card-hover group">
-                  <CardContent className="pt-6">
-                    <div className={`inline-flex p-3 rounded-xl mb-4 transition-transform group-hover:scale-110 ${
-                      finding.color === "emerald" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" :
-                      finding.color === "blue" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" :
-                      "bg-violet-500/10 text-violet-400 border border-violet-500/20"
-                    }`}>
-                      {finding.icon}
-                    </div>
-                    <h3 className="text-lg sm:text-xl font-semibold text-zinc-100 mb-2">
-                      {finding.title}
-                    </h3>
-                    <p className="text-sm text-zinc-400 leading-relaxed">
-                      {finding.description}
+                    <p className="mt-3 text-[10px] sm:text-xs text-neutral-600">
+                      Minor increases due to expanded renewable infrastructure
                     </p>
                   </CardContent>
                 </Card>
               </motion.div>
-            ))}
-          </div>
-        </AnimatedSection>
+
+              <motion.div variants={fadeUp}>
+                <Card className="h-full">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-neutral-300 text-base">
+                      Key Insight
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-xs sm:text-sm text-neutral-400">
+                      Prospective LCA reveals{" "}
+                      <strong className="text-neutral-200">
+                        significant reductions
+                      </strong>{" "}
+                      across most environmental impact categories, with only minor
+                      trade-offs in land use.
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2 text-neutral-400 mb-2">
+                  <TrendingDown className="h-5 w-5" />
+                  <CardTitle>Impact Category Comparison</CardTitle>
+                </div>
+                <CardDescription>
+                  Relative change vs. business-as-usual (BAU) across all
+                  categories
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ImpactCategoryComparisonChart />
+              </CardContent>
+            </Card>
+
+            <SectionTakeaway>
+              <strong className="text-neutral-300">Takeaway:</strong> The energy transition delivers improvements across most environmental dimensions, not just climate change. The main trade-off is a moderate increase in land use — a small price for broad environmental gains.
+            </SectionTakeaway>
+          </RevealSection>
+        </div>
+
+        {/* ─── BIG STAT: -23% ─── */}
+        <BigStatMoment caption="The 1.5°C pathway reveals potential to reduce grid expansion emissions by nearly a quarter compared to static assessment — a strong case for prospective LCA.">
+          <span className="text-emerald-500">-23%</span>
+        </BigStatMoment>
+
+        {/* Section 7: Key Findings */}
+        <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
+          <RevealSection id="key-findings">
+            <ChapterHeader
+              step={7}
+              title="Key Findings"
+              subtitle="Three core insights emerge from this prospective life cycle assessment of Germany's grid expansion through 2045."
+            />
+
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="grid md:grid-cols-3 gap-4 sm:gap-5"
+            >
+              {[
+                {
+                  icon: <TrendingUp className="h-5 w-5" />,
+                  title: "23% Reduction Achievable",
+                  description:
+                    "Prospective LCA reveals potential to reduce estimated grid expansion impact by up to 23% compared to static assessment methods.",
+                },
+                {
+                  icon: <Zap className="h-5 w-5" />,
+                  title: "Growing Grid Share",
+                  description:
+                    "As electricity generation decarbonizes, grid infrastructure's relative contribution to total impact increases significantly.",
+                },
+                {
+                  icon: <Layers className="h-5 w-5" />,
+                  title: "Material Hotspots",
+                  description:
+                    "Overhead lines (aluminum) and transformers (steel/iron) are the largest contributors to grid infrastructure impact.",
+                },
+              ].map((finding) => (
+                <motion.div key={finding.title} variants={fadeUp}>
+                  <Card className="h-full">
+                    <CardContent className="pt-6">
+                      <div className="text-violet-400 mb-4">{finding.icon}</div>
+                      <h3 className="text-base sm:text-lg font-semibold text-neutral-200 mb-2">
+                        {finding.title}
+                      </h3>
+                      <p className="text-sm text-neutral-500 leading-relaxed">
+                        {finding.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          </RevealSection>
+        </div>
 
         {/* Back to Top */}
-        <AnimatedSection className="text-center">
+        <div className="text-center pb-16">
           <Button
             variant="outline"
-            size="lg"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
             Back to Top
             <ChevronDown className="ml-2 h-4 w-4 rotate-180" />
           </Button>
-        </AnimatedSection>
+        </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800/50 mt-16 bg-zinc-900/50">
-        <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* ─── FOOTER ─── */}
+      <footer className="border-t border-neutral-800/50">
+        <div className="max-w-5xl mx-auto px-4 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                <Cable className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-sm text-zinc-400">PLCA Grid Expansion Explorer</span>
+            <div className="flex items-center gap-3">
+              <Cable className="h-4 w-4 text-violet-400/60" />
+              <span className="text-sm text-neutral-600">
+                PLCA Grid Expansion Explorer
+              </span>
             </div>
-            <p className="text-xs sm:text-sm text-zinc-500 text-center">
-              Data from: <span className="text-zinc-400">Prospective Life Cycle Assessment of Germany's Electricity Grid Expansion</span>
+            <p className="text-xs sm:text-sm text-neutral-600 text-center">
+              Data from:{" "}
+              <span className="text-neutral-400">
+                Prospective Life Cycle Assessment of Germany's Electricity Grid
+                Expansion
+              </span>
             </p>
-            <Button variant="ghost" size="sm" className="text-zinc-400">
+            <Button variant="ghost" size="sm" className="text-neutral-500">
               <ExternalLink className="h-4 w-4 mr-1.5" />
               View Paper
             </Button>
