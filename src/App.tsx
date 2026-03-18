@@ -336,9 +336,6 @@ function App() {
     return `${sign}${delta.toFixed(1)} pts vs 2023`;
   };
 
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-neutral-200 overflow-x-hidden relative">
