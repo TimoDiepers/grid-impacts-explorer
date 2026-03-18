@@ -164,3 +164,23 @@ h1, h2, h3, h4, h5, h6 {
   transform-origin: center;
   transform-box: fill-box;
 }
+
+/* Mobile performance optimizations */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  .animate-pulse-glow,
+  .animate-float,
+  .grid-pulse {
+    animation-duration: 4s;
+  }
+  
+  /* Optimize scroll performance with contain */
+  main > * {
+    contain: layout style paint;
+  }
+  
+  /* Reduce opacity of fixed background on mobile to lower repaint cost */
+  .fixed {
+    transform: translateZ(0);
+  }
+}
