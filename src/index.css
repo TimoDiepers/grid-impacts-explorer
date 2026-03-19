@@ -58,8 +58,8 @@
   --scrollbar-hover: #aaa;
 
   /* Grid pattern */
-  --grid-pattern-opacity: 0.05;
-  --grid-hero-opacity: 0.08;
+  --grid-pattern-opacity: 0.12;
+  --grid-hero-opacity: 0.18;
 }
 
 /* ─── Dark mode ─── */
@@ -85,8 +85,8 @@
   --scrollbar-thumb: #333;
   --scrollbar-hover: #444;
 
-  --grid-pattern-opacity: 0.07;
-  --grid-hero-opacity: 0.1;
+  --grid-pattern-opacity: 0.1;
+  --grid-hero-opacity: 0.13;
 }
 
 html {
