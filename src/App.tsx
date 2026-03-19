@@ -368,9 +368,9 @@ function App() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-100 tracking-tighter leading-[0.9] mb-6"
           >
-            Climate Impacts 
+            Climate Impacts of
             <br />
-            of <span className="text-violet-400">Grid Expansion</span>
+            <span className="text-violet-400">Grid Expansion</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -378,8 +378,8 @@ function App() {
             transition={{ duration: 0.7, delay: 0.35 }}
             className="text-neutral-500 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
           >
-            Exploring the environmental impact of electricity grid expansion
-            through 2045 for the case of Germany
+            How grid infrastructure shapes the environmental impacts of
+            future power systems — a prospective LCA for Germany through 2045
           </motion.p>
         </motion.div>
 
@@ -393,17 +393,19 @@ function App() {
             variants={fadeUp}
             className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
           >
-            Everyone talks about clean electricity generation — but what about
-            the{" "}
-            <span className="text-violet-400 font-medium">
-              grid itself
-            </span>
-            ? Thousands of kilometers of new power lines, cables, and
-            transformers are needed for Germany's energy transition. All that
-            infrastructure has its own environmental cost. And as generation
-            gets cleaner, the grid's share of total impact{" "}
+            The transition to renewable electricity simultaneously reduces
+            climate impacts of generation and helps{" "}
             <span className="text-neutral-300 font-medium">
-              grows dramatically
+              decarbonize the production
+            </span>{" "}
+            of grid infrastructure. However, the extensive{" "}
+            <span className="text-violet-400 font-medium">
+              grid expansion
+            </span>{" "}
+            necessary to support increasing shares of renewables creates a
+            trade-off, increasing the{" "}
+            <span className="text-neutral-300 font-medium">
+              future relevance of grid-related impacts
             </span>
             .
           </motion.p>
@@ -418,7 +420,7 @@ function App() {
             <ChapterHeader
               step={1}
               title="Electricity's Climate Impact"
-              subtitle="Today, fossil fuel combustion dominates electricity's carbon footprint. As generation decarbonizes, the relative importance of grid infrastructure — cables, transformers, substations — grows dramatically."
+              subtitle="In 2023, grid infrastructure accounts for just 1% of electricity's climate impact. But as generation shifts to renewables, a 'decarbonization gap' emerges: direct emissions from generation are abated faster than the embodied emissions in grid materials."
             />
 
             <motion.div
@@ -545,7 +547,7 @@ function App() {
         {/* ─── BIG STAT: grid share growth ─── */}
         <div ref={gridGrowthRef}>
           <BigStatMoment
-            caption={`Grid infrastructure's share of total electricity impact increases from ~${Math.round(electricityImpactData.statusQuo.gridShare)}% today to over ${Math.round(electricityImpactData.pkBudg650_2045.gridShare)}% in the 1.5°C scenario — a fundamental shift in where environmental burden lies.`}
+            caption={`Grid infrastructure's share of electricity's climate impact rises from ${Math.round(electricityImpactData.statusQuo.gridShare)}% in 2023 to ${Math.round(electricityImpactData.pkBudg650_2045.gridShare)}% in the 1.5°C scenario — making it the third largest contributor behind wind and solar generation.`}
           >
             <span className="text-neutral-600">{Math.round(electricityImpactData.statusQuo.gridShare)}%</span>
             <span className="text-neutral-700 text-3xl sm:text-5xl md:text-6xl">→</span>
@@ -568,24 +570,25 @@ function App() {
               variants={fadeUp}
               className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
             >
-              Grid infrastructure is becoming a{" "}
+              Understanding{" "}
               <span className="text-neutral-300 font-medium">
-                dominant driver
+                where grid emissions originate
               </span>{" "}
-              of electricity's environmental footprint. But where exactly do
-              these emissions come from? To answer this, we first examine{" "}
+              is essential for identifying mitigation levers. We trace impacts
+              from{" "}
               <span className="text-violet-400 font-medium">
-                today's grid
+                today's grid infrastructure
               </span>{" "}
-              and its material composition, then model how{" "}
+              through its material and process supply chains, then examine how{" "}
               <span className="text-neutral-300 font-medium">
-                expansion scenarios
+                future grid expansion
               </span>{" "}
-              shape the future, and finally assess how the energy transition{" "}
+              evolves under different climate scenarios, and finally assess
+              whether decarbonization{" "}
               <span className="text-neutral-300 font-medium">
-                redistributes environmental burdens
+                shifts environmental burdens
               </span>{" "}
-              across impact categories.
+              to other impact categories.
             </motion.p>
           </div>
         </RevealSection>
@@ -596,7 +599,7 @@ function App() {
             <ChapterHeader
               step={2}
               title="Today's Grid Infrastructure"
-              subtitle="Germany's electricity grid is a vast network of overhead lines, underground cables, transformers, substations, and switchgear. Together, they add up to a significant material stock — and a measurable climate impact."
+              subtitle="Germany's electricity grid comprises overhead lines, underground cables, transformers, substations, and switchgear across four voltage levels. Based on installed component data reported by grid operators for 2023, we quantify the life-cycle climate impact of this infrastructure."
             />
 
             <motion.div
@@ -634,7 +637,7 @@ function App() {
             </div>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> Overhead lines and transformers are the largest contributors to the grid's climate footprint today, together accounting for the majority of the total {totalGridImpact.toFixed(1)} Mt CO₂-eq impact.
+              <strong className="text-neutral-300">Takeaway:</strong> Over 90% of the grid's climate impact comes from conducting equipment — overhead lines (54%) and cables (37%).
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -645,7 +648,7 @@ function App() {
             <ChapterHeader
               step={3}
               title="Material & Process Analysis"
-              subtitle="What makes grid infrastructure carbon-intensive? By tracing impact flows from industrial processes through raw materials to finished components, we can identify the hotspots that drive the grid's footprint."
+              subtitle="The actual sources of grid emissions largely lie not in the materials themselves, but in upstream supply chain processes. By tracing impacts from emitting processes through materials to components, we reveal the dominant emission sources."
             />
 
             <Card>
@@ -665,7 +668,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> Aluminum production (for overhead lines) and steel/iron processing (for transformers) are the dominant material hotspots. These are the processes where decarbonization of background systems will have the largest effect.
+              <strong className="text-neutral-300">Takeaway:</strong> Three upstream sectors dominate grid impacts: electricity generation (35%), iron & steel process emissions (14%), and heat supply (11%). Since all three are prominent targets for decarbonization, future grid components can benefit from their transformation.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -677,16 +680,18 @@ function App() {
               variants={fadeUp}
               className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
             >
-              Now that we understand{" "}
+              With {" "}
               <span className="text-neutral-300 font-medium">
-                where today's emissions come from
-              </span>
-              , the question becomes: what happens when Germany massively expands
-              its grid to support the energy transition? The next sections model{" "}
-              <span className="text-violet-400 font-medium">
-                future expansion scenarios
+                electricity, heat, and steel
               </span>{" "}
-              and their cumulative impact through 2045.
+              as the dominant emission sourcesin grid supply chains, the question is: {" "}
+              <span className="text-violet-400 font-medium">
+                how much will these
+              sectors decarbonize
+              </span> as Germany expands its grid?
+              Using prospective LCA with Integrated Assessment Model
+              scenarios, we model grid expansion under three climate pathways
+              through 2045.
             </motion.p>
           </div>
         </RevealSection>
@@ -697,7 +702,7 @@ function App() {
             <ChapterHeader
               step={4}
               title="Grid Expansion Scenarios"
-              subtitle="Germany's grid must grow substantially to integrate renewables. Using prospective LCA, we compare the cumulative impact of expansion under different climate policy pathways — from business-as-usual to ambitious 1.5°C targets."
+              subtitle="We model Germany's planned grid expansion across multiple periods, accounting for projected supply chain developments. Components built later benefit from progressively cleaner production systems — the 2040–2045 expansion has less than half the impact of business-as-usual."
             />
 
             <motion.div
@@ -775,7 +780,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> The choice of climate scenario matters. Using prospective LCA — which accounts for background system changes like cleaner steel and aluminum production — reduces the estimated cumulative grid expansion impact by up to 23% compared to static assessment.
+              <strong className="text-neutral-300">Takeaway:</strong> Most impact occurs in early expansion periods, when the bulk of construction is scheduled and supply chains have not yet fully decarbonized. Later periods benefit significantly from cleaner electricity, heat, and steel production.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -786,7 +791,7 @@ function App() {
             <ChapterHeader
               step={5}
               title="Future Contributions Explorer"
-              subtitle="Which materials, components, and processes drive the difference between scenarios? This interactive explorer lets you decompose the impact by category and time period to pinpoint where the largest reductions occur."
+              subtitle="Decompose the impact of grid expansion by component, material, process, and time period. Explore how supply chain decarbonization affects different parts of the grid's environmental footprint."
             />
 
             <Card>
@@ -808,7 +813,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> The reductions are not uniform — they are concentrated in specific materials and time periods. Aluminum and steel processing see the largest absolute improvements as their background production systems decarbonize.
+              <strong className="text-neutral-300">Takeaway:</strong> Electricity generation is the process with the largest change, its impact share dropping from 33% to 17% in the 1.5°C scenario. Heat and iron & steel process emissions remain relatively persistent, becoming the dominant residual sources as electricity decarbonizes.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -820,17 +825,17 @@ function App() {
               variants={fadeUp}
               className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
             >
-              So far, we've focused on{" "}
+              Reducing climate change impact is the main motivation behind
+              the energy transition — but transitions to{" "}
               <span className="text-neutral-300 font-medium">
-                climate change
+                low-carbon systems
               </span>{" "}
-              as the impact category. But does the energy transition simply shift
-              environmental burdens elsewhere? The final analysis looks beyond
-              CO₂ to assess{" "}
+              can shift environmental burdens to other categories. Do the
+              supply chain transformations that reduce grid emissions come with{" "}
               <span className="text-violet-400 font-medium">
-                trade-offs across multiple impact dimensions
+                unintended environmental trade-offs
               </span>
-              .
+              ?
             </motion.p>
           </div>
         </RevealSection>
@@ -841,7 +846,7 @@ function App() {
             <ChapterHeader
               step={6}
               title="Shifting Environmental Burdens"
-              subtitle="The energy transition doesn't just reduce emissions — it reshapes the entire environmental profile. Here we compare prospective vs. static LCA results across all impact categories to reveal where burdens decrease, and where new trade-offs emerge."
+              subtitle="Comparing prospective scenarios against a static BAU baseline across 16 environmental impact categories. Burden shifting occurs in only 2 of 16 categories, while the phase-out of coal delivers co-benefits across most others."
             />
 
             <motion.div
@@ -918,7 +923,7 @@ function App() {
                             ))}
                           </div>
                           <p className="mt-3 text-[10px] sm:text-xs text-neutral-600">
-                            Minor increases due to expanded renewable infrastructure
+                            From bio-based energy carriers and increased renewable deployment
                           </p>
                         </CardContent>
                       </Card>
@@ -936,12 +941,11 @@ function App() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-xs sm:text-sm text-neutral-400">
-                      Prospective LCA reveals{" "}
+                      Burden shifting occurs in{" "}
                       <strong className="text-neutral-200">
-                        significant reductions
+                        only 2 of 16
                       </strong>{" "}
-                      across most environmental impact categories, with only minor
-                      trade-offs in land use.
+                      impact categories. Land use increases due to bio-based energy carriers, while mineral depletion rises from renewable energy deployment. Most other categories show co-benefits from coal phase-out.
                     </p>
                   </CardContent>
                 </Card>
@@ -965,7 +969,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> The energy transition delivers improvements across most environmental dimensions, not just climate change. The main trade-off is a moderate increase in land use — a small price for broad environmental gains.
+              <strong className="text-neutral-300">Takeaway:</strong> The coal phase-out delivers environmental co-benefits across most categories — less energy resource depletion, reduced eutrophication and particulate matter. Burden shifting is limited to land use (from biomass) and mineral resources (from renewables), affecting only 2 of 16 assessed categories.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -976,7 +980,7 @@ function App() {
           const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
           const maxReduction = Math.round((pkBudg650Total / staticTotal - 1) * 100);
           return (
-            <BigStatMoment caption="The 1.5°C pathway reveals potential to reduce grid expansion emissions by nearly a quarter compared to static assessment — a strong case for prospective LCA.">
+            <BigStatMoment caption="Accounting for the evolution of supply chains through prospective LCA reveals that the cumulative climate impact of grid expansion can be significantly lower than static assessments suggest — underscoring the need for forward-looking environmental assessment.">
               <span className="text-emerald-500">{maxReduction}%</span>
             </BigStatMoment>
           );
@@ -988,7 +992,7 @@ function App() {
             <ChapterHeader
               step={7}
               title="Key Findings"
-              subtitle="Three core insights emerge from this prospective life cycle assessment of Germany's grid expansion through 2045."
+              subtitle="Three core insights emerge from this prospective life cycle assessment of Germany's grid infrastructure through 2045."
             />
 
             <motion.div
@@ -999,27 +1003,25 @@ function App() {
               className="grid md:grid-cols-3 gap-4 sm:gap-5"
             >
               {(() => {
-                const staticTotal = expansionYearlyData.reduce((sum, d) => sum + d.static, 0);
-                const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
-                const maxReduction = Math.abs(Math.round((pkBudg650Total / staticTotal - 1) * 100));
                 const futureGridShare = Math.round(electricityImpactData.pkBudg650_2045.gridShare);
                 return [
                   {
-                    icon: <TrendingUp className="h-5 w-5" />,
-                    title: `${maxReduction}% Reduction Achievable`,
-                    description: `Prospective LCA reveals potential to reduce estimated grid expansion impact by up to ${maxReduction}% compared to static assessment methods.`,
-                  },
-                  {
                     icon: <Zap className="h-5 w-5" />,
-                    title: `Grid Share Grows to ${futureGridShare}%`,
+                    title: `Grid Share Rises to ${futureGridShare}%`,
                     description:
-                      "As electricity generation decarbonizes, grid infrastructure's relative contribution to total impact increases significantly.",
+                      "As generation decarbonizes faster than grid supply chains, infrastructure shifts from a marginal concern to a central pillar of electricity's climate impact.",
                   },
                   {
                     icon: <Layers className="h-5 w-5" />,
-                    title: "Material Hotspots",
+                    title: "Persistent Emission Sources",
                     description:
-                      "Overhead lines (aluminum) and transformers (steel/iron) are the largest contributors to grid infrastructure impact.",
+                      "Even under ambitious decarbonization, electricity and heat for aluminum production alongside iron & steel process emissions remain the main drivers of grid-related impacts.",
+                  },
+                  {
+                    icon: <TrendingUp className="h-5 w-5" />,
+                    title: "Limited Burden Shifting",
+                    description:
+                      "Supply chain decarbonization delivers co-benefits across most impact categories, with burden shifting limited to land use and mineral resources — only 2 of 16 categories assessed.",
                   },
                 ];
               })().map((finding) => (
