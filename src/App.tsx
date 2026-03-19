@@ -13,6 +13,15 @@ import {
 } from "@/components/charts";
 import { electricityImpactData, gridStatusQuoComponents, expansionYearlyData, expansionComparisonData } from "@/data";
 import { CountUp } from "@/components/CountUp";
+
+// Lazy load chart components to improve initial page load
+// Import directly from individual files for optimal code splitting
+const GridStatusQuoChart = lazy(() => import("@/components/charts/GridStatusQuoChart").then(m => ({ default: m.GridStatusQuoChart })));
+const MaterialContributionChart = lazy(() => import("@/components/charts/MaterialContributionChart").then(m => ({ default: m.MaterialContributionChart })));
+const ExpansionTimelineChart = lazy(() => import("@/components/charts/ExpansionTimelineChart").then(m => ({ default: m.ExpansionTimelineChart })));
+const ImpactCategoryComparisonChart = lazy(() => import("@/components/charts/ImpactCategoryComparisonChart").then(m => ({ default: m.ImpactCategoryComparisonChart })));
+const ElectricityDonutChart = lazy(() => import("@/components/charts/ElectricityDonutChart").then(m => ({ default: m.ElectricityDonutChart })));
+const SankeyVisualization = lazy(() => import("@/components/charts/SankeyVisualization").then(m => ({ default: m.SankeyVisualization })));
 import {
   Zap,
   TrendingUp,
@@ -319,6 +328,7 @@ function App() {
     "npi2045" | "pkBudg1000_2045" | "pkBudg650_2045"
   >("pkBudg650_2045");
   const baseGridShare = electricityImpactData.statusQuo.gridShare;
+  const shouldReduceMotion = useReducedMotion();
 
   // Hero parallax
   const heroRef = useRef(null);
@@ -336,6 +346,14 @@ function App() {
     return `${sign}${delta.toFixed(1)} pts vs 2023`;
   };
 
+
+  // Optimized animation variants
+  const fadeInUp = shouldReduceMotion 
+    ? {}
+    : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 }
+      };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-neutral-200 overflow-x-hidden relative">
