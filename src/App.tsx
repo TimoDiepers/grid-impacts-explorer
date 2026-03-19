@@ -11,7 +11,7 @@ import {
   ElectricityDonutChart,
   SankeyVisualization,
 } from "@/components/charts";
-import { electricityImpactData, gridStatusQuoComponents } from "@/data";
+import { electricityImpactData, gridStatusQuoComponents, expansionYearlyData, expansionComparisonData } from "@/data";
 import { CountUp } from "@/components/CountUp";
 import {
   Zap,
@@ -240,7 +240,7 @@ function TotalImpactCard({ totalGridImpact }: { totalGridImpact: number }) {
         </div>
         <div className="p-3 bg-violet-950/20 rounded-lg border border-violet-900/30">
           <p className="text-xs sm:text-sm text-neutral-400">
-            ≈ <strong className="text-violet-400">4.6 g CO₂-eq/kWh</strong>{" "}
+            ≈ <strong className="text-violet-400">{(electricityImpactData.statusQuo.totalGCO2e * electricityImpactData.statusQuo.gridShare / 100).toFixed(1)} g CO₂-eq/kWh</strong>{" "}
             contribution to Germany's electricity carbon footprint
           </p>
         </div>
@@ -387,32 +387,26 @@ function App() {
       </section>
 
       {/* ─── STUDY INTRO — appears after hero ─── */}
-      <RevealSection className="full-bleed border-y border-neutral-800/60">
-        <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center"
+      <RevealSection className="full-bleed">
+        <div className="max-w-3xl mx-auto px-4 py-20 sm:py-28 text-center">
+          <motion.p
+            variants={fadeUp}
+            className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
           >
-            <motion.h2
-              variants={fadeUp}
-              className="font-display text-lg sm:text-xl md:text-2xl text-neutral-200 tracking-tight mb-4 leading-snug"
-            >
-              About this study
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-neutral-500 text-sm sm:text-base leading-relaxed"
-            >
-              Germany's energy transition requires a massive expansion of its electricity grid. But building new infrastructure has environmental costs of its own. This interactive explorer presents results from a{" "}
-              <span className="text-neutral-300 font-medium">prospective life cycle assessment</span>{" "}
-              that models the climate impact of grid expansion through{" "}
-              <span className="text-neutral-300 font-medium">2045</span>{" "}
-              under three different climate policy scenarios — comparing conventional static LCA with a forward-looking approach that accounts for how industrial background systems will change over time.
-            </motion.p>
-          </motion.div>
+            Everyone talks about clean electricity generation — but what about
+            the{" "}
+            <span className="text-violet-400 font-medium">
+              grid itself
+            </span>
+            ? Thousands of kilometers of new power lines, cables, and
+            transformers are needed for Germany's energy transition. All that
+            infrastructure has its own environmental cost. And as generation
+            gets cleaner, the grid's share of total impact{" "}
+            <span className="text-neutral-300 font-medium">
+              grows dramatically
+            </span>
+            .
+          </motion.p>
         </div>
       </RevealSection>
 
@@ -548,15 +542,15 @@ function App() {
           </RevealSection>
         </div>
 
-        {/* ─── BIG STAT: 1% → 22% ─── */}
+        {/* ─── BIG STAT: grid share growth ─── */}
         <div ref={gridGrowthRef}>
           <BigStatMoment
-            caption="Grid infrastructure's share of total electricity impact increases from ~1% today to over 22% in the 1.5°C scenario — a fundamental shift in where environmental burden lies."
+            caption={`Grid infrastructure's share of total electricity impact increases from ~${Math.round(electricityImpactData.statusQuo.gridShare)}% today to over ${Math.round(electricityImpactData.pkBudg650_2045.gridShare)}% in the 1.5°C scenario — a fundamental shift in where environmental burden lies.`}
           >
-            <span className="text-neutral-600">1%</span>
+            <span className="text-neutral-600">{Math.round(electricityImpactData.statusQuo.gridShare)}%</span>
             <span className="text-neutral-700 text-3xl sm:text-5xl md:text-6xl">→</span>
             <CountUp
-              target={22}
+              target={Math.round(electricityImpactData.pkBudg650_2045.gridShare)}
               start={gridGrowthInView}
               duration={3}
               delay={0}
@@ -713,36 +707,19 @@ function App() {
               viewport={{ once: true }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8"
             >
-              {[
-                {
-                  name: "Static (BAU)",
-                  value: "34.5",
-                  change: "Baseline",
-                  desc: "Business as usual",
-                  highlight: false,
-                },
-                {
-                  name: "3°C Scenario",
-                  value: "30.4",
-                  change: "-12%",
-                  desc: "National policies",
-                  highlight: false,
-                },
-                {
-                  name: "2°C Scenario",
-                  value: "28.3",
-                  change: "-18%",
-                  desc: "1000 Gt budget",
-                  highlight: false,
-                },
-                {
-                  name: "1.5°C Scenario",
-                  value: "26.3",
-                  change: "-23%",
-                  desc: "650 Gt budget",
-                  highlight: true,
-                },
-              ].map((scenario) => (
+              {(() => {
+                const staticTotal = expansionYearlyData.reduce((sum, d) => sum + d.static, 0);
+                const npiTotal = expansionYearlyData.reduce((sum, d) => sum + d.npi, 0);
+                const pkBudg1000Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg1000, 0);
+                const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
+                const pctChange = (val: number) => `${Math.round((val / staticTotal - 1) * 100)}%`;
+                return [
+                  { name: "Static (BAU)", value: staticTotal.toFixed(1), change: "Baseline", desc: "Business as usual", highlight: false },
+                  { name: "3°C Scenario", value: npiTotal.toFixed(1), change: pctChange(npiTotal), desc: "National policies implemented", highlight: false },
+                  { name: "2°C Scenario", value: pkBudg1000Total.toFixed(1), change: pctChange(pkBudg1000Total), desc: "1000 Gt budget", highlight: false },
+                  { name: "1.5°C Scenario", value: pkBudg650Total.toFixed(1), change: pctChange(pkBudg650Total), desc: "650 Gt budget", highlight: true },
+                ];
+              })().map((scenario) => (
                 <motion.div key={scenario.name} variants={fadeUp}>
                   <Card
                     className={
@@ -874,69 +851,81 @@ function App() {
               viewport={{ once: true }}
               className="grid md:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8"
             >
-              <motion.div variants={fadeUp}>
-                <Card variant="success" className="h-full">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-emerald-400 text-base">
-                      Most Improved
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {[
-                        { name: "Climate Change", value: "-23%" },
-                        { name: "Energy Resources", value: "-22%" },
-                        { name: "Eutrophication", value: "-13%" },
-                      ].map((item) => (
-                        <div
-                          key={item.name}
-                          className="flex justify-between items-center"
-                        >
-                          <span className="text-xs sm:text-sm text-neutral-400">
-                            {item.name}
-                          </span>
-                          <Badge variant="success" className="text-[10px]">
-                            {item.value}
-                          </Badge>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              {(() => {
+                const cats = expansionComparisonData.impactCategories;
+                const improved = cats
+                  .filter((c) => c.pkBudg650 < -0.05)
+                  .sort((a, b) => a.pkBudg650 - b.pkBudg650)
+                  .slice(0, 3);
+                const tradeoffs = cats
+                  .filter((c) => c.pkBudg650 > 0)
+                  .sort((a, b) => b.pkBudg650 - a.pkBudg650);
+                const fmtPct = (v: number) => `${v > 0 ? "+" : ""}${Math.round(v * 100)}%`;
+                const titleCase = (s: string) => s.replace(/\b\w/g, (c) => c.toUpperCase());
+                return (
+                  <>
+                    <motion.div variants={fadeUp}>
+                      <Card variant="success" className="h-full">
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-emerald-400 text-base">
+                            Most Improved
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {improved.map((item) => (
+                              <div
+                                key={item.category}
+                                className="flex justify-between items-center"
+                              >
+                                <span className="text-xs sm:text-sm text-neutral-400">
+                                  {titleCase(item.category)}
+                                </span>
+                                <Badge variant="success" className="text-[10px]">
+                                  {fmtPct(item.pkBudg650)}
+                                </Badge>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
 
-              <motion.div variants={fadeUp}>
-                <Card variant="warning" className="h-full">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-violet-400 text-base">
-                      Trade-offs
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs sm:text-sm text-neutral-400">
-                          Land Use
-                        </span>
-                        <Badge variant="warning" className="text-[10px]">
-                          +18%
-                        </Badge>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs sm:text-sm text-neutral-400">
-                          Material Resources
-                        </span>
-                        <Badge variant="outline" className="text-[10px]">
-                          +1%
-                        </Badge>
-                      </div>
-                    </div>
-                    <p className="mt-3 text-[10px] sm:text-xs text-neutral-600">
-                      Minor increases due to expanded renewable infrastructure
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    <motion.div variants={fadeUp}>
+                      <Card variant="warning" className="h-full">
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-violet-400 text-base">
+                            Trade-offs
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-3">
+                            {tradeoffs.map((item) => (
+                              <div
+                                key={item.category}
+                                className="flex justify-between items-center"
+                              >
+                                <span className="text-xs sm:text-sm text-neutral-400">
+                                  {titleCase(item.category)}
+                                </span>
+                                <Badge
+                                  variant={item.pkBudg650 >= 0.05 ? "warning" : "outline"}
+                                  className="text-[10px]"
+                                >
+                                  {fmtPct(item.pkBudg650)}
+                                </Badge>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="mt-3 text-[10px] sm:text-xs text-neutral-600">
+                            Minor increases due to expanded renewable infrastructure
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </>
+                );
+              })()}
 
               <motion.div variants={fadeUp}>
                 <Card className="h-full">
@@ -981,10 +970,17 @@ function App() {
           </RevealSection>
         </div>
 
-        {/* ─── BIG STAT: -23% ─── */}
-        <BigStatMoment caption="The 1.5°C pathway reveals potential to reduce grid expansion emissions by nearly a quarter compared to static assessment — a strong case for prospective LCA.">
-          <span className="text-emerald-500">-23%</span>
-        </BigStatMoment>
+        {/* ─── BIG STAT: max reduction ─── */}
+        {(() => {
+          const staticTotal = expansionYearlyData.reduce((sum, d) => sum + d.static, 0);
+          const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
+          const maxReduction = Math.round((pkBudg650Total / staticTotal - 1) * 100);
+          return (
+            <BigStatMoment caption="The 1.5°C pathway reveals potential to reduce grid expansion emissions by nearly a quarter compared to static assessment — a strong case for prospective LCA.">
+              <span className="text-emerald-500">{maxReduction}%</span>
+            </BigStatMoment>
+          );
+        })()}
 
         {/* Section 7: Key Findings */}
         <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
@@ -1002,26 +998,31 @@ function App() {
               viewport={{ once: true }}
               className="grid md:grid-cols-3 gap-4 sm:gap-5"
             >
-              {[
-                {
-                  icon: <TrendingUp className="h-5 w-5" />,
-                  title: "23% Reduction Achievable",
-                  description:
-                    "Prospective LCA reveals potential to reduce estimated grid expansion impact by up to 23% compared to static assessment methods.",
-                },
-                {
-                  icon: <Zap className="h-5 w-5" />,
-                  title: "Growing Grid Share",
-                  description:
-                    "As electricity generation decarbonizes, grid infrastructure's relative contribution to total impact increases significantly.",
-                },
-                {
-                  icon: <Layers className="h-5 w-5" />,
-                  title: "Material Hotspots",
-                  description:
-                    "Overhead lines (aluminum) and transformers (steel/iron) are the largest contributors to grid infrastructure impact.",
-                },
-              ].map((finding) => (
+              {(() => {
+                const staticTotal = expansionYearlyData.reduce((sum, d) => sum + d.static, 0);
+                const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
+                const maxReduction = Math.abs(Math.round((pkBudg650Total / staticTotal - 1) * 100));
+                const futureGridShare = Math.round(electricityImpactData.pkBudg650_2045.gridShare);
+                return [
+                  {
+                    icon: <TrendingUp className="h-5 w-5" />,
+                    title: `${maxReduction}% Reduction Achievable`,
+                    description: `Prospective LCA reveals potential to reduce estimated grid expansion impact by up to ${maxReduction}% compared to static assessment methods.`,
+                  },
+                  {
+                    icon: <Zap className="h-5 w-5" />,
+                    title: `Grid Share Grows to ${futureGridShare}%`,
+                    description:
+                      "As electricity generation decarbonizes, grid infrastructure's relative contribution to total impact increases significantly.",
+                  },
+                  {
+                    icon: <Layers className="h-5 w-5" />,
+                    title: "Material Hotspots",
+                    description:
+                      "Overhead lines (aluminum) and transformers (steel/iron) are the largest contributors to grid infrastructure impact.",
+                  },
+                ];
+              })().map((finding) => (
                 <motion.div key={finding.title} variants={fadeUp}>
                   <Card className="h-full">
                     <CardContent className="pt-6">
