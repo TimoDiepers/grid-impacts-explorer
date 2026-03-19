@@ -1072,16 +1072,22 @@ function App() {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-neutral-600 text-center">
-              Data from:{" "}
-              <span className="text-neutral-400">
-                Prospective Life Cycle Assessment of Germany's Electricity Grid
-                Expansion
+              Based on: Diepers et al.,{" "}
+              <span className="text-neutral-400 italic">
+                Emerging environmental impacts of future electricity grid infrastructure
               </span>
+              , Nature Communications (2026)
             </p>
-            <Button variant="ghost" size="sm" className="text-neutral-500">
-              <ExternalLink className="h-4 w-4 mr-1.5" />
-              View Paper
-            </Button>
+            <a
+              href="https://doi.org/10.1038/s41467-026-00000-0"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="sm" className="text-neutral-500">
+                <ExternalLink className="h-4 w-4 mr-1.5" />
+                Read Paper
+              </Button>
+            </a>
           </div>
         </div>
       </footer>
