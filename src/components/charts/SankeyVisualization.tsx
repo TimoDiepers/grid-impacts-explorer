@@ -355,7 +355,7 @@ export function SankeyVisualization() {
                         y={(node.y0 ?? 0) + nodeHeight / 2}
                         textAnchor={textAnchor}
                         dominantBaseline="middle"
-                        className="fill-gray-200 text-[11px] sm:text-[12px] font-medium"
+                        className="fill-neutral-700 dark:fill-gray-200 text-[11px] sm:text-[12px] font-medium"
                         opacity={hasAnimated ? 0.95 : 0}
                         style={{
                           transition: `transform 920ms ${entryEasing}, opacity 640ms ${entryEasing}`,
@@ -376,12 +376,12 @@ export function SankeyVisualization() {
 
           {tooltip && (
             <div
-              className="pointer-events-none fixed z-50 rounded-md border border-zinc-700 bg-zinc-900/95 px-2.5 py-1.5 text-[11px] shadow-xl"
+              className="pointer-events-none fixed z-50 rounded-md border border-neutral-200 bg-white/95 dark:border-zinc-700 dark:bg-zinc-900/95 px-2.5 py-1.5 text-[11px] shadow-xl"
               style={{ left: tooltip.x, top: tooltip.y }}
             >
-              <div className="text-gray-100 font-semibold whitespace-nowrap">{tooltip.title}</div>
+              <div className="text-neutral-900 dark:text-gray-100 font-semibold whitespace-nowrap">{tooltip.title}</div>
               {tooltip.value !== undefined && (
-                <div className="text-gray-400">{tooltip.value.toFixed(2)} Mt CO₂-eq</div>
+                <div className="text-neutral-500 dark:text-gray-400">{tooltip.value.toFixed(2)} Mt CO₂-eq</div>
               )}
             </div>
           )}

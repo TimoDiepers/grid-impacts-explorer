@@ -3,16 +3,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
-  "rounded-lg border text-neutral-200 transition-colors duration-200",
+  "rounded-lg border text-neutral-800 dark:text-neutral-200 transition-colors duration-200",
   {
     variants: {
       variant: {
-        default: "border-neutral-800 bg-neutral-900/60",
-        accent: "border-violet-900/40 bg-violet-950/20",
-        success: "border-emerald-900/40 bg-emerald-950/20",
-        warning: "border-amber-900/40 bg-amber-950/20",
-        glass: "border-neutral-800 bg-neutral-900/40",
-        gradient: "border-neutral-800 bg-neutral-900/60",
+        default: "border-neutral-200 bg-white/70 dark:border-neutral-800 dark:bg-neutral-900/60",
+        accent: "border-violet-200/60 bg-violet-50/40 dark:border-violet-900/40 dark:bg-violet-950/20",
+        success: "border-emerald-200/60 bg-emerald-50/40 dark:border-emerald-900/40 dark:bg-emerald-950/20",
+        warning: "border-amber-200/60 bg-amber-50/40 dark:border-amber-900/40 dark:bg-amber-950/20",
+        glass: "border-neutral-200 bg-white/50 dark:border-neutral-800 dark:bg-neutral-900/40",
+        gradient: "border-neutral-200 bg-white/70 dark:border-neutral-800 dark:bg-neutral-900/60",
       },
     },
     defaultVariants: {
@@ -54,7 +54,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("font-semibold leading-tight tracking-tight text-neutral-100 text-lg", className)}
+    className={cn("font-semibold leading-tight tracking-tight text-neutral-900 dark:text-neutral-100 text-lg", className)}
     {...props}
   />
 ));
@@ -66,7 +66,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-neutral-500", className)}
+    className={cn("text-sm text-neutral-500 dark:text-neutral-500", className)}
     {...props}
   />
 ));

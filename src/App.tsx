@@ -1,4 +1,5 @@
 import { useRef, useState, lazy } from "react";
+import { useTheme } from "@/hooks/useTheme";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,8 @@ import {
   Unplug,
   Building2,
   ToggleLeft,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { GridComponent } from "@/data";
@@ -119,14 +122,14 @@ function ChapterHeader({
       className="mb-10 sm:mb-14"
     >
       <motion.div variants={fadeUp} className="flex items-center gap-4 mb-5">
-        <span className="font-mono text-violet-400/70 text-sm tracking-wider">
+        <span className="font-mono text-violet-600/70 dark:text-violet-400/70 text-sm tracking-wider">
           {String(step).padStart(2, "0")}
         </span>
         <div className="section-rule flex-1" />
       </motion.div>
       <motion.h2
         variants={fadeUp}
-        className="font-display text-3xl sm:text-4xl md:text-5xl text-neutral-100 tracking-tight mb-4 leading-tight"
+        className="font-display text-3xl sm:text-4xl md:text-5xl text-neutral-900 dark:text-neutral-100 tracking-tight mb-4 leading-tight"
       >
         {title}
       </motion.h2>
@@ -149,11 +152,11 @@ function SectionTakeaway({ children }: { children: React.ReactNode }) {
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="mt-8 sm:mt-10 p-4 sm:p-5 rounded-lg border border-neutral-800/60 bg-neutral-900/30"
+      className="mt-8 sm:mt-10 p-4 sm:p-5 rounded-lg border border-neutral-200/60 bg-neutral-100/30 dark:border-neutral-800/60 dark:bg-neutral-900/30"
     >
       <div className="flex gap-3 items-start">
-        <ArrowDown className="h-4 w-4 text-violet-400/70 mt-0.5 flex-shrink-0 rotate-[-90deg]" />
-        <p className="text-sm sm:text-base text-neutral-400 leading-relaxed">
+        <ArrowDown className="h-4 w-4 text-violet-600/70 dark:text-violet-400/70 mt-0.5 flex-shrink-0 rotate-[-90deg]" />
+        <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed">
           {children}
         </p>
       </div>
@@ -184,7 +187,7 @@ function GridComponentCard({
         <CardContent className="pt-5 pb-4 px-3 sm:px-4">
           <div className="flex flex-col items-center text-center">
             <div
-              className="p-2.5 rounded-lg mb-3 bg-neutral-800/80"
+              className="p-2.5 rounded-lg mb-3 bg-neutral-100 dark:bg-neutral-800/80"
               style={{ color: component.color }}
             >
               <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -200,7 +203,7 @@ function GridComponentCard({
               className="text-xl sm:text-2xl font-semibold font-mono"
               style={{ color: component.color }}
             />
-            <div className="text-[10px] sm:text-xs text-neutral-600">
+            <div className="text-[10px] sm:text-xs text-neutral-400 dark:text-neutral-600">
               {component.unit}
             </div>
           </div>
@@ -219,7 +222,7 @@ function TotalImpactCard({ totalGridImpact }: { totalGridImpact: number }) {
   return (
     <Card ref={cardRef} className="lg:col-span-2 w-full min-w-0">
       <CardHeader className="pb-2">
-        <div className="flex items-center gap-2 text-violet-400 mb-2">
+        <div className="flex items-center gap-2 text-violet-600 dark:text-violet-400 mb-2">
           <Sigma className="h-5 w-5" />
           <CardTitle>Total Impact (2023)</CardTitle>
         </div>
@@ -233,14 +236,14 @@ function TotalImpactCard({ totalGridImpact }: { totalGridImpact: number }) {
           start={isInView}
           duration={1}
           decimals={2}
-          className="text-4xl sm:text-5xl font-semibold font-mono text-violet-400 mb-2 block"
+          className="text-4xl sm:text-5xl font-semibold font-mono text-violet-600 dark:text-violet-400 mb-2 block"
         />
         <div className="text-sm text-neutral-500 mb-4">
           Megatonnes of CO₂ equivalent
         </div>
-        <div className="p-3 bg-violet-950/20 rounded-lg border border-violet-900/30">
-          <p className="text-xs sm:text-sm text-neutral-400">
-            ≈ <strong className="text-violet-400">{(electricityImpactData.statusQuo.totalGCO2e * electricityImpactData.statusQuo.gridShare / 100).toFixed(1)} g CO₂-eq/kWh</strong>{" "}
+        <div className="p-3 bg-violet-50/50 dark:bg-violet-950/20 rounded-lg border border-violet-200/50 dark:border-violet-900/30">
+          <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
+            ≈ <strong className="text-violet-600 dark:text-violet-400">{(electricityImpactData.statusQuo.totalGCO2e * electricityImpactData.statusQuo.gridShare / 100).toFixed(1)} g CO₂-eq/kWh</strong>{" "}
             contribution to Germany's electricity carbon footprint
           </p>
         </div>
@@ -272,7 +275,7 @@ function BigStatMoment({
         transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="text-center"
       >
-        <div className="font-mono text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-violet-400 mb-6 flex items-center justify-center gap-4 sm:gap-6">
+        <div className="font-mono text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-violet-600 dark:text-violet-400 mb-6 flex items-center justify-center gap-4 sm:gap-6">
           {children}
         </div>
         <p className="text-neutral-500 text-sm sm:text-base md:text-lg max-w-xl mx-auto leading-relaxed">
@@ -293,10 +296,10 @@ function ScrollIndicator() {
       transition={{ delay: 1.2, duration: 0.8 }}
       className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
     >
-      <span className="text-neutral-600 text-[10px] uppercase tracking-[0.2em] font-mono">
+      <span className="text-neutral-400 dark:text-neutral-600 text-[10px] uppercase tracking-[0.2em] font-mono">
         Scroll
       </span>
-      <ArrowDown className="h-4 w-4 text-neutral-600 scroll-indicator" />
+      <ArrowDown className="h-4 w-4 text-neutral-400 dark:text-neutral-600 scroll-indicator" />
     </motion.div>
   );
 }
@@ -304,6 +307,23 @@ function ScrollIndicator() {
 // ═════════════════════════════════════════════════════════════════════════════
 // APP
 // ═════════════════════════════════════════════════════════════════════════════
+
+function ThemeToggle() {
+  const { resolvedTheme, toggleTheme } = useTheme();
+  return (
+    <button
+      onClick={toggleTheme}
+      className="fixed top-4 right-4 z-50 p-2.5 rounded-full border border-neutral-200 bg-white/80 text-neutral-600 hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-900/80 dark:text-neutral-400 dark:hover:bg-neutral-800 backdrop-blur-sm transition-colors duration-200 shadow-sm"
+      aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
+    >
+      {resolvedTheme === "dark" ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
+    </button>
+  );
+}
 
 function App() {
   const totalGridImpact = gridStatusQuoComponents.reduce(
@@ -338,7 +358,8 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-neutral-200 overflow-x-hidden relative">
+    <div className="min-h-screen bg-[var(--page-bg)] text-neutral-800 dark:text-neutral-200 overflow-x-hidden relative transition-colors duration-300">
+      <ThemeToggle />
       {/* Fixed grid background */}
       <div className="fixed inset-0 bg-grid-pattern pointer-events-none z-0" />
 
@@ -358,7 +379,7 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="font-mono text-xs sm:text-sm text-violet-400/60 mb-5 tracking-[0.2em] uppercase"
+            className="font-mono text-xs sm:text-sm text-violet-600/60 dark:text-violet-400/60 mb-5 tracking-[0.2em] uppercase"
           >
             Prospective Life Cycle Assessment
           </motion.p>
@@ -366,11 +387,11 @@ function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-100 tracking-tighter leading-[0.9] mb-6"
+            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-neutral-900 dark:text-neutral-100 tracking-tighter leading-[0.9] mb-6"
           >
             Climate Impacts of
             <br />
-            <span className="text-violet-400">Grid Expansion</span>
+            <span className="text-violet-600 dark:text-violet-400">Grid Expansion</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -395,16 +416,16 @@ function App() {
           >
             The transition to renewable electricity simultaneously reduces
             climate impacts of generation and helps{" "}
-            <span className="text-neutral-300 font-medium">
+            <span className="text-neutral-700 dark:text-neutral-300 font-medium">
               decarbonize the production
             </span>{" "}
             of grid infrastructure. However, the extensive{" "}
-            <span className="text-violet-400 font-medium">
+            <span className="text-violet-600 dark:text-violet-400 font-medium">
               grid expansion
             </span>{" "}
             necessary to support increasing shares of renewables creates a
             trade-off, increasing the{" "}
-            <span className="text-neutral-300 font-medium">
+            <span className="text-neutral-700 dark:text-neutral-300 font-medium">
               future relevance of grid-related impacts
             </span>
             .
@@ -472,19 +493,19 @@ function App() {
                                     value as typeof selectedScenario
                                   )
                                 }
-                                className="gap-0 rounded-md border border-neutral-800 overflow-hidden bg-neutral-900/60"
+                                className="gap-0 rounded-md border border-neutral-200 dark:border-neutral-800 overflow-hidden bg-white/60 dark:bg-neutral-900/60"
                               >
                                 <ToggleGroupItem
                                   value="pkBudg650_2045"
                                   aria-label="1.5 degree scenario"
-                                  className="font-medium text-xs border-r border-neutral-800 rounded-none"
+                                  className="font-medium text-xs border-r border-neutral-200 dark:border-neutral-800 rounded-none"
                                 >
                                   1.5°C
                                 </ToggleGroupItem>
                                 <ToggleGroupItem
                                   value="pkBudg1000_2045"
                                   aria-label="2 degree scenario"
-                                  className="font-medium text-xs border-r border-neutral-800 rounded-none"
+                                  className="font-medium text-xs border-r border-neutral-200 dark:border-neutral-800 rounded-none"
                                 >
                                   2°C
                                 </ToggleGroupItem>
@@ -513,16 +534,16 @@ function App() {
                       </div>
 
                       <div className="flex items-start flex-shrink-0 w-full sm:w-auto sm:justify-end pt-1 sm:pt-0">
-                        <div className="flex items-center gap-3 rounded-md border border-violet-500/30 bg-violet-950/30 px-3 py-2 text-left">
+                        <div className="flex items-center gap-3 rounded-md border border-violet-300/30 bg-violet-50/30 dark:border-violet-500/30 dark:bg-violet-950/30 px-3 py-2 text-left">
                           <span className="relative flex h-2 w-2 flex-shrink-0">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-400" />
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-500 dark:bg-violet-400 opacity-75" />
+                            <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500 dark:bg-violet-400" />
                           </span>
                           <div className="leading-tight">
-                            <div className="text-[10px] uppercase tracking-wide text-violet-400/70 font-mono">
+                            <div className="text-[10px] uppercase tracking-wide text-violet-600/70 dark:text-violet-400/70 font-mono">
                               Grid share
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-neutral-200">
+                            <div className="flex items-center gap-2 text-xs text-neutral-800 dark:text-neutral-200">
                               <span className="font-semibold font-mono">
                                 {scenario.gridShare.toFixed(1)}%
                               </span>
@@ -549,8 +570,8 @@ function App() {
           <BigStatMoment
             caption={`Grid infrastructure's share of electricity's climate impact rises from ${Math.round(electricityImpactData.statusQuo.gridShare)}% in 2023 to ${Math.round(electricityImpactData.pkBudg650_2045.gridShare)}% in the 1.5°C scenario — making it the third largest contributor behind wind and solar generation.`}
           >
-            <span className="text-neutral-600">{Math.round(electricityImpactData.statusQuo.gridShare)}%</span>
-            <span className="text-neutral-700 text-3xl sm:text-5xl md:text-6xl">→</span>
+            <span className="text-neutral-400 dark:text-neutral-600">{Math.round(electricityImpactData.statusQuo.gridShare)}%</span>
+            <span className="text-neutral-300 dark:text-neutral-700 text-3xl sm:text-5xl md:text-6xl">→</span>
             <CountUp
               target={Math.round(electricityImpactData.pkBudg650_2045.gridShare)}
               start={gridGrowthInView}
@@ -571,21 +592,21 @@ function App() {
               className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
             >
               Understanding{" "}
-              <span className="text-neutral-300 font-medium">
+              <span className="text-neutral-700 dark:text-neutral-300 font-medium">
                 where grid emissions originate
               </span>{" "}
               is essential for identifying mitigation levers. We trace impacts
               from{" "}
-              <span className="text-violet-400 font-medium">
+              <span className="text-violet-600 dark:text-violet-400 font-medium">
                 today's grid infrastructure
               </span>{" "}
               through its material and process supply chains, then examine how{" "}
-              <span className="text-neutral-300 font-medium">
+              <span className="text-neutral-700 dark:text-neutral-300 font-medium">
                 future grid expansion
               </span>{" "}
               evolves under different climate scenarios, and finally assess
               whether decarbonization{" "}
-              <span className="text-neutral-300 font-medium">
+              <span className="text-neutral-700 dark:text-neutral-300 font-medium">
                 shifts environmental burdens
               </span>{" "}
               to other impact categories.
@@ -622,7 +643,7 @@ function App() {
               <TotalImpactCard totalGridImpact={totalGridImpact} />
               <Card className="lg:col-span-3 w-full min-w-0">
                 <CardHeader className="pb-2">
-                  <div className="flex items-center gap-2 text-violet-400 mb-2">
+                  <div className="flex items-center gap-2 text-violet-600 dark:text-violet-400 mb-2">
                     <ChartBar className="h-5 w-5" />
                     <CardTitle className="text-lg">Component Breakdown</CardTitle>
                   </div>
@@ -637,7 +658,7 @@ function App() {
             </div>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> Over 90% of the grid's climate impact comes from conducting equipment — overhead lines (54%) and cables (37%).
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> Over 90% of the grid's climate impact comes from conducting equipment — overhead lines (54%) and cables (37%).
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -668,7 +689,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> Three upstream sectors dominate grid impacts: electricity generation (35%), iron & steel process emissions (14%), and heat supply (11%). Since all three are prominent targets for decarbonization, future grid components can benefit from their transformation.
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> Three upstream sectors dominate grid impacts: electricity generation (35%), iron & steel process emissions (14%), and heat supply (11%). Since all three are prominent targets for decarbonization, future grid components can benefit from their transformation.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -681,11 +702,11 @@ function App() {
               className="text-neutral-500 text-sm sm:text-base md:text-lg leading-relaxed"
             >
               With {" "}
-              <span className="text-neutral-300 font-medium">
+              <span className="text-neutral-700 dark:text-neutral-300 font-medium">
                 electricity, heat, and steel
               </span>{" "}
               as the dominant emission sourcesin grid supply chains, the question is: {" "}
-              <span className="text-violet-400 font-medium">
+              <span className="text-violet-600 dark:text-violet-400 font-medium">
                 how much will these
               sectors decarbonize
               </span> as Germany expands its grid?
@@ -728,7 +749,7 @@ function App() {
                 <motion.div key={scenario.name} variants={fadeUp}>
                   <Card
                     className={
-                      scenario.highlight ? "border-violet-900/40" : ""
+                      scenario.highlight ? "border-violet-300/40 dark:border-violet-900/40" : ""
                     }
                   >
                     <CardContent className="pt-5 text-center">
@@ -738,8 +759,8 @@ function App() {
                       <div
                         className={`text-2xl sm:text-3xl font-semibold font-mono mb-1 ${
                           scenario.highlight
-                            ? "text-violet-400"
-                            : "text-neutral-200"
+                            ? "text-violet-600 dark:text-violet-400"
+                            : "text-neutral-800 dark:text-neutral-200"
                         }`}
                       >
                         {scenario.value}
@@ -780,7 +801,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> Most impact occurs in early expansion periods, when the bulk of construction is scheduled and supply chains have not yet fully decarbonized. Later periods benefit significantly from cleaner electricity, heat, and steel production.
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> Most impact occurs in early expansion periods, when the bulk of construction is scheduled and supply chains have not yet fully decarbonized. Later periods benefit significantly from cleaner electricity, heat, and steel production.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -813,7 +834,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> Electricity generation is the process with the largest change, its impact share dropping from 33% to 17% in the 1.5°C scenario. Heat and iron & steel process emissions remain relatively persistent, becoming the dominant residual sources as electricity decarbonizes.
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> Electricity generation is the process with the largest change, its impact share dropping from 33% to 17% in the 1.5°C scenario. Heat and iron & steel process emissions remain relatively persistent, becoming the dominant residual sources as electricity decarbonizes.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -827,12 +848,12 @@ function App() {
             >
               Reducing climate change impact is the main motivation behind
               the energy transition — but transitions to{" "}
-              <span className="text-neutral-300 font-medium">
+              <span className="text-neutral-700 dark:text-neutral-300 font-medium">
                 low-carbon systems
               </span>{" "}
               can shift environmental burdens to other categories. Do the
               supply chain transformations that reduce grid emissions come with{" "}
-              <span className="text-violet-400 font-medium">
+              <span className="text-violet-600 dark:text-violet-400 font-medium">
                 unintended environmental trade-offs
               </span>
               ?
@@ -872,7 +893,7 @@ function App() {
                     <motion.div variants={fadeUp}>
                       <Card variant="success" className="h-full">
                         <CardHeader className="pb-2">
-                          <CardTitle className="text-emerald-400 text-base">
+                          <CardTitle className="text-emerald-600 dark:text-emerald-400 text-base">
                             Most Improved
                           </CardTitle>
                         </CardHeader>
@@ -899,7 +920,7 @@ function App() {
                     <motion.div variants={fadeUp}>
                       <Card variant="warning" className="h-full">
                         <CardHeader className="pb-2">
-                          <CardTitle className="text-violet-400 text-base">
+                          <CardTitle className="text-violet-600 dark:text-violet-400 text-base">
                             Trade-offs
                           </CardTitle>
                         </CardHeader>
@@ -935,14 +956,14 @@ function App() {
               <motion.div variants={fadeUp}>
                 <Card className="h-full">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-neutral-300 text-base">
+                    <CardTitle className="text-neutral-700 dark:text-neutral-300 text-base">
                       Key Insight
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-xs sm:text-sm text-neutral-400">
                       Burden shifting occurs in{" "}
-                      <strong className="text-neutral-200">
+                      <strong className="text-neutral-800 dark:text-neutral-200">
                         only 2 of 16
                       </strong>{" "}
                       impact categories. Land use increases due to bio-based energy carriers, while mineral depletion rises from renewable energy deployment. Most other categories show co-benefits from coal phase-out.
@@ -969,7 +990,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-300">Takeaway:</strong> The coal phase-out delivers environmental co-benefits across most categories — less energy resource depletion, reduced eutrophication and particulate matter. Burden shifting is limited to land use (from biomass) and mineral resources (from renewables), affecting only 2 of 16 assessed categories.
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> The coal phase-out delivers environmental co-benefits across most categories — less energy resource depletion, reduced eutrophication and particulate matter. Burden shifting is limited to land use (from biomass) and mineral resources (from renewables), affecting only 2 of 16 assessed categories.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -1016,8 +1037,8 @@ function App() {
                 <motion.div key={finding.title} variants={fadeUp}>
                   <Card className="h-full">
                     <CardContent className="pt-6">
-                      <div className="text-violet-400 mb-4">{finding.icon}</div>
-                      <h3 className="text-base sm:text-lg font-semibold text-neutral-200 mb-2">
+                      <div className="text-violet-600 dark:text-violet-400 mb-4">{finding.icon}</div>
+                      <h3 className="text-base sm:text-lg font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
                         {finding.title}
                       </h3>
                       <p className="text-sm text-neutral-500 leading-relaxed">
@@ -1044,18 +1065,18 @@ function App() {
       </main>
 
       {/* ─── FOOTER ─── */}
-      <footer className="border-t border-neutral-800/50">
+      <footer className="border-t border-neutral-200/50 dark:border-neutral-800/50">
         <div className="max-w-5xl mx-auto px-4 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <Cable className="h-4 w-4 text-violet-400/60" />
-              <span className="text-sm text-neutral-600">
+              <Cable className="h-4 w-4 text-violet-600/60 dark:text-violet-400/60" />
+              <span className="text-sm text-neutral-400 dark:text-neutral-600">
                 PLCA Grid Expansion Explorer
               </span>
             </div>
-            <p className="text-xs sm:text-sm text-neutral-600 text-center">
+            <p className="text-xs sm:text-sm text-neutral-400 dark:text-neutral-600 text-center">
               Based on: Diepers et al.,{" "}
-              <span className="text-neutral-400 italic">
+              <span className="text-neutral-600 dark:text-neutral-400 italic">
                 Emerging environmental impacts of future electricity grid infrastructure
               </span>
               , Nature Communications (2026)

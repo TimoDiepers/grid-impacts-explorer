@@ -59,14 +59,14 @@ export function ImpactCategoryComparisonChart() {
               layout="vertical"
               barGap={2}
             >
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#374151" />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--chart-grid)" />
               <XAxis
                 type="number"
                 domain={[-30, 20]}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${value > 0 ? "+" : ""}${value}%`}
-                tick={{ fontSize: 10, fill: "#9ca3af" }}
+                tick={{ fontSize: 10, fill: "var(--chart-tick)" }}
               />
               <YAxis
                 type="category"
@@ -74,17 +74,17 @@ export function ImpactCategoryComparisonChart() {
                 width={110}
                 tickLine={false}
                 axisLine={false}
-                tick={{ fontSize: 11, fill: "#e5e7eb" }}
+                tick={{ fontSize: 11, fill: "var(--chart-label)" }}
               />
               <ChartTooltip
                 content={
                   <ChartTooltipContent
                     formatter={(value, name) => (
                       <div className="flex items-center justify-between gap-2 sm:gap-4">
-                        <span className="text-gray-400 text-xs">
+                        <span className="text-[var(--tooltip-muted)] text-xs">
                           {chartConfig[name as keyof typeof chartConfig]?.label || name}
                         </span>
-                        <span className="font-mono font-medium text-gray-100 text-xs">
+                        <span className="font-mono font-medium text-[var(--tooltip-text)] text-xs">
                           {typeof value === "number"
                             ? `${value > 0 ? "+" : ""}${value.toFixed(1)}%`
                             : value}

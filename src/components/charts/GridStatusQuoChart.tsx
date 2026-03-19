@@ -68,13 +68,13 @@ export function GridStatusQuoChart() {
             layout="vertical"
             barSize={20}
           >
-            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#374151" />
+            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--chart-grid)" />
             <XAxis
               type="number"
               tickLine={false}
               axisLine={false}
               tickFormatter={(value) => `${value}`}
-              tick={{ fontSize: 11, fill: "#9ca3af" }}
+              tick={{ fontSize: 11, fill: "var(--chart-tick)" }}
               domain={[0, "auto"]}
             />
             <YAxis
@@ -83,16 +83,16 @@ export function GridStatusQuoChart() {
               tickLine={false}
               axisLine={false}
               width={90}
-              tick={{ fontSize: 11, fill: "#e5e7eb" }}
+              tick={{ fontSize: 11, fill: "var(--chart-label)" }}
             />
             <ChartTooltip
-              cursor={{ fill: "rgba(255, 255, 255, 0.05)" }}
+              cursor={{ fill: "var(--chart-cursor)" }}
               content={
                 <ChartTooltipContent
                   formatter={(value, name) => (
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
-                      <span className="text-gray-400 text-xs">{name}</span>
-                      <span className="font-mono font-medium text-gray-100 text-xs">
+                      <span className="text-[var(--tooltip-muted)] text-xs">{name}</span>
+                      <span className="font-mono font-medium text-[var(--tooltip-text)] text-xs">
                         {typeof value === "number" ? value.toFixed(2) : value} Mt CO₂-eq
                       </span>
                     </div>

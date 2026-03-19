@@ -9,20 +9,19 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
   ({ className, variant = "default", ...props }, ref) => {
     const variants = {
       default:
-        "border-violet-800/40 bg-violet-950/30 text-violet-400",
+        "border-violet-300/50 bg-violet-50/50 text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/30 dark:text-violet-400",
       secondary:
-        "border-neutral-700 bg-neutral-800/50 text-neutral-400",
+        "border-neutral-300 bg-neutral-100/50 text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-neutral-400",
       destructive:
-        "border-red-800/40 bg-red-950/30 text-red-400",
+        "border-red-300/50 bg-red-50/50 text-red-700 dark:border-red-800/40 dark:bg-red-950/30 dark:text-red-400",
       outline:
-        "border-neutral-700 bg-transparent text-neutral-400",
+        "border-neutral-300 bg-transparent text-neutral-600 dark:border-neutral-700 dark:text-neutral-400",
       success:
-        "border-emerald-800/40 bg-emerald-950/30 text-emerald-400",
+        "border-emerald-300/50 bg-emerald-50/50 text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/30 dark:text-emerald-400",
       warning:
-        "border-amber-800/40 bg-amber-950/30 text-amber-400",
-
+        "border-amber-300/50 bg-amber-50/50 text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/30 dark:text-amber-400",
       info:
-        "border-neutral-600 bg-neutral-800/30 text-neutral-400",
+        "border-neutral-300 bg-neutral-100/30 text-neutral-600 dark:border-neutral-600 dark:bg-neutral-800/30 dark:text-neutral-400",
     };
 
     return (

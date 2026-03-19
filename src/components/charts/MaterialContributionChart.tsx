@@ -98,7 +98,7 @@ export function MaterialContributionChart() {
             type="single"
             value={datasetKey}
             onValueChange={(value) => value && setDatasetKey(value as PlotDatasetKey)}
-            className="gap-0 h-9 rounded-lg border border-zinc-800 overflow-hidden bg-zinc-900/60"
+            className="gap-0 h-9 rounded-lg border border-neutral-200 overflow-hidden bg-white/60 dark:border-neutral-200 dark:border-zinc-800 dark:bg-zinc-900/60"
             size="lg"
             accent="zinc"
           >
@@ -108,7 +108,7 @@ export function MaterialContributionChart() {
                 value={option.key}
                 aria-label={option.label}
                 className={`rounded-none ${
-                  index < datasetOptions.length - 1 ? "border-r border-zinc-800" : ""
+                  index < datasetOptions.length - 1 ? "border-r border-neutral-200 dark:border-zinc-800" : ""
                 }`}
               >
                 {option.label}
@@ -129,7 +129,7 @@ export function MaterialContributionChart() {
               barGap={12}
               barCategoryGap={20}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--chart-grid)" />
               <XAxis
                 dataKey="category"
                 tickLine={false}
@@ -137,13 +137,13 @@ export function MaterialContributionChart() {
                 tickMargin={10}
                 interval={0}
                 height={60}
-                tick={{ fontSize: 11, fill: "#e5e7eb" }}
+                tick={{ fontSize: 11, fill: "var(--chart-label)" }}
               />
               <YAxis
                 tickLine={false}
                 axisLine={false}
                 tickMargin={6}
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                tick={{ fontSize: 11, fill: "var(--chart-tick)" }}
                 domain={[0, yMax]}
                 tickFormatter={(v) => `${v}%`}
               />
@@ -152,10 +152,10 @@ export function MaterialContributionChart() {
                   <ChartTooltipContent
                     formatter={(value, name) => (
                       <div className="flex items-center justify-between gap-3">
-                        <span className="text-gray-400 text-xs">
+                        <span className="text-[var(--tooltip-muted)] text-xs">
                           {chartConfig[name as keyof typeof chartConfig]?.label || name}
                         </span>
-                        <span className="font-mono font-medium text-gray-100 text-xs">
+                        <span className="font-mono font-medium text-[var(--tooltip-text)] text-xs">
                           {typeof value === "number" ? value.toFixed(1) : value}%
                         </span>
                       </div>

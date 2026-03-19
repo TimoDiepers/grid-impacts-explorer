@@ -3,22 +3,22 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-background: #0a0a0a;
-  --color-foreground: #e5e5e5;
-  --color-card: #141414;
-  --color-card-foreground: #e5e5e5;
+  --color-background: var(--page-bg);
+  --color-foreground: var(--text-primary);
+  --color-card: var(--surface-bg);
+  --color-card-foreground: var(--text-primary);
   --color-primary: #7c5ce0;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #1a1a1a;
-  --color-secondary-foreground: #e5e5e5;
-  --color-muted: #1a1a1a;
-  --color-muted-foreground: #737373;
+  --color-secondary: var(--surface-secondary);
+  --color-secondary-foreground: var(--text-primary);
+  --color-muted: var(--surface-secondary);
+  --color-muted-foreground: var(--text-muted);
   --color-accent: #7c5ce0;
   --color-accent-foreground: #ffffff;
   --color-destructive: #dc2626;
-  --color-destructive-foreground: #e5e5e5;
-  --color-border: #262626;
-  --color-input: #262626;
+  --color-destructive-foreground: var(--text-primary);
+  --color-border: var(--surface-border);
+  --color-input: var(--surface-border);
   --color-ring: #7c5ce0;
   --radius: 0.5rem;
 
@@ -31,39 +31,97 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
+/* ─── Light mode (default) ─── */
+:root {
+  --page-bg: #fafafa;
+  --surface-bg: rgba(255, 255, 255, 0.7);
+  --surface-secondary: #f0f0f0;
+  --surface-border: #e5e5e5;
+  --text-primary: #171717;
+  --text-secondary: #525252;
+  --text-muted: #737373;
+
+  /* Chart theming */
+  --chart-grid: #e5e7eb;
+  --chart-tick: #6b7280;
+  --chart-label: #374151;
+  --chart-cursor: rgba(0, 0, 0, 0.05);
+
+  /* Tooltips */
+  --tooltip-bg: rgba(255, 255, 255, 0.95);
+  --tooltip-border: #d4d4d4;
+  --tooltip-text: #171717;
+  --tooltip-muted: #6b7280;
+
+  /* Scrollbar */
+  --scrollbar-thumb: #ccc;
+  --scrollbar-hover: #aaa;
+
+  /* Grid pattern */
+  --grid-pattern-opacity: 0.05;
+  --grid-hero-opacity: 0.08;
+}
+
+/* ─── Dark mode ─── */
+.dark {
+  --page-bg: #0a0a0a;
+  --surface-bg: rgba(20, 20, 20, 0.6);
+  --surface-secondary: #1a1a1a;
+  --surface-border: #262626;
+  --text-primary: #e5e5e5;
+  --text-secondary: #a3a3a3;
+  --text-muted: #737373;
+
+  --chart-grid: #374151;
+  --chart-tick: #9ca3af;
+  --chart-label: #e5e7eb;
+  --chart-cursor: rgba(255, 255, 255, 0.05);
+
+  --tooltip-bg: rgba(24, 24, 27, 0.95);
+  --tooltip-border: #3f3f46;
+  --tooltip-text: #f4f4f5;
+  --tooltip-muted: #a1a1aa;
+
+  --scrollbar-thumb: #333;
+  --scrollbar-hover: #444;
+
+  --grid-pattern-opacity: 0.07;
+  --grid-hero-opacity: 0.1;
+}
+
 html {
-  color-scheme: dark;
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #e5e5e5;
+  background-color: var(--page-bg);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
 }
 
-/* Grid background — warm amber, subtle */
+/* Grid background */
 .bg-grid-pattern {
   background-image:
-    linear-gradient(rgba(124, 92, 224, 0.07) 0.5px, transparent 0.5px),
-    linear-gradient(90deg, rgba(124, 92, 224, 0.07) 0.5px, transparent 0.5px);
+    linear-gradient(rgba(124, 92, 224, var(--grid-pattern-opacity)) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(124, 92, 224, var(--grid-pattern-opacity)) 0.5px, transparent 0.5px);
   background-size: 64px 64px;
   -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 75%);
   mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 75%);
 }
 
-/* Hero grid — brighter, pulsing subtly */
+/* Hero grid */
 .bg-grid-hero {
   background-image:
-    linear-gradient(rgba(124, 92, 224, 0.1) 0.5px, transparent 0.5px),
-    linear-gradient(90deg, rgba(124, 92, 224, 0.1) 0.5px, transparent 0.5px);
+    linear-gradient(rgba(124, 92, 224, var(--grid-hero-opacity)) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(124, 92, 224, var(--grid-hero-opacity)) 0.5px, transparent 0.5px);
   background-size: 64px 64px;
   -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 10%, transparent 70%);
   mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 10%, transparent 70%);
@@ -102,12 +160,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
+  background: var(--scrollbar-hover);
 }
 
 /* Chart styles */
@@ -117,8 +175,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background: rgba(20, 20, 20, 0.95) !important;
-  border: 1px solid #262626 !important;
+  background: var(--tooltip-bg) !important;
+  border: 1px solid var(--tooltip-border) !important;
   border-radius: 6px !important;
   font-family: var(--font-sans) !important;
 }
@@ -129,7 +187,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
-  stroke: rgba(255, 255, 255, 0.04);
+  stroke: var(--chart-grid);
+  opacity: 0.5;
 }
 
 ::selection {
@@ -141,7 +200,7 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 2px;
 }
 
-/* Thin amber rule between sections */
+/* Thin rule between sections */
 .section-rule {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(124, 92, 224, 0.3), transparent);
@@ -167,19 +226,16 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Mobile performance optimizations */
 @media (max-width: 768px) {
-  /* Reduce animation complexity on mobile */
   .animate-pulse-glow,
   .animate-float,
   .grid-pulse {
     animation-duration: 4s;
   }
-  
-  /* Optimize scroll performance with contain */
+
   main > * {
     contain: layout style paint;
   }
-  
-  /* Reduce opacity of fixed background on mobile to lower repaint cost */
+
   .fixed {
     transform: translateZ(0);
   }

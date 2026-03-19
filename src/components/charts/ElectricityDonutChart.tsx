@@ -89,7 +89,7 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
   return (
     <div className="w-full">
       <div className="flex items-center justify-between px-2">
-        <span className="text-[10px] uppercase tracking-[0.12em] text-zinc-500">Generation mix</span>
+        <span className="text-[10px] uppercase tracking-[0.12em] text-neutral-500">Generation mix</span>
       </div>
       <ChartContainer config={chartConfig} className="h-6 w-full px-2 mb-2">
         <ResponsiveContainer width="100%" height="100%">
@@ -115,8 +115,8 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
                     hideIndicator
                     formatter={() => (
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-gray-300 text-xs">{dataKey as string}</span>
-                        <span className="font-mono font-medium text-gray-100 text-xs">
+                        <span className="text-[var(--tooltip-muted)] text-xs">{dataKey as string}</span>
+                        <span className="font-mono font-medium text-[var(--tooltip-text)] text-xs">
                           {typeof value === "number" ? value.toFixed(1) : value}%
                         </span>
                       </div>
@@ -264,8 +264,8 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
                   payload={tooltipProps?.payload ? [...tooltipProps.payload] : undefined}
                   formatter={(value, name) => (
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
-                      <span className="text-gray-400 text-xs">{name}</span>
-                      <span className="font-mono font-medium text-gray-100 text-xs">
+                      <span className="text-[var(--tooltip-muted)] text-xs">{name}</span>
+                      <span className="font-mono font-medium text-[var(--tooltip-text)] text-xs">
                         {typeof value === "number" ? value.toFixed(1) : value}%
                       </span>
                     </div>
@@ -341,10 +341,10 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
               startValue={labelStartValue}
               duration={labelDuration}
               decimals={1}
-              className="text-xl sm:text-3xl font-semibold text-gray-100 leading-tight z-0"
+              className="text-xl sm:text-3xl font-semibold text-[var(--tooltip-text)] leading-tight z-0"
               suffix=" g"
             />
-            <div className="text-[11px] text-zinc-300 mt-1">CO₂-eq/kWh</div>
+            <div className="text-[11px] text-neutral-500 dark:text-zinc-300 mt-1">CO₂-eq/kWh</div>
           </div>
         </div>
       </ChartContainer>

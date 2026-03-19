@@ -99,33 +99,33 @@ export function ExpansionTimelineChart() {
                 <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.02} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--chart-grid)" />
             <XAxis
               dataKey="year"
               tickLine={false}
               axisLine={false}
               tickMargin={6}
-              tick={{ fontSize: 9, fill: "#9ca3af" }}
+              tick={{ fontSize: 9, fill: "var(--chart-tick)" }}
             />
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={2}
               tickFormatter={(value) => `${value}`}
-              tick={{ fontSize: 9, fill: "#9ca3af" }}
+              tick={{ fontSize: 9, fill: "var(--chart-tick)" }}
               width={28}
               domain={[0, 'auto']}
-              label={{ value: "Mt CO₂-eq", angle: -90, position: "insideLeft", offset: 10, style: { fontSize: 9, fill: "#9ca3af" } }}
+              label={{ value: "Mt CO₂-eq", angle: -90, position: "insideLeft", offset: 10, style: { fontSize: 9, fill: "var(--chart-tick)" } }}
             />
             <ChartTooltip
               content={
                 <ChartTooltipContent
                   formatter={(value, name) => (
                     <div className="flex items-center justify-between gap-2 sm:gap-4">
-                      <span className="text-gray-400 text-xs">
+                      <span className="text-[var(--tooltip-muted)] text-xs">
                         {chartConfig[name as keyof typeof chartConfig]?.label || name}
                       </span>
-                      <span className="font-mono font-medium text-gray-100 text-xs">
+                      <span className="font-mono font-medium text-[var(--tooltip-text)] text-xs">
                         {typeof value === "number" ? value.toFixed(1) : value} Mt CO₂-eq
                       </span>
                     </div>

@@ -52,7 +52,7 @@ const ChartContainer = React.forwardRef<
         data-chart={chartId}
         ref={ref}
         className={cn(
-          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-zinc-400 [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-zinc-700 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-zinc-600 [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-zinc-700 [&_.recharts-radial-bar-background-sector]:fill-zinc-800 [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-zinc-800/50 [&_.recharts-reference-line_[stroke='#ccc']]:stroke-zinc-700 [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-neutral-500 dark:[&_.recharts-cartesian-axis-tick_text]:fill-zinc-400 [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-neutral-300 dark:[&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-zinc-700 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-neutral-400 dark:[&_.recharts-curve.recharts-tooltip-cursor]:stroke-zinc-600 [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-neutral-300 dark:[&_.recharts-polar-grid_[stroke='#ccc']]:stroke-zinc-700 [&_.recharts-radial-bar-background-sector]:fill-neutral-200 dark:[&_.recharts-radial-bar-background-sector]:fill-zinc-800 [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-neutral-200/50 dark:[&_.recharts-rectangle.recharts-tooltip-cursor]:fill-zinc-800/50 [&_.recharts-reference-line_[stroke='#ccc']]:stroke-neutral-300 dark:[&_.recharts-reference-line_[stroke='#ccc']]:stroke-zinc-700 [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
           className
         )}
         {...props}
@@ -191,7 +191,7 @@ const ChartTooltipContent = React.forwardRef<
       <div
         ref={ref}
         className={cn(
-          "grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-zinc-700 bg-zinc-900/95 px-2.5 py-1.5 text-xs shadow-xl",
+          "grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-neutral-200 bg-white/95 dark:border-zinc-700 dark:bg-zinc-900/95 px-2.5 py-1.5 text-xs shadow-xl",
           className
         )}
       >
@@ -206,7 +206,7 @@ const ChartTooltipContent = React.forwardRef<
               <div
                 key={`${item.dataKey}-${index}`}
                 className={cn(
-                  "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-zinc-400",
+                  "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-neutral-400 dark:[&>svg]:text-zinc-400",
                   indicator === "dot" && "items-center"
                 )}
               >
@@ -247,12 +247,12 @@ const ChartTooltipContent = React.forwardRef<
                     >
                       <div className="grid gap-1.5">
                         {nestLabel ? tooltipLabel : null}
-                        <span className="text-gray-500">
+                        <span className="text-neutral-500">
                           {itemConfig?.label || item.name}
                         </span>
                       </div>
                       {item.value && (
-                        <span className="font-mono font-medium tabular-nums text-gray-900">
+                        <span className="font-mono font-medium tabular-nums text-neutral-900 dark:text-neutral-100">
                           {typeof item.value === 'number' ? item.value.toLocaleString() : item.value}
                         </span>
                       )}
@@ -313,7 +313,7 @@ const ChartLegendContent = React.forwardRef<
             <div
               key={item.value}
               className={cn(
-                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-gray-500"
+                "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-neutral-500"
               )}
             >
               {itemConfig?.icon && !hideIcon ? (
