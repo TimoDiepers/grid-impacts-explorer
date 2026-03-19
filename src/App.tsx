@@ -768,7 +768,7 @@ function App() {
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2 text-neutral-400 mb-2">
                   <TrendingUp className="h-5 w-5" />
-                  <CardTitle className="text-lg">Expansion Timeline</CardTitle>
+                  <CardTitle className="text-lg">Grid Expansion Impacts</CardTitle>
                 </div>
                 <CardDescription>
                   Cumulative climate impact of grid expansion from 2025 to 2045
@@ -973,18 +973,6 @@ function App() {
             </SectionTakeaway>
           </RevealSection>
         </div>
-
-        {/* ─── BIG STAT: max reduction ─── */}
-        {(() => {
-          const staticTotal = expansionYearlyData.reduce((sum, d) => sum + d.static, 0);
-          const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
-          const maxReduction = Math.round((pkBudg650Total / staticTotal - 1) * 100);
-          return (
-            <BigStatMoment caption="Accounting for the evolution of supply chains through prospective LCA reveals that the cumulative climate impact of grid expansion can be significantly lower than static assessments suggest — underscoring the need for forward-looking environmental assessment.">
-              <span className="text-emerald-500">{maxReduction}%</span>
-            </BigStatMoment>
-          );
-        })()}
 
         {/* Section 7: Key Findings */}
         <div className="max-w-5xl mx-auto px-4 py-16 sm:py-24">
