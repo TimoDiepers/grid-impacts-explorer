@@ -4,13 +4,13 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-violet-500/50 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default: "bg-transparent",
         outline:
-          "border border-gray-200 bg-transparent shadow-sm hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+          "border border-neutral-700 bg-transparent hover:bg-neutral-800",
       },
       size: {
         default: "h-8 px-3",
@@ -18,25 +18,25 @@ const toggleVariants = cva(
         lg: "h-10 px-3",
       },
       accent: {
-        violet: "text-zinc-400 hover:bg-violet-400/10 hover:text-violet-50 data-[state=on]:bg-violet-400/20 data-[state=on]:text-zinc-50",
-        cyan: "text-zinc-400 hover:bg-cyan-400/10 hover:text-cyan-50 data-[state=on]:bg-cyan-400/20 data-[state=on]:text-zinc-50",
-        blue: "text-zinc-400 hover:bg-blue-400/10 hover:text-blue-50 data-[state=on]:bg-blue-400/20 data-[state=on]:text-zinc-50",
-        emerald: "text-zinc-400 hover:bg-emerald-400/10 hover:text-emerald-50 data-[state=on]:bg-emerald-400/20 data-[state=on]:text-zinc-50",
-        amber: "text-zinc-400 hover:bg-amber-400/15 hover:text-amber-50 data-[state=on]:bg-amber-400/25 data-[state=on]:text-zinc-50",
-        rose: "text-zinc-400 hover:bg-rose-400/10 hover:text-rose-50 data-[state=on]:bg-rose-400/20 data-[state=on]:text-zinc-50",
-        indigo: "text-zinc-400 hover:bg-indigo-400/10 hover:text-indigo-50 data-[state=on]:bg-indigo-400/20 data-[state=on]:text-zinc-50",
-        teal: "text-zinc-400 hover:bg-teal-400/10 hover:text-teal-50 data-[state=on]:bg-teal-400/20 data-[state=on]:text-zinc-50",
-        lime: "text-zinc-400 hover:bg-lime-400/15 hover:text-lime-50 data-[state=on]:bg-lime-400/25 data-[state=on]:text-zinc-50",
-        zinc: "text-zinc-400 hover:bg-zinc-300/10 hover:text-zinc-50 data-[state=on]:bg-zinc-300/20 data-[state=on]:text-zinc-50",
-        red: "text-zinc-400 hover:bg-red-400/10 hover:text-red-50 data-[state=on]:bg-red-400/20 data-[state=on]:text-zinc-50",
-        yellow: "text-zinc-400ver:bg-yellow-400/15 hover:text-yellow-50 data-[state=on]:bg-yellow-400/25 data-[state=on]:text-zinc-50",
-        purple: "text-zinc-400 hover:bg-purple-400/10 hover:text-purple-50 data-[state=on]:bg-purple-400/20 data-[state=on]:text-zinc-50",
+        violet: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-violet-900/30 data-[state=on]:text-violet-400",
+        cyan: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        blue: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        emerald: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        amber: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-violet-900/30 data-[state=on]:text-violet-400",
+        rose: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        indigo: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        teal: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        lime: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        zinc: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        red: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        yellow: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
+        purple: "text-neutral-500 hover:text-neutral-200 data-[state=on]:bg-neutral-800 data-[state=on]:text-neutral-100",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
-      accent: "violet",
+      accent: "amber",
     },
   }
 );
@@ -46,7 +46,7 @@ const ToggleGroupContext = React.createContext<
 >({
   size: "default",
   variant: "default",
-  accent: "violet",
+  accent: "amber",
 });
 
 const ToggleGroup = React.forwardRef<

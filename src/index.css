@@ -3,174 +3,111 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* Professional dark theme with refined colors */
-  --color-background: #09090b;
-  --color-foreground: #fafafa;
-  --color-card: #18181b;
-  --color-card-foreground: #fafafa;
-  --color-primary: #3b82f6;
+  --color-background: #0a0a0a;
+  --color-foreground: #e5e5e5;
+  --color-card: #141414;
+  --color-card-foreground: #e5e5e5;
+  --color-primary: #7c5ce0;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #27272a;
-  --color-secondary-foreground: #fafafa;
-  --color-muted: #27272a;
-  --color-muted-foreground: #a1a1aa;
-  --color-accent: #3b82f6;
-  --color-accent-foreground: #fafafa;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #fafafa;
-  --color-border: #27272a;
-  --color-input: #27272a;
-  --color-ring: #3b82f6;
-  --radius: 0.75rem;
-  
-  /* Custom accent colors */
-  --color-emerald: #10b981;
-  --color-violet: #8b5cf6;
-  --color-amber: #f59e0b;
-  --color-rose: #f43f5e;
-  --color-cyan: #06b6d4;
+  --color-secondary: #1a1a1a;
+  --color-secondary-foreground: #e5e5e5;
+  --color-muted: #1a1a1a;
+  --color-muted-foreground: #737373;
+  --color-accent: #7c5ce0;
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #e5e5e5;
+  --color-border: #262626;
+  --color-input: #262626;
+  --color-ring: #7c5ce0;
+  --radius: 0.5rem;
+
+  --color-success: #4ade80;
+  --color-warning: #f59e0b;
+  --color-info: #94a3b8;
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
-/* Base styles - dark mode only */
 html {
   color-scheme: dark;
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #09090b;
-  color: #fafafa;
+  background-color: #0a0a0a;
+  color: #e5e5e5;
+  font-family: var(--font-sans);
   font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography refinements */
 h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.025em;
 }
 
-/* Subtle background pattern with radial fade */
+/* Grid background — warm amber, subtle */
 .bg-grid-pattern {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(124, 92, 224, 0.07) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(124, 92, 224, 0.07) 0.5px, transparent 0.5px);
   background-size: 64px 64px;
-  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 70%);
-  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 20%, transparent 75%);
 }
 
-/* Mobile optimization: reduce grid opacity on mobile to reduce repaint cost */
-@media (max-width: 768px) {
-  .bg-grid-pattern {
-    opacity: 0.5;
-    /* Use will-change only on mobile to hint at optimization */
-    will-change: transform;
-  }
+/* Hero grid — brighter, pulsing subtly */
+.bg-grid-hero {
+  background-image:
+    linear-gradient(rgba(124, 92, 224, 0.1) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(124, 92, 224, 0.1) 0.5px, transparent 0.5px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 10%, transparent 70%);
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 10%, transparent 70%);
+  animation: gridBreathe 8s ease-in-out infinite;
 }
 
-/* Mobile-optimized blur for gradient orbs */
-.blur-orb-mobile {
-  filter: blur(40px);
+@keyframes gridBreathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
-/* Gradient text utility - optimized for performance */
-.gradient-text {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  /* Improve rendering performance with GPU acceleration */
-  transform: translateZ(0);
+/* Full-bleed: break out of container */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 
-/* Glass morphism effect - no blur for grid visibility */
-.glass {
-  background: rgba(24, 24, 27, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Scroll indicator pulse */
+@keyframes scrollPulse {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(6px); opacity: 1; }
 }
 
-/* Glow effects */
-.glow-blue {
-  box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.5);
-}
-
-.glow-emerald {
-  box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.5);
-}
-
-.glow-violet {
-  box-shadow: 0 0 40px -10px rgba(139, 92, 246, 0.5);
-}
-
-/* Card hover animations */
-.card-hover {
-  position: relative;
-  transition: box-shadow 0.35s ease, border-color 0.35s ease, background 0.35s ease;
-}
-
-/* Gradient border overlay that respects border radius */
-.card-hover::after {
-  content: "";
-  position: absolute;
-  inset: -8px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.01), rgba(139, 92, 246, 0.01));
-  filter: blur(10px);
-  z-index: -1;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-
-/* Mobile: completely disable hover effects for better performance and UX */
-@media (max-width: 768px) {
-  .card-hover {
-    transition: none;
-  }
-  
-  .card-hover::after {
-    display: none;
-  }
-  
-  .card-hover:hover {
-    box-shadow: none;
-  }
-  
-  .card-hover:hover::after {
-    opacity: 0;
-  }
-}
-
-.card-hover:hover {
-  /* Gradient glow (border/shadow only), background unchanged */
-  box-shadow:
-    0 18px 38px -18px rgba(0, 0, 0, 0.15),
-    0 0 18px 6px rgba(59, 130, 246, 0.09),
-    0 0 24px 10px rgba(139, 92, 246, 0.09);
-}
-
-.card-hover:hover::after {
-  opacity: 1;
+.scroll-indicator {
+  animation: scrollPulse 2s ease-in-out infinite;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #18181b;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3f3f46;
-  border-radius: 4px;
+  background: #333;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #52525b;
+  background: #444;
 }
 
 /* Chart styles */
@@ -180,20 +117,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background: rgba(24, 24, 27, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Mobile: use solid background instead of backdrop-filter for performance */
-@media (max-width: 768px) {
-  .recharts-tooltip-wrapper .recharts-default-tooltip {
-    background: rgba(24, 24, 27, 0.98) !important;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
+  background: rgba(20, 20, 20, 0.95) !important;
+  border: 1px solid #262626 !important;
+  border-radius: 6px !important;
+  font-family: var(--font-sans) !important;
 }
 
 .recharts-legend-wrapper {
@@ -202,52 +129,25 @@ h1, h2, h3, h4, h5, h6 {
 
 .recharts-cartesian-grid-horizontal line,
 .recharts-cartesian-grid-vertical line {
-  stroke: rgba(255, 255, 255, 0.06);
+  stroke: rgba(255, 255, 255, 0.04);
 }
 
-/* Selection styles */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(124, 92, 224, 0.25);
 }
 
-/* Focus visible styles */
 :focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #7c5ce0;
   outline-offset: 2px;
 }
 
-/* Animation keyframes */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Thin amber rule between sections */
+.section-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124, 92, 224, 0.3), transparent);
 }
 
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes slideUp {
-  from { 
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.4); }
-  50% { box-shadow: 0 0 30px -5px rgba(59, 130, 246, 0.6); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
+/* Grid infrastructure pie segment pulse */
 @keyframes grid-pulse {
   0%, 100% {
     transform: scale(1.02) translateX(2px);
@@ -257,34 +157,6 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(1.06) translateX(8px);
     opacity: 1;
   }
-}
-
-.animate-in {
-  animation-duration: 200ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  animation-fill-mode: forwards;
-}
-
-.animate-out {
-  animation-duration: 150ms;
-  animation-timing-function: ease-in;
-  animation-fill-mode: forwards;
-}
-
-.fade-in-0 {
-  animation-name: fadeIn;
-}
-
-.fade-out-0 {
-  animation-name: fadeOut;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
 }
 
 .grid-pulse {

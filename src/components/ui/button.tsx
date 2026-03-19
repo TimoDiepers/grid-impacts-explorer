@@ -4,29 +4,29 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-blue-600 text-white shadow-lg shadow-blue-500/25 hover:bg-blue-500 hover:shadow-blue-500/40 active:scale-[0.98]",
+          "bg-violet-600 text-white hover:bg-violet-500",
         gradient:
-          "bg-gradient-to-r from-blue-600 via-violet-600 to-blue-600 bg-[length:200%_auto] text-white shadow-lg hover:bg-right active:scale-[0.98] transition-all duration-400",
+          "bg-violet-600 text-white hover:bg-violet-500",
         destructive:
-          "bg-red-600 text-white shadow-lg shadow-red-500/25 hover:bg-red-500 hover:shadow-red-500/40 active:scale-[0.98]",
+          "bg-red-600 text-white hover:bg-red-500",
         outline:
-          "border border-zinc-700 bg-transparent text-zinc-100 hover:bg-zinc-800 hover:border-zinc-600",
+          "border border-neutral-700 bg-transparent text-neutral-300 hover:bg-neutral-800 hover:text-neutral-100",
         secondary:
-          "bg-zinc-800 text-zinc-100 hover:bg-zinc-700 active:scale-[0.98]",
-        ghost: 
-          "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-100",
-        link: 
-          "text-blue-400 underline-offset-4 hover:underline hover:text-blue-300",
+          "bg-neutral-800 text-neutral-200 hover:bg-neutral-700",
+        ghost:
+          "text-neutral-400 hover:bg-neutral-800/50 hover:text-neutral-200",
+        link:
+          "text-violet-400 underline-offset-4 hover:underline hover:text-violet-300",
       },
       size: {
         default: "h-10 px-5 py-2",
         sm: "h-8 rounded-md px-4 text-xs",
-        lg: "h-12 rounded-lg px-8 text-base",
+        lg: "h-11 rounded-md px-8 text-sm",
         icon: "h-10 w-10",
       },
     },
