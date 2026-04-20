@@ -293,7 +293,7 @@ function ScrollIndicator() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 1.2, duration: 0.8 }}
+      transition={{ delay: 0.8, duration: 0.8 }}
       className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
     >
       <span className="text-neutral-400 dark:text-neutral-600 text-[10px] uppercase tracking-[0.2em] font-mono">
@@ -332,6 +332,11 @@ function App() {
   );
   const gridGrowthRef = useRef<HTMLDivElement | null>(null);
   const gridGrowthInView = useInView(gridGrowthRef, {
+    once: true,
+    margin: "0px 0px -10% 0px",
+  });
+  const expansionScenarioStatsRef = useRef<HTMLDivElement | null>(null);
+  const expansionScenarioStatsInView = useInView(expansionScenarioStatsRef, {
     once: true,
     margin: "0px 0px -10% 0px",
   });
@@ -399,8 +404,17 @@ function App() {
             transition={{ duration: 0.7, delay: 0.35 }}
             className="text-neutral-500 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
           >
-            How grid infrastructure shapes the environmental impacts of
-            future power systems — a prospective LCA for Germany through 2045
+            How electricity grid infrastructure shapes the environmental impacts of
+            future power systems — a prospective LCA for Germany through 2045. Based on {" "}
+            <a
+              href="https://doi.org/10.1038/s41467-026-00000-0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-neutral-400/40 underline-offset-2 hover:text-neutral-600 dark:hover:text-neutral-300 hover:decoration-neutral-400/60 transition-colors"
+            >
+              Diepers et al. (2026)
+            </a>
+            .
           </motion.p>
         </motion.div>
 
@@ -480,9 +494,9 @@ function App() {
                           <>
                             <div className="flex flex-wrap items-center gap-2 text-neutral-400 mb-2">
                               <TrendingUp className="h-4 w-4" />
-                              <span className="text-base font-medium text-neutral-300">
+                              <CardTitle className="text-base">
                                 Scenario
-                              </span>
+                              </CardTitle>
                               <ToggleGroup
                                 type="single"
                                 value={selectedScenario}
@@ -727,6 +741,7 @@ function App() {
             />
 
             <motion.div
+              ref={expansionScenarioStatsRef}
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -740,10 +755,10 @@ function App() {
                 const pkBudg650Total = expansionYearlyData.reduce((sum, d) => sum + d.pkBudg650, 0);
                 const pctChange = (val: number) => `${Math.round((val / staticTotal - 1) * 100)}%`;
                 return [
-                  { name: "Static (BAU)", value: staticTotal.toFixed(1), change: "Baseline", desc: "Business as usual", highlight: false },
-                  { name: "3°C Scenario", value: npiTotal.toFixed(1), change: pctChange(npiTotal), desc: "National policies implemented", highlight: false },
-                  { name: "2°C Scenario", value: pkBudg1000Total.toFixed(1), change: pctChange(pkBudg1000Total), desc: "1000 Gt budget", highlight: false },
-                  { name: "1.5°C Scenario", value: pkBudg650Total.toFixed(1), change: pctChange(pkBudg650Total), desc: "650 Gt budget", highlight: true },
+                  { name: "Static (BAU)", value: staticTotal, change: "Baseline", desc: "Business as usual", highlight: false },
+                  { name: "3°C Scenario", value: npiTotal, change: pctChange(npiTotal), desc: "National policies implemented", highlight: false },
+                  { name: "2°C Scenario", value: pkBudg1000Total, change: pctChange(pkBudg1000Total), desc: "1000 Gt budget", highlight: false },
+                  { name: "1.5°C Scenario", value: pkBudg650Total, change: pctChange(pkBudg650Total), desc: "650 Gt budget", highlight: true },
                 ];
               })().map((scenario) => (
                 <motion.div key={scenario.name} variants={fadeUp}>
@@ -763,7 +778,12 @@ function App() {
                             : "text-neutral-800 dark:text-neutral-200"
                         }`}
                       >
-                        {scenario.value}
+                        <CountUp
+                          target={scenario.value}
+                          start={expansionScenarioStatsInView}
+                          duration={1.2}
+                          decimals={1}
+                        />
                       </div>
                       <div className="text-[10px] sm:text-xs text-neutral-600 mb-2">
                         Mt CO₂-eq
@@ -834,7 +854,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> Electricity generation is the process with the largest change, its impact share dropping from 33% to 17% in the 1.5°C scenario. Heat and iron & steel process emissions remain relatively persistent, becoming the dominant residual sources as electricity decarbonizes.
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> Most future climate impact reduction is driven by decarbonizing electricity. This extends to reductions in aluminium and copper production, which rely on electricity. Comparing time periods reveals how later grid expansion increasingly benefit from progressive decarbonization.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -990,7 +1010,7 @@ function App() {
             </Card>
 
             <SectionTakeaway>
-              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> The coal phase-out delivers environmental co-benefits across most categories — less energy resource depletion, reduced eutrophication and particulate matter. Burden shifting is limited to land use (from biomass) and mineral resources (from renewables), affecting only 2 of 16 assessed categories.
+              <strong className="text-neutral-700 dark:text-neutral-300">Takeaway:</strong> The climate-driven transition towards renewables mainly brings environmental co-benefits in other impact categories. Especially coal phase-out reduces energy resource depletion, eutrophication and particulate matter emissions. Burden shifting is limited to land use (from biomass) and mineral resources (from renewables), affecting only 2 of 16 assessed categories.
             </SectionTakeaway>
           </RevealSection>
         </div>
@@ -1024,7 +1044,7 @@ function App() {
                     icon: <Layers className="h-5 w-5" />,
                     title: "Persistent Emission Sources",
                     description:
-                      "Even under ambitious decarbonization, electricity and heat for aluminum production alongside iron & steel process emissions remain the main drivers of grid-related impacts.",
+                      "Even under ambitious decarbonization, electricity and heat generation for aluminium production remain dominant drivers of grid-related impacts - and are therefor major levers for future mitigation.",
                   },
                   {
                     icon: <TrendingUp className="h-5 w-5" />,
