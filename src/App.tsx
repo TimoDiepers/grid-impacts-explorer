@@ -343,6 +343,9 @@ function App() {
   const [selectedScenario, setSelectedScenario] = useState<
     "npi2045" | "pkBudg1000_2045" | "pkBudg650_2045"
   >("pkBudg650_2045");
+  const [timelineMode, setTimelineMode] = useState<"cumulative" | "yearly">(
+    "cumulative"
+  );
   const baseGridShare = electricityImpactData.statusQuo.gridShare;
 
   // Hero parallax
@@ -807,16 +810,44 @@ function App() {
 
             <Card>
               <CardHeader className="pb-2">
-                <div className="flex items-center gap-2 text-neutral-400 mb-2">
-                  <TrendingUp className="h-5 w-5" />
-                  <CardTitle className="text-lg">Grid Expansion Impacts</CardTitle>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-neutral-400 mb-2">
+                      <TrendingUp className="h-5 w-5" />
+                      <CardTitle className="text-lg">Grid Expansion Impacts</CardTitle>
+                    </div>
+                    <CardDescription>
+                      Climate impact of grid expansion from 2025 to 2045
+                    </CardDescription>
+                  </div>
+                  <ToggleGroup
+                    type="single"
+                    value={timelineMode}
+                    accent="violet"
+                    onValueChange={(value) =>
+                      value && setTimelineMode(value as typeof timelineMode)
+                    }
+                    className="gap-0 rounded-md border border-neutral-200 dark:border-neutral-800 overflow-hidden bg-white/60 dark:bg-neutral-900/60 self-start"
+                  >
+                    <ToggleGroupItem
+                      value="cumulative"
+                      aria-label="Show cumulative impacts"
+                      className="font-medium text-xs border-r border-neutral-200 dark:border-neutral-800 rounded-none px-3"
+                    >
+                      Cumulative
+                    </ToggleGroupItem>
+                    <ToggleGroupItem
+                      value="yearly"
+                      aria-label="Show year-specific impacts"
+                      className="font-medium text-xs rounded-none px-3"
+                    >
+                      Year-specific
+                    </ToggleGroupItem>
+                  </ToggleGroup>
                 </div>
-                <CardDescription>
-                  Cumulative climate impact of grid expansion from 2025 to 2045
-                </CardDescription>
               </CardHeader>
               <CardContent>
-                <ExpansionTimelineChart />
+                <ExpansionTimelineChart mode={timelineMode} />
               </CardContent>
             </Card>
 

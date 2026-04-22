@@ -11,6 +11,8 @@ import {
 import { useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
+type ExpansionTimelineMode = "cumulative" | "yearly";
+
 const chartConfig = {
   static: {
     label: "Static (BAU)",
@@ -58,7 +60,21 @@ function buildCumulativeData() {
 
 const cumulativeData = buildCumulativeData();
 
-export function ExpansionTimelineChart() {
+function buildZeroData(data: typeof cumulativeData) {
+  return data.map((d) => ({
+    year: d.year,
+    static: 0,
+    npi: 0,
+    pkBudg1000: 0,
+    pkBudg650: 0,
+  }));
+}
+
+export function ExpansionTimelineChart({
+  mode = "cumulative",
+}: {
+  mode?: ExpansionTimelineMode;
+}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -69,16 +85,15 @@ export function ExpansionTimelineChart() {
     }
   }, [isInView, hasAnimated]);
 
-  const chartData = hasAnimated
-    ? cumulativeData
-    : cumulativeData.map(d => ({ year: d.year, static: 0, npi: 0, pkBudg1000: 0, pkBudg650: 0 }));
+  const chartData = mode === "cumulative" ? cumulativeData : expansionYearlyData;
+  const displayedData = hasAnimated ? chartData : buildZeroData(chartData);
 
   return (
     <div ref={ref} className="w-full">
       <ChartContainer config={chartConfig} className="h-44 sm:h-56 md:h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
-            data={chartData}
+            data={displayedData}
             margin={{ top: 5, right: 5, left: 0, bottom: 5 }}
           >
             <defs>
