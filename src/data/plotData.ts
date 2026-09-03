@@ -1,3 +1,5 @@
+import { scenarioSeriesColors } from "@/lib/palette";
+
 export type ScenarioKey = "scen3" | "scen2" | "scen15";
 
 export const scenarioOptions: { key: ScenarioKey; label: string }[] = [
@@ -6,11 +8,11 @@ export const scenarioOptions: { key: ScenarioKey; label: string }[] = [
   { key: "scen15", label: "1.5°C scenario" },
 ];
 
-// Shared scenario colors across charts (aligned with ExpansionTimelineChart)
+// Shared scenario colors across charts — see src/lib/palette.ts
 export const scenarioColors: Record<ScenarioKey, string> = {
-  scen3: "#ef4444",   // 3°C scenario — red
-  scen2: "#3b82f6",   // 2°C scenario — blue
-  scen15: "#8b5cf6",  // 1.5°C scenario — violet
+  scen3: scenarioSeriesColors.scen3,
+  scen2: scenarioSeriesColors.scen2,
+  scen15: scenarioSeriesColors.scen15,
 };
 
 type ScenarioShares = {

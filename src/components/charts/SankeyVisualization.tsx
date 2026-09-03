@@ -2,34 +2,28 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { sankey as d3Sankey } from "d3-sankey";
 import { sankeyData } from "@/data";
+import {
+  chartPalette,
+  gridComponentColors,
+  materialColors,
+  processColors,
+  seriesFallback,
+} from "@/lib/palette";
 
-// Node colors - organized by category
+// Node colors — all series colors come from the documented chart palette.
 const NODE_COLORS: Record<string, string> = {
   // Grid (final target)
-  "grid status quo": "#17becf",
+  "grid status quo": chartPalette.verdigris,
   // Components
-  "cables": "#f97316",
-  "overhead lines": "#2563eb",
-  "transformers": "#22c55e",
-  "substations": "#ef4444",
-  "switchgears": "#a855f7",
+  cables: gridComponentColors.Cables,
+  "overhead lines": gridComponentColors["Overhead lines"],
+  transformers: gridComponentColors.Transformers,
+  substations: gridComponentColors.Substations,
+  switchgears: gridComponentColors.Switchgears,
   // Materials
-  "aluminum": "#60a5fa",
-  "copper": "#f87171",
-  "iron & steel": "#4ade80",
-  "plastics": "#c084fc",
-  "concrete": "#9ca3af",
-  "SF6": "#fbbf24",
-  "other materials": "#a3e635",
+  ...materialColors,
   // Processes
-  "electricity": "#64748b",
-  "heat": "#fcd34d",
-  "transport": "#22d3ee",
-  "coal": "#1e293b",
-  "clinker": "#65a30d",
-  "aluminum (process emissions)": "#d97706",
-  "iron & steel (process emissions)": "#dc2626",
-  "other processes": "#a855f7",
+  ...processColors,
 };
 type SankeyNodeDatum = {
   name: string;
@@ -64,7 +58,7 @@ function buildSankeyGraph() {
 
   const nodes: SankeyNodeDatum[] = Array.from(nodeSet).map((name) => ({
     name,
-    color: NODE_COLORS[name] || "#9ca3af",
+    color: NODE_COLORS[name] || seriesFallback,
   }));
 
   const links: SankeyLinkDatum[] = sankeyData

@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-violet-500/50 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent/50 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -18,25 +18,15 @@ const toggleVariants = cva(
         lg: "h-10 px-3",
       },
       accent: {
-        violet: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-violet-100/60 data-[state=on]:text-violet-700 dark:data-[state=on]:bg-violet-900/30 dark:data-[state=on]:text-violet-400",
-        cyan: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        blue: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        emerald: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        amber: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-violet-100/60 data-[state=on]:text-violet-700 dark:data-[state=on]:bg-violet-900/30 dark:data-[state=on]:text-violet-400",
-        rose: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        indigo: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        teal: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        lime: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        zinc: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        red: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        yellow: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
-        purple: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
+        accent: "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-accent-surface data-[state=on]:text-accent",
+        neutral:
+          "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200 data-[state=on]:bg-neutral-200 data-[state=on]:text-neutral-900 dark:data-[state=on]:bg-neutral-800 dark:data-[state=on]:text-neutral-100",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
-      accent: "amber",
+      accent: "accent",
     },
   }
 );
@@ -46,7 +36,7 @@ const ToggleGroupContext = React.createContext<
 >({
   size: "default",
   variant: "default",
-  accent: "amber",
+  accent: "accent",
 });
 
 const ToggleGroup = React.forwardRef<

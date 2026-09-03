@@ -9,7 +9,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
   ({ className, variant = "default", ...props }, ref) => {
     const variants = {
       default:
-        "border-violet-300/50 bg-violet-50/50 text-violet-700 dark:border-violet-800/40 dark:bg-violet-950/30 dark:text-violet-400",
+        "border-accent-border bg-accent-surface text-accent",
       secondary:
         "border-neutral-300 bg-neutral-100/50 text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800/50 dark:text-neutral-400",
       destructive:
@@ -17,7 +17,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
       outline:
         "border-neutral-300 bg-transparent text-neutral-600 dark:border-neutral-700 dark:text-neutral-400",
       success:
-        "border-emerald-300/50 bg-emerald-50/50 text-emerald-700 dark:border-emerald-800/40 dark:bg-emerald-950/30 dark:text-emerald-400",
+        "border-accent-border bg-accent-surface text-accent",
       warning:
         "border-amber-300/50 bg-amber-50/50 text-amber-700 dark:border-amber-800/40 dark:bg-amber-950/30 dark:text-amber-400",
       info:

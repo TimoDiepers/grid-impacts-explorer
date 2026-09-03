@@ -1,5 +1,6 @@
 import { Area, AreaChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { expansionYearlyData } from "@/data";
+import { scenarioColors } from "@/lib/palette";
 import {
   ChartContainer,
   ChartTooltip,
@@ -16,19 +17,19 @@ type ExpansionTimelineMode = "cumulative" | "yearly";
 const chartConfig = {
   static: {
     label: "Static (BAU)",
-    color: "#6b7280",
+    color: scenarioColors.static,
   },
   npi: {
     label: "3°C scenario",
-    color: "#ef4444",
+    color: scenarioColors.npi,
   },
   pkBudg1000: {
     label: "2°C scenario",
-    color: "#3b82f6",
+    color: scenarioColors.pkBudg1000,
   },
   pkBudg650: {
     label: "1.5°C scenario",
-    color: "#8b5cf6",
+    color: scenarioColors.pkBudg650,
   },
 } satisfies ChartConfig;
 
@@ -98,20 +99,20 @@ export function ExpansionTimelineChart({
           >
             <defs>
               <linearGradient id="fillStatic" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#6b7280" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#6b7280" stopOpacity={0.02} />
+                <stop offset="0%" stopColor={scenarioColors.static} stopOpacity={0.15} />
+                <stop offset="100%" stopColor={scenarioColors.static} stopOpacity={0.02} />
               </linearGradient>
               <linearGradient id="fillNpi" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#ef4444" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#ef4444" stopOpacity={0.02} />
+                <stop offset="0%" stopColor={scenarioColors.npi} stopOpacity={0.15} />
+                <stop offset="100%" stopColor={scenarioColors.npi} stopOpacity={0.02} />
               </linearGradient>
               <linearGradient id="fillPkBudg1000" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.02} />
+                <stop offset="0%" stopColor={scenarioColors.pkBudg1000} stopOpacity={0.15} />
+                <stop offset="100%" stopColor={scenarioColors.pkBudg1000} stopOpacity={0.02} />
               </linearGradient>
               <linearGradient id="fillPkBudg650" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.15} />
-                <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.02} />
+                <stop offset="0%" stopColor={scenarioColors.pkBudg650} stopOpacity={0.15} />
+                <stop offset="100%" stopColor={scenarioColors.pkBudg650} stopOpacity={0.02} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--chart-grid)" />
@@ -119,18 +120,24 @@ export function ExpansionTimelineChart({
               dataKey="year"
               tickLine={false}
               axisLine={false}
-              tickMargin={6}
-              tick={{ fontSize: 9, fill: "var(--chart-tick)" }}
+              tickMargin={8}
+              tick={{ fontSize: 11, fill: "var(--chart-tick)" }}
             />
             <YAxis
               tickLine={false}
               axisLine={false}
-              tickMargin={2}
+              tickMargin={6}
               tickFormatter={(value) => `${value}`}
-              tick={{ fontSize: 9, fill: "var(--chart-tick)" }}
-              width={28}
+              tick={{ fontSize: 11, fill: "var(--chart-tick)" }}
+              width={52}
               domain={[0, 'auto']}
-              label={{ value: "Mt CO₂-eq", angle: -90, position: "insideLeft", offset: 10, style: { fontSize: 9, fill: "var(--chart-tick)" } }}
+              label={{
+                value: "Mt CO₂-eq",
+                angle: -90,
+                position: "insideLeft",
+                offset: 4,
+                style: { fontSize: 11, fill: "var(--chart-tick)", textAnchor: "middle" },
+              }}
             />
             <ChartTooltip
               content={

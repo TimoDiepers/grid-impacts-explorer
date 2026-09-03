@@ -1,5 +1,6 @@
 import { Bar, BarChart, XAxis, YAxis, CartesianGrid, Cell, ResponsiveContainer } from "recharts";
 import { gridStatusQuoComponents } from "@/data";
+import { gridComponentColors, seriesFallback } from "@/lib/palette";
 import {
   ChartContainer,
   ChartTooltip,
@@ -17,33 +18,27 @@ const chartConfig = {
   },
   "Overhead lines": {
     label: "Overhead lines",
-    color: "#2563eb",
+    color: gridComponentColors["Overhead lines"],
   },
   Cables: {
     label: "Cables",
-    color: "#f97316",
+    color: gridComponentColors.Cables,
   },
   Transformers: {
     label: "Transformers",
-    color: "#22c55e",
+    color: gridComponentColors.Transformers,
   },
   Substations: {
     label: "Substations",
-    color: "#ef4444",
+    color: gridComponentColors.Substations,
   },
   Switchgears: {
     label: "Switchgears",
-    color: "#a855f7",
+    color: gridComponentColors.Switchgears,
   },
 } satisfies ChartConfig;
 
-const COLORS: Record<string, string> = {
-  "Overhead lines": "#2563eb",
-  Cables: "#f97316",
-  Transformers: "#22c55e",
-  Substations: "#ef4444",
-  Switchgears: "#a855f7",
-};
+const COLORS = gridComponentColors;
 
 export function GridStatusQuoChart() {
   const ref = useRef(null);
@@ -108,7 +103,7 @@ export function GridStatusQuoChart() {
               animationBegin={0}
             >
               {gridStatusQuoComponents.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[entry.name] || "#8884d8"} />
+                <Cell key={`cell-${index}`} fill={COLORS[entry.name] || seriesFallback} />
               ))}
             </Bar>
             <ChartLegend

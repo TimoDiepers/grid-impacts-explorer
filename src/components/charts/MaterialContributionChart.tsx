@@ -3,6 +3,7 @@ import { useInView } from "framer-motion";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { plotDatasets, scenarioOptions, scenarioColors, type PlotDatasetKey, type ScenarioKey } from "@/data/plotData";
+import { scenarioSeriesColors } from "@/lib/palette";
 import type { ChartConfig } from "@/components/ui/chart";
 import {
   ChartContainer,
@@ -43,7 +44,7 @@ export function MaterialContributionChart() {
         ...acc,
         [option.key]: { label: option.label, color: scenarioColors[option.key] },
       }),
-      { BAU: { label: "Business as Usual", color: "#6b7280" } }
+      { BAU: { label: "Business as Usual", color: scenarioSeriesColors.BAU } }
     );
   }, []);
 
@@ -100,7 +101,7 @@ export function MaterialContributionChart() {
             onValueChange={(value) => value && setDatasetKey(value as PlotDatasetKey)}
             className="gap-0 h-9 rounded-lg border border-neutral-200 overflow-hidden bg-white/60 dark:border-neutral-200 dark:border-zinc-800 dark:bg-zinc-900/60"
             size="lg"
-            accent="zinc"
+            accent="neutral"
           >
             {datasetOptions.map((option, index) => (
               <ToggleGroupItem

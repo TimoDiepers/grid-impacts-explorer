@@ -1,3 +1,5 @@
+import { gridComponentColors } from "@/lib/palette";
+
 // Type definition for grid status quo components
 export interface GridComponent {
   name: string;
@@ -102,11 +104,11 @@ export { default as distributedComponents } from "./distributed_components.json"
 
 // Aggregated sankey data for easier visualization
 export const gridStatusQuoComponents: GridComponent[] = [
-  { name: "Overhead lines", value: 33.12, color: "#1f77b4", quantity: 35000, displayQuantity: 35, quantitySuffix: ",000", unit: "km", icon: "utility-pole" },
-  { name: "Cables", value: 22.81, color: "#ff7f0e", quantity: 580000, displayQuantity: 580, quantitySuffix: ",000", unit: "km", icon: "cable" },
-  { name: "Transformers", value: 3.60, color: "#2ca02c", quantity: 850000, displayQuantity: 850, quantitySuffix: ",000", unit: "units", icon: "transformer" },
-  { name: "Substations", value: 1.19, color: "#d62728", quantity: 8500, displayQuantity: 8, quantitySuffix: ",500", unit: "units", icon: "building" },
-  { name: "Switchgears", value: 0.98, color: "#9467bd", quantity: 12000, displayQuantity: 12, quantitySuffix: ",000", unit: "units", icon: "toggle-left" },
+  { name: "Overhead lines", value: 33.12, color: gridComponentColors["Overhead lines"], quantity: 35000, displayQuantity: 35, quantitySuffix: ",000", unit: "km", icon: "utility-pole" },
+  { name: "Cables", value: 22.81, color: gridComponentColors.Cables, quantity: 580000, displayQuantity: 580, quantitySuffix: ",000", unit: "km", icon: "cable" },
+  { name: "Transformers", value: 3.60, color: gridComponentColors.Transformers, quantity: 850000, displayQuantity: 850, quantitySuffix: ",000", unit: "units", icon: "transformer" },
+  { name: "Substations", value: 1.19, color: gridComponentColors.Substations, quantity: 8500, displayQuantity: 8, quantitySuffix: ",500", unit: "units", icon: "building" },
+  { name: "Switchgears", value: 0.98, color: gridComponentColors.Switchgears, quantity: 12000, displayQuantity: 12, quantitySuffix: ",000", unit: "units", icon: "toggle-left" },
 ];
 
 export const materialContributions = [

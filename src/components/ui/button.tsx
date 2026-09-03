@@ -4,14 +4,12 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-950 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-violet-600 text-white hover:bg-violet-500",
-        gradient:
-          "bg-violet-600 text-white hover:bg-violet-500",
+          "bg-accent text-accent-foreground hover:bg-accent-strong",
         destructive:
           "bg-red-600 text-white hover:bg-red-500",
         outline:
@@ -21,7 +19,7 @@ const buttonVariants = cva(
         ghost:
           "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-800/50 dark:hover:text-neutral-200",
         link:
-          "text-violet-600 underline-offset-4 hover:underline hover:text-violet-500 dark:text-violet-400 dark:hover:text-violet-300",
+          "text-accent underline-offset-4 hover:underline hover:text-accent-strong",
       },
       size: {
         default: "h-10 px-5 py-2",

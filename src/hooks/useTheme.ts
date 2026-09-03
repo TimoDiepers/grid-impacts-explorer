@@ -19,15 +19,29 @@ function applyTheme(theme: Theme) {
   root.style.colorScheme = resolved;
 }
 
+/** Storage is unavailable when site data is blocked; the theme still has to work. */
+function readStoredTheme(): Theme | null {
+  try {
+    return localStorage.getItem("theme") as Theme | null;
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredTheme(t: Theme) {
+  try {
+    localStorage.setItem("theme", t);
+  } catch {
+    // The preference simply will not survive this session.
+  }
+}
+
 export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    return stored ?? "system";
-  });
+  const [theme, setThemeState] = useState<Theme>(() => readStoredTheme() ?? "system");
 
   const setTheme = useCallback((t: Theme) => {
     setThemeState(t);
-    localStorage.setItem("theme", t);
+    writeStoredTheme(t);
     applyTheme(t);
   }, []);
 

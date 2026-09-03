@@ -11,6 +11,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import { CountUp } from "@/components/CountUp";
+import { chartPalette, generationColors, seriesFallback } from "@/lib/palette";
 
 interface ElectricityDonutChartProps {
   data: {
@@ -25,21 +26,10 @@ interface ElectricityDonutChartProps {
 export const ElectricityDonutChart = memo(ElectricityDonutChartComponent, (prevProps, nextProps) =>
   dataIsEqual(prevProps.data, nextProps.data)
 );
-export const ELECTRICITY_COLORS: Record<string, string> = {
-  Coal: "#52525b",
-  Gas: "#f97316",
-  Wind: "#3b82f6",
-  Solar: "#eab308",
-  Biomass: "#22c55e",
-  Nuclear: "#fbbf24",
-  Hydro: "#06b6d4",
-  Hydrogen: "#ed7577ff",
-  Other: "#9ca3af",
-  "Grid infrastructure": "#1e40af",
-};
+export const ELECTRICITY_COLORS = generationColors;
 
-const GRID_GRADIENT_START = "#645de8ff";
-const GRID_GRADIENT_END = "#a855f7";
+const GRID_GRADIENT_START = chartPalette.verdigris;
+const GRID_GRADIENT_END = "#6fdcbb";
 
 function usePrevious<T>(value: T) {
   const ref = useRef<T | undefined>(undefined);
@@ -80,7 +70,7 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
   ];
 
   const chartConfig = entries.reduce((acc, [name]) => {
-    acc[name] = { label: name, color: ELECTRICITY_COLORS[name] || "#9ca3af" };
+    acc[name] = { label: name, color: ELECTRICITY_COLORS[name] || seriesFallback };
     return acc;
   }, {} as ChartConfig);
 
@@ -89,7 +79,7 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
   return (
     <div className="w-full">
       <div className="flex items-center justify-between px-2">
-        <span className="text-[10px] uppercase tracking-[0.12em] text-neutral-500">Generation mix</span>
+        <span className="text-[11px] uppercase tracking-[0.12em] text-neutral-500">Generation mix</span>
       </div>
       <ChartContainer config={chartConfig} className="h-6 w-full px-2 mb-2">
         <ResponsiveContainer width="100%" height="100%">
@@ -139,7 +129,7 @@ function GenerationStackBar({ generation, order, animate }: { generation: Record
                   key={`${name}-${idx}`}
                   dataKey={name}
                   stackId="mix"
-                  fill={ELECTRICITY_COLORS[name] || "#9ca3af"}
+                  fill={ELECTRICITY_COLORS[name] || seriesFallback}
                   radius={radius}
                   onMouseEnter={() => setActive(name)}
                   onMouseLeave={() => setActive(null)}
@@ -206,7 +196,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
         name,
         value: values.impact,
         share: values.share,
-        fill: ELECTRICITY_COLORS[name] || "#9ca3af",
+        fill: ELECTRICITY_COLORS[name] || seriesFallback,
       }))
       .filter((entry) => entry.value > MIN_VALUE);
 
@@ -214,7 +204,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
       name: "Grid infrastructure",
       value: data.gridShare,
       share: 0,
-      fill: ELECTRICITY_COLORS["Grid infrastructure"] ?? "#1e40af",
+      fill: ELECTRICITY_COLORS["Grid infrastructure"] ?? chartPalette.verdigris,
     });
 
     const ordered = [
@@ -327,7 +317,7 @@ function ElectricityDonutChartComponent({ data }: ElectricityDonutChartProps) {
                     dataKey: item.name,
                     color: item.name === "Grid infrastructure" ? gridLegendColor : item.fill,
                   })) as any}
-                  className="text-[10px] sm:text-xs flex-wrap gap-1 justify-center"
+                  className="text-[11px] sm:text-xs flex-wrap gap-1 justify-center"
                 />
               )}
             />

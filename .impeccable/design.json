@@ -1,0 +1,678 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-03T08:29:09.856127+00:00",
+  "title": "Design System: Grid Impacts Explorer",
+  "extensions": {
+    "colorMeta": {
+      "page-bg-light": {
+        "role": "neutral",
+        "displayName": "Substrate (light)",
+        "canonical": "#fafafa",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "page-bg-dark": {
+        "role": "neutral",
+        "displayName": "Substrate (dark)",
+        "canonical": "#0a0a0a",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "surface-light": {
+        "role": "neutral",
+        "displayName": "Veiled Surface (light)",
+        "canonical": "rgba(255, 255, 255, 0.7)",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "surface-dark": {
+        "role": "neutral",
+        "displayName": "Veiled Surface (dark)",
+        "canonical": "rgba(20, 20, 20, 0.6)",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "surface-secondary-light": {
+        "role": "neutral",
+        "displayName": "Recessed Surface (light)",
+        "canonical": "#f0f0f0",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(50% 0.003 285)",
+          "oklch(62% 0.003 285)",
+          "oklch(74% 0.003 285)",
+          "oklch(86% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "surface-secondary-dark": {
+        "role": "neutral",
+        "displayName": "Recessed Surface (dark)",
+        "canonical": "#1a1a1a",
+        "tonalRamp": [
+          "oklch(15% 0.003 285)",
+          "oklch(26% 0.003 285)",
+          "oklch(38% 0.003 285)",
+          "oklch(50% 0.003 285)",
+          "oklch(62% 0.003 285)",
+          "oklch(74% 0.003 285)",
+          "oklch(86% 0.003 285)",
+          "oklch(95% 0.003 285)"
+        ]
+      },
+      "border-light": {
+        "role": "neutral",
+        "displayName": "Hairline (light)",
+        "canonical": "#e5e5e5",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "border-dark": {
+        "role": "neutral",
+        "displayName": "Hairline (dark)",
+        "canonical": "#262626",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#171717",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "ink-inverse": {
+        "role": "neutral",
+        "displayName": "Ink (on dark)",
+        "canonical": "#e5e5e5",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "#525252",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "#737373",
+        "tonalRamp": [
+          "oklch(15% 0.002 285)",
+          "oklch(26% 0.002 285)",
+          "oklch(38% 0.002 285)",
+          "oklch(50% 0.002 285)",
+          "oklch(62% 0.002 285)",
+          "oklch(74% 0.002 285)",
+          "oklch(86% 0.002 285)",
+          "oklch(95% 0.002 285)"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Warning",
+        "canonical": "#f59e0b",
+        "tonalRamp": [
+          "oklch(15% 0.15 75)",
+          "oklch(26% 0.15 75)",
+          "oklch(38% 0.15 75)",
+          "oklch(50% 0.15 75)",
+          "oklch(62% 0.15 75)",
+          "oklch(74% 0.15 75)",
+          "oklch(86% 0.15 75)",
+          "oklch(95% 0.15 75)"
+        ]
+      },
+      "info": {
+        "role": "tertiary",
+        "displayName": "Info",
+        "canonical": "#94a3b8",
+        "tonalRamp": [
+          "oklch(15% 0.02 255)",
+          "oklch(26% 0.02 255)",
+          "oklch(38% 0.02 255)",
+          "oklch(50% 0.02 255)",
+          "oklch(62% 0.02 255)",
+          "oklch(74% 0.02 255)",
+          "oklch(86% 0.02 255)",
+          "oklch(95% 0.02 255)"
+        ]
+      },
+      "destructive": {
+        "role": "tertiary",
+        "displayName": "Destructive",
+        "canonical": "#dc2626",
+        "tonalRamp": [
+          "oklch(15% 0.19 27)",
+          "oklch(26% 0.19 27)",
+          "oklch(38% 0.19 27)",
+          "oklch(50% 0.19 27)",
+          "oklch(62% 0.19 27)",
+          "oklch(74% 0.19 27)",
+          "oklch(86% 0.19 27)",
+          "oklch(95% 0.19 27)"
+        ]
+      },
+      "verdigris": {
+        "role": "primary",
+        "displayName": "Verdigris (light)",
+        "canonical": "#0c6e56",
+        "tonalRamp": [
+          "oklch(15% 0.09 168)",
+          "oklch(26% 0.09 168)",
+          "oklch(38% 0.09 168)",
+          "oklch(50% 0.09 168)",
+          "oklch(62% 0.09 168)",
+          "oklch(74% 0.09 168)",
+          "oklch(86% 0.09 168)",
+          "oklch(95% 0.09 168)"
+        ]
+      },
+      "verdigris-dark-mode": {
+        "role": "primary",
+        "displayName": "Verdigris (dark)",
+        "canonical": "#3fc9a2",
+        "tonalRamp": [
+          "oklch(15% 0.11 168)",
+          "oklch(26% 0.11 168)",
+          "oklch(38% 0.11 168)",
+          "oklch(50% 0.11 168)",
+          "oklch(62% 0.11 168)",
+          "oklch(74% 0.11 168)",
+          "oklch(86% 0.11 168)",
+          "oklch(95% 0.11 168)"
+        ]
+      },
+      "chart-verdigris": {
+        "role": "tertiary",
+        "displayName": "Chart Verdigris - the subject series only",
+        "canonical": "#2fb894",
+        "tonalRamp": [
+          "oklch(15% 0.11 168)",
+          "oklch(26% 0.11 168)",
+          "oklch(38% 0.11 168)",
+          "oklch(50% 0.11 168)",
+          "oklch(62% 0.11 168)",
+          "oklch(74% 0.11 168)",
+          "oklch(86% 0.11 168)",
+          "oklch(95% 0.11 168)"
+        ]
+      },
+      "chart-arc": {
+        "role": "tertiary",
+        "displayName": "Arc Blue - transmission, wind, transport",
+        "canonical": "#2e9bd6",
+        "tonalRamp": [
+          "oklch(15% 0.12 235)",
+          "oklch(26% 0.12 235)",
+          "oklch(38% 0.12 235)",
+          "oklch(50% 0.12 235)",
+          "oklch(62% 0.12 235)",
+          "oklch(74% 0.12 235)",
+          "oklch(86% 0.12 235)",
+          "oklch(95% 0.12 235)"
+        ]
+      },
+      "chart-copper": {
+        "role": "tertiary",
+        "displayName": "Copper - cables, conductor materials, heat",
+        "canonical": "#dd8a3c",
+        "tonalRamp": [
+          "oklch(15% 0.12 65)",
+          "oklch(26% 0.12 65)",
+          "oklch(38% 0.12 65)",
+          "oklch(50% 0.12 65)",
+          "oklch(62% 0.12 65)",
+          "oklch(74% 0.12 65)",
+          "oklch(86% 0.12 65)",
+          "oklch(95% 0.12 65)"
+        ]
+      },
+      "chart-filament": {
+        "role": "tertiary",
+        "displayName": "Filament Rose - substations, process emissions, 3 C",
+        "canonical": "#e05a6d",
+        "tonalRamp": [
+          "oklch(15% 0.15 15)",
+          "oklch(26% 0.15 15)",
+          "oklch(38% 0.15 15)",
+          "oklch(50% 0.15 15)",
+          "oklch(62% 0.15 15)",
+          "oklch(74% 0.15 15)",
+          "oklch(86% 0.15 15)",
+          "oklch(95% 0.15 15)"
+        ]
+      },
+      "chart-violet": {
+        "role": "tertiary",
+        "displayName": "Violet - transformers, plastics, upstream electricity",
+        "canonical": "#8a6fd8",
+        "tonalRamp": [
+          "oklch(15% 0.13 295)",
+          "oklch(26% 0.13 295)",
+          "oklch(38% 0.13 295)",
+          "oklch(50% 0.13 295)",
+          "oklch(62% 0.13 295)",
+          "oklch(74% 0.13 295)",
+          "oklch(86% 0.13 295)",
+          "oklch(95% 0.13 295)"
+        ]
+      },
+      "chart-slate": {
+        "role": "tertiary",
+        "displayName": "Slate - baseline, always quietest",
+        "canonical": "#8a94a6",
+        "tonalRamp": [
+          "oklch(15% 0.02 255)",
+          "oklch(26% 0.02 255)",
+          "oklch(38% 0.02 255)",
+          "oklch(50% 0.02 255)",
+          "oklch(62% 0.02 255)",
+          "oklch(74% 0.02 255)",
+          "oklch(86% 0.02 255)",
+          "oklch(95% 0.02 255)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero title only, Space Grotesk 700 at -0.04em with 0.9 line-height. One per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Chapter titles in Space Grotesk, always preceded by a mono numeral and a fading hairline rule."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles in Inter 600 at 18px."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All prose in Inter, Ink Muted, capped at 65-70ch. Key phrases lift to Ink Secondary or Verdigris at weight 500."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "The scroll cue, chart-block labels, badges, units, axis ticks at 0.2em tracking. Never a kicker above a heading."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Full-bleed stat figures and headline metrics in JetBrains Mono, always count-up animated on first view."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "The smallest step in the system (11px) \u2014 inline deltas, chip meta, the scroll cue. Never a full sentence, never smaller."
+      }
+    },
+    "shadows": [
+      {
+        "name": "floating-chrome",
+        "value": "0 1px 2px 0 rgba(0,0,0,0.05)",
+        "purpose": "The only shadow in the system. Fixed chrome that floats over scrolling content (the theme toggle). Never used on in-flow surfaces."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "purpose": "The single easing curve for every reveal, parallax, and scale transition."
+      },
+      {
+        "name": "reveal-section",
+        "value": "opacity 0->1, translateY 40px->0 over 0.8s",
+        "purpose": "Section entry on useInView({ once: true, margin: '-80px' })."
+      },
+      {
+        "name": "reveal-item",
+        "value": "opacity 0->1, translateY 30px->0 over 0.6s",
+        "purpose": "Child items inside a staggered container."
+      },
+      {
+        "name": "stagger-children",
+        "value": "0.08s",
+        "purpose": "Delay between children of a revealing group."
+      },
+      {
+        "name": "stat-moment",
+        "value": "opacity 0->1, scale 0.92->1 over 1s",
+        "purpose": "Full-bleed typographic stat entry."
+      },
+      {
+        "name": "count-up",
+        "value": "1s",
+        "purpose": "Numeral count-up on first view; runs once."
+      },
+      {
+        "name": "state-transition",
+        "value": "200ms",
+        "purpose": "Hover and control state color changes."
+      },
+      {
+        "name": "theme-transition",
+        "value": "300ms ease",
+        "purpose": "Background and text color crossfade when the theme toggles."
+      },
+      {
+        "name": "grid-breathe",
+        "value": "8s ease-in-out infinite (opacity 0.6 -> 1)",
+        "purpose": "Ambient hero grid pulse. Slows to 4s under 768px."
+      },
+      {
+        "name": "scroll-pulse",
+        "value": "2s ease-in-out infinite (translateY 0->6px)",
+        "purpose": "Hero scroll cue."
+      },
+      {
+        "name": "grid-pulse",
+        "value": "2.4s ease-in-out infinite (scale 1.02->1.06, translateX 2px->8px)",
+        "purpose": "Exploded grid-share segment in the electricity donut."
+      },
+      {
+        "name": "rail-charge",
+        "value": "spring(stiffness 220, damping 40, mass 0.4) on scroll progress; instant under prefers-reduced-motion",
+        "purpose": "The conductor rail's fill trailing the reading line, which sits a third down the viewport."
+      },
+      {
+        "name": "chart-load",
+        "value": "translateX(-100% -> 300%) over 1.4s ease-in-out, infinite while a chunk is in flight",
+        "purpose": "The Chart Frame's loading bar. Stops under prefers-reduced-motion with every other loop."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Rare, high-commitment action. Filled Verdigris; at most one per viewport.",
+      "html": "<button class=\"ds-btn-primary\">Explore the data</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 20px; border: none; border-radius: 6px; background: var(--accent); color: #fff; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 200ms cubic-bezier(0.25,0.46,0.45,0.94); } .ds-btn-primary:hover { background: var(--accent-strong); } .ds-btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The site's workhorse: in-page navigation, 'Read Paper', 'Back to Top'.",
+      "html": "<button class=\"ds-btn-ghost\">Read Paper<svg class=\"ds-btn-ghost-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15 3h6v6\"/><path d=\"M10 14 21 3\"/><path d=\"M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6\"/></svg></button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 20px; border: none; border-radius: 6px; background: transparent; color: #737373; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 200ms, color 200ms; } .ds-btn-ghost-icon { width: 16px; height: 16px; } .ds-btn-ghost:hover { background: rgba(0,0,0,0.04); color: #171717; } .ds-btn-ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Mono metadata marker: units, scenario tags. Carries facts, never actions.",
+      "html": "<span class=\"ds-badge\">Mt CO\u2082-eq</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; padding: 2px 8px; border: 1px solid var(--accent-border); border-radius: 6px; background: var(--accent-surface); color: var(--accent); font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; font-weight: 500; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat, translucent surface with a hairline border. The page grid stays visible through it.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Total Impact (2023)</h3><p class=\"ds-card-desc\">Combined climate impact of all grid components</p><span class=\"ds-card-figure\">62.70</span><span class=\"ds-card-unit\">Megatonnes of CO\u2082 equivalent</span></div>",
+      "css": ".ds-card { border: 1px solid #e5e5e5; border-radius: 8px; background: rgba(255,255,255,0.7); padding: 20px; color: #262626; transition: border-color 200ms; } .ds-card-title { margin: 0 0 6px; font-family: Inter, system-ui, sans-serif; font-size: 18px; font-weight: 600; line-height: 1.25; letter-spacing: -0.025em; color: #171717; } .ds-card-desc { margin: 0 0 16px; font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #737373; } .ds-card-figure { display: block; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 44px; font-weight: 600; line-height: 1; color: var(--accent); margin-bottom: 8px; } .ds-card-unit { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #737373; }"
+    },
+    {
+      "name": "Accent Card",
+      "kind": "card",
+      "refersTo": "card-accent",
+      "description": "The same flat card with a 4-6% accent wash. Reserved for a section's key figure.",
+      "html": "<div class=\"ds-card-accent\"><p class=\"ds-card-accent-text\">\u2248 <strong>0.62 g CO\u2082-eq/kWh</strong> contribution to Germany\u2019s electricity carbon footprint</p></div>",
+      "css": ".ds-card-accent { border: 1px solid var(--accent-border); border-radius: 8px; background: var(--accent-surface); padding: 12px 16px; } .ds-card-accent-text { margin: 0; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.6; color: #525252; } .ds-card-accent-text strong { color: var(--accent); font-weight: 600; }"
+    },
+    {
+      "name": "Segmented Toggle",
+      "kind": "nav",
+      "refersTo": "toggle-item-on",
+      "description": "Scenario and cumulative/yearly switching. The selected state is the only control that carries the accent.",
+      "html": "<div class=\"ds-toggle\" role=\"group\"><button class=\"ds-toggle-item is-on\" aria-pressed=\"true\">Cumulative</button><button class=\"ds-toggle-item\" aria-pressed=\"false\">Year-specific</button></div>",
+      "css": ".ds-toggle { display: inline-flex; align-items: center; gap: 4px; } .ds-toggle-item { height: 32px; padding: 0 12px; border: none; border-radius: 6px; background: transparent; color: #737373; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 200ms, color 200ms; } .ds-toggle-item:hover { color: #404040; } .ds-toggle-item.is-on { background: var(--accent-surface); color: var(--accent); } .ds-toggle-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }"
+    },
+    {
+      "name": "Chapter Header",
+      "kind": "custom",
+      "description": "The structural signature: zero-padded mono numeral, a hairline rule that fades at both ends, a Space Grotesk headline, and a muted subtitle.",
+      "html": "<header class=\"ds-chapter\"><div class=\"ds-chapter-marker\"><span class=\"ds-chapter-num\">02</span><span class=\"ds-chapter-rule\"></span></div><h2 class=\"ds-chapter-title\">Today\u2019s Grid Infrastructure</h2><p class=\"ds-chapter-sub\">What the existing German grid costs the climate, component by component.</p></header>",
+      "css": ".ds-chapter { max-width: 680px; } .ds-chapter-marker { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; } .ds-chapter-num { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 14px; letter-spacing: 0.05em; color: var(--accent); } .ds-chapter-rule { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-border), transparent); } .ds-chapter-title { margin: 0 0 16px; font-family: 'Space Grotesk', system-ui, sans-serif; font-size: clamp(1.875rem, 5vw, 3rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.025em; color: #171717; } .ds-chapter-sub { margin: 0; font-family: Inter, system-ui, sans-serif; font-size: 17px; line-height: 1.625; color: #737373; }"
+    },
+    {
+      "name": "Stat Moment",
+      "kind": "custom",
+      "description": "Full-bleed typographic punctuation between chapters. One mono figure in iris, one caption, nothing else.",
+      "html": "<div class=\"ds-stat\"><div class=\"ds-stat-figure\">1 \u2192 14%</div><p class=\"ds-stat-caption\">The grid\u2019s share of electricity\u2019s climate impact, from 2023 to a 1.5 \u00b0C-compatible 2045.</p></div>",
+      "css": ".ds-stat { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 64px 16px; } .ds-stat-figure { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: clamp(3rem, 9vw, 7rem); font-weight: 700; line-height: 1; color: var(--accent); margin-bottom: 24px; } .ds-stat-caption { margin: 0; max-width: 36ch; font-family: Inter, system-ui, sans-serif; font-size: 16px; line-height: 1.625; color: #737373; }"
+    },
+    {
+      "name": "Metric Card",
+      "kind": "custom",
+      "description": "Grid-component tile: series-colored icon well, name, count-up mono figure, unit.",
+      "html": "<div class=\"ds-metric\"><span class=\"ds-metric-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2v20\"/><path d=\"m4 6 8-4 8 4\"/><path d=\"M4 10h16\"/><path d=\"m6 22 6-8 6 8\"/></svg></span><span class=\"ds-metric-name\">Overhead lines</span><span class=\"ds-metric-value\">35,000</span><span class=\"ds-metric-unit\">km</span></div>",
+      "css": ".ds-metric { display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid #e5e5e5; border-radius: 8px; background: rgba(255,255,255,0.7); padding: 20px 16px 16px; } .ds-metric-icon { display: inline-flex; padding: 10px; border-radius: 8px; background: #f0f0f0; color: #2e9bd6; margin-bottom: 12px; } .ds-metric-icon svg { width: 22px; height: 22px; } .ds-metric-name { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #737373; margin-bottom: 4px; } .ds-metric-value { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 24px; font-weight: 600; color: #2e9bd6; } .ds-metric-unit { font-family: Inter, system-ui, sans-serif; font-size: 12px; color: #a3a3a3; }"
+    },
+    {
+      "name": "Section Takeaway",
+      "kind": "custom",
+      "description": "The one-sentence finding that closes every chapter. Recessed panel, iris arrow, plain language.",
+      "html": "<div class=\"ds-takeaway\"><svg class=\"ds-takeaway-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg><p class=\"ds-takeaway-text\">Overhead lines and cables carry nearly 90% of the grid\u2019s current climate impact \u2014 aluminium is the single largest material driver.</p></div>",
+      "css": ".ds-takeaway { display: flex; gap: 12px; align-items: flex-start; border: 1px solid rgba(229,229,229,0.6); border-radius: 8px; background: rgba(240,240,240,0.3); padding: 16px 20px; } .ds-takeaway-icon { flex: none; width: 16px; height: 16px; margin-top: 3px; color: var(--accent); } .ds-takeaway-text { margin: 0; font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.625; color: #525252; }"
+    },
+    {
+      "name": "Theme Toggle",
+      "kind": "custom",
+      "description": "The only fixed chrome and the only shadowed surface in the system.",
+      "html": "<button class=\"ds-theme-toggle\" aria-label=\"Switch to dark mode\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z\"/></svg></button>",
+      "css": ".ds-theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid #e5e5e5; border-radius: 9999px; background: rgba(255,255,255,0.8); backdrop-filter: blur(4px); color: #525252; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); cursor: pointer; transition: background 200ms; } .ds-theme-toggle svg { width: 16px; height: 16px; } .ds-theme-toggle:hover { background: #f0f0f0; } .ds-theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Findings Row",
+      "kind": "custom",
+      "description": "The closing findings as equal-height panels on the card surface - no icons, no eyebrows, the statement carries the panel.",
+      "html": "<div class=\"ds-findings\"><div class=\"ds-finding\"><h3 class=\"ds-finding-title\">Grid share rises to 21%</h3><p class=\"ds-finding-body\">As generation decarbonizes faster than grid supply chains, infrastructure shifts from a marginal concern to a central pillar of electricity's climate impact.</p></div><div class=\"ds-finding\"><h3 class=\"ds-finding-title\">Emission sources persist</h3><p class=\"ds-finding-body\">Electricity and heat generation for aluminium production remain dominant drivers of grid-related impacts.</p></div></div>",
+      "css": ".ds-findings { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; } .ds-finding { padding: 24px; border: 1px solid #e5e5e5; border-radius: 8px; background: rgba(255,255,255,0.7); } .ds-finding-title { margin: 0 0 12px; font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; color: #171717; } .ds-finding-body { margin: 0; font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.625; color: #737373; }"
+    },
+    {
+      "name": "Conductor Rail",
+      "kind": "nav",
+      "description": "Left-margin transmission line that energizes with reading position; one diamond node per chapter, click to jump.",
+      "html": "<nav class=\"ds-rail\" aria-label=\"Chapters\"><div class=\"ds-rail-track\"><div class=\"ds-rail-charge\"></div><button class=\"ds-rail-node is-passed\" style=\"top:0%\" aria-label=\"Chapter 01\"></button><button class=\"ds-rail-node is-active\" style=\"top:34%\" aria-label=\"Chapter 02\" aria-current=\"true\"></button><button class=\"ds-rail-node\" style=\"top:68%\" aria-label=\"Chapter 03\"></button></div></nav>",
+      "css": ".ds-rail-track { position: relative; width: 1px; height: 220px; background: #e5e5e5; } .ds-rail-charge { position: absolute; inset: 0; height: 100%; transform: scaleY(0.34); transform-origin: top; background: var(--accent); } .ds-rail-node { position: absolute; left: 50%; width: 24px; height: 24px; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; border: none; background: none; padding: 0; cursor: pointer; } .ds-rail-node::before { content: ''; width: 6px; height: 6px; transform: rotate(45deg); border: 1px solid #d4d4d4; background: #fafafa; transition: transform 300ms, background 300ms; } .ds-rail-node.is-passed::before { border-color: var(--accent); background: var(--accent); } .ds-rail-node.is-active::before { border-color: var(--accent); background: var(--accent); transform: rotate(45deg) scale(1.5); } .ds-rail-node:hover::before { transform: rotate(45deg) scale(1.25); }"
+    },
+    {
+      "name": "Chart Frame",
+      "kind": "custom",
+      "description": "Reserves a lazy chart's height, states what is loading, and contains a chunk failure to one card.",
+      "html": "<div class=\"ds-frame\"><svg class=\"ds-frame-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m19 5 3-3\"/><path d=\"m2 22 3-3\"/><path d=\"M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z\"/><path d=\"M7.5 13.5 10 11\"/><path d=\"M10.5 16.5 13 14\"/><path d=\"m12 6 6 6 2.3-2.3a2.4 2.4 0 0 0 0-3.4l-2.6-2.6a2.4 2.4 0 0 0-3.4 0Z\"/></svg><p class=\"ds-frame-text\">The component breakdown could not be loaded. The rest of the page is unaffected \\u2014 the figures behind it are in the paper.</p><button class=\"ds-frame-btn\">Reload the page</button></div>",
+      "css": ".ds-frame { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; min-height: 220px; padding: 24px; text-align: center; border: 1px dashed rgba(229,229,229,0.7); border-radius: 8px; } .ds-frame-icon { width: 20px; height: 20px; color: #a3a3a3; } .ds-frame-text { margin: 0; max-width: 20rem; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.6; color: #737373; } .ds-frame-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid #d4d4d4; border-radius: 6px; background: none; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 500; color: #525252; cursor: pointer; transition: background 200ms; } .ds-frame-btn:hover { background: #f0f0f0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lit Grid",
+    "overview": "Infrastructure rendered as something electric and alive. The page sits on a near-black (dark) or near-white (light) substrate with a 64px blueprint grid drawn across it at half-pixel weight and masked to a soft radial ellipse \u2014 the schematic that engineers actually draw the grid on, dimmed to atmosphere. A single current, Verdigris - the blue-green copper conductors oxidize to - runs through the whole system: the hero word, the chapter numerals, the big stat moments, the focus ring, the selection highlight, the grid lines themselves. Nothing else glows.\n\nThe register is engineered, charged, and precise, never decorative. Every measured quantity is set in JetBrains Mono and counts up like a meter when it scrolls into view; every heading is Space Grotesk, tracked tight and set close, so the numbers and the headlines read as instruments rather than marketing. Surfaces are flat and translucent, separated by hairline borders, so the grid substrate stays faintly visible behind the content. Depth comes from tone and transparency, not from shadow.\n\nThis is a scientific instrument that has been lit, not a dashboard that has been dressed up. The design's job is to make a peer-reviewed prospective LCA legible to a journalist without making a researcher distrust it. Charts arrive plainly, captions carry the finding, and the accent appears only where the reader should look.",
+    "keyCharacteristics": [
+      "64px radially masked blueprint grid as permanent, breathing atmosphere (8s pulse)",
+      "One accent, Verdigris, on a strictly rationed budget - and the only green anywhere",
+      "Monospace for every number, unit, chapter marker, and eyebrow \u2014 no exceptions",
+      "Flat translucent surfaces, hairline borders, no shadow vocabulary",
+      "Scroll reveal as narrative punctuation: content enters once, from 30\u201340px below, and stays",
+      "Full-bleed typographic stat moments that break the reading container between chapters"
+    ],
+    "rules": [
+      {
+        "name": "The One Current Rule",
+        "body": "Verdigris marks what the reader should look at: one finding, one numeral, or one active control state per viewport. If two violet things compete inside a single screenful, one of them is decoration and must be neutral instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Green Rule",
+        "body": "Verdigris is the accent, so nothing else in the system may be green - not a success state, not a chart series, not a badge. Improvement and the subject share the accent precisely because they mean the same thing here. A second green reads as a second brand.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quiet Baseline Rule",
+        "body": "In any scenario chart, the reference or business-as-usual series is Slate. The reader must be able to find the baseline without reading the legend.",
+        "section": "colors"
+      },
+      {
+        "name": "The Substrate Rule",
+        "body": "The blueprint grid belongs to the page, never to a component. Cards, charts, and panels never draw their own grid; they let the page's grid show through their translucency.",
+        "section": "colors"
+      },
+      {
+        "name": "The Instrument Rule",
+        "body": "Every number a reader could quote \u2014 a value, a year, a percentage, a unit, a chapter index \u2014 is set in JetBrains Mono. Sans-serif digits inside a data context are a bug.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Depth Rule",
+        "body": "A newcomer must get the whole story from display, headline, and caption alone. If a finding exists only inside body prose or only inside a chart tooltip, the hierarchy has failed.",
+        "section": "typography"
+      },
+      {
+        "name": "The Reading Width Rule",
+        "body": "Body prose never exceeds max-w-3xl, even when its section is full-bleed. Data may span the viewport; sentences may not.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "A new surface earns a shadow only if it is fixed or floating above the scroll. Everything in the document flow separates with tone and a hairline.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Drawn Line Rule",
+        "body": "Separation is a 1px line that fades at its ends, not a block of contrasting fill.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Arrive-Once Rule",
+        "body": "Reveals fire once (once: true) and never replay on scroll-back. Nothing in the document flow animates on a loop; only the three named ambient elements do.",
+        "section": "components"
+      },
+      {
+        "name": "The Earned Response Rule",
+        "body": "Motion answers something the reader did or something the data says. The rail charges because the reader descended; the numerals count because a value arrived. Nothing on this page congratulates an ordinary click.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "Do let the reader's position be legible on a page this long - the conductor rail is wayfinding first and atmosphere second.",
+      "Do set every quotable number in JetBrains Mono, and animate the headline figures with a one-second count-up on first view.",
+      "Do end every chapter with exactly one Section Takeaway stating the finding in a single plain sentence.",
+      "Do keep Verdigris to one subject per viewport: a finding, a numeral, or an active control state.",
+      "Do let the substrate grid show through surfaces \u2014 cards stay at 60\u201370% opacity.",
+      "Do use .full-bleed for stat moments and section breaks, while keeping prose inside max-w-3xl.",
+      "Do give charts a Slate baseline series and label meaning in text as well as color.",
+      "Do reach for the ghost button first; a filled iris button is a rare event on this page."
+    ],
+    "donts": [
+      "Don't add shadows to in-flow surfaces. Depth is tone, translucency, and a 1px line.",
+      "Don't write a Tailwind color utility for the accent. It lives in --accent and reaches components as text-accent, bg-accent-surface, border-accent-border, ring-accent; those swap per theme, a green-600 class does not.",
+      "Don't introduce a second green anywhere - including a \"success\" or \"positive\" state. See The One Green Rule.",
+      "Don't put a kicker or eyebrow above a heading. The heading carries its own weight; if the label holds real information, it belongs in the subhead.",
+      "Don't put a decorative icon above a card's heading. A row of icon + heading + paragraph cards is the category's default page scaffold; if a container is warranted, the type carries it alone - see Signature: Findings Row.",
+      "Don't introduce a second accent hue. Additional color enters only as a data series, from the six documented chart colors.",
+      "Don't write a literal color into a chart file. Every series color comes from src/lib/palette.ts (gridComponentColors, scenarioColors, generationColors, materialColors, processColors); a new series earns a named entry there, not a hex at the call site.",
+      "Don't add a component variant that renders identically to one that exists. The dead aliases (button.gradient, card.gradient, card.glass, and ten of the twelve ToggleGroup accents) have been removed; ToggleGroup now has exactly two accents, accent and neutral.",
+      "Don't encode meaning in color alone \u2014 these charts are read by a general-public audience alongside experts.",
+      "Don't loop an animation on anything in the document flow, and don't replay reveals on scroll-back.",
+      "Don't set type below 11px, and don't invent a step between micro (11px) and label (12px).",
+      "Don't let a chart shrink below legibility on mobile; scroll it horizontally instead.",
+      "Don't dramatize a value for visual effect. Every figure traces to src/data.",
+      "Don't render a lazily loaded chart without a Chart Frame. An unframed chunk reflows the page while it loads and takes the whole document down when it fails.",
+      "Don't touch localStorage outside a try/catch. Blocked site data must cost the reader a stored preference, never the page."
+    ]
+  }
+}

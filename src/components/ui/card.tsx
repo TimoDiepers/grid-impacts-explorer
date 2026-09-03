@@ -8,11 +8,9 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: "border-neutral-200 bg-white/70 dark:border-neutral-800 dark:bg-neutral-900/60",
-        accent: "border-violet-200/60 bg-violet-50/40 dark:border-violet-900/40 dark:bg-violet-950/20",
-        success: "border-emerald-200/60 bg-emerald-50/40 dark:border-emerald-900/40 dark:bg-emerald-950/20",
+        accent: "border-accent-border bg-accent-surface",
+        success: "border-accent-border bg-accent-surface",
         warning: "border-amber-200/60 bg-amber-50/40 dark:border-amber-900/40 dark:bg-amber-950/20",
-        glass: "border-neutral-200 bg-white/50 dark:border-neutral-800 dark:bg-neutral-900/40",
-        gradient: "border-neutral-200 bg-white/70 dark:border-neutral-800 dark:bg-neutral-900/60",
       },
     },
     defaultVariants: {

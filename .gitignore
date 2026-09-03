@@ -20,3 +20,7 @@ coverage
 .vscode/
 .idea/
 .vite/
+.impeccable/live/
+
+# Impeccable local caches
+.impeccable/hook.cache.json

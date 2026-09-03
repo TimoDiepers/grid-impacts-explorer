@@ -1,5 +1,6 @@
 import { Bar, BarChart, XAxis, YAxis, CartesianGrid, ReferenceLine, ResponsiveContainer } from "recharts";
 import { expansionComparisonData } from "@/data";
+import { chartPalette, scenarioSeriesColors } from "@/lib/palette";
 import {
   ChartContainer,
   ChartTooltip,
@@ -14,15 +15,15 @@ import { useRef, useState, useEffect } from "react";
 const chartConfig = {
   base: {
     label: "3°C scenario",
-    color: "#6b7280",
+    color: scenarioSeriesColors.scen3,
   },
   pkBudg1000: {
     label: "2°C scenario",
-    color: "#3b82f6",
+    color: scenarioSeriesColors.scen2,
   },
   pkBudg650: {
     label: "1.5°C scenario",
-    color: "#8b5cf6",
+    color: scenarioSeriesColors.scen15,
   },
 } satisfies ChartConfig;
 
@@ -66,7 +67,7 @@ export function ImpactCategoryComparisonChart() {
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${value > 0 ? "+" : ""}${value}%`}
-                tick={{ fontSize: 10, fill: "var(--chart-tick)" }}
+                tick={{ fontSize: 11, fill: "var(--chart-tick)" }}
               />
               <YAxis
                 type="category"
@@ -94,7 +95,7 @@ export function ImpactCategoryComparisonChart() {
                   />
                 }
               />
-              <ReferenceLine x={0} stroke="#6b7280" strokeDasharray="3 3" />
+              <ReferenceLine x={0} stroke={chartPalette.slate} strokeDasharray="3 3" />
               <Bar
                 dataKey="base"
                 fill="var(--color-base)"
